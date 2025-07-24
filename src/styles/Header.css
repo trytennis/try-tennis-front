@@ -1,0 +1,118 @@
+.header {
+    background-color: white;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+    border-bottom: 1px solid #f1f1f1;
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+}
+
+.header-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.header-inner {
+    height: 64px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.left-group {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+}
+
+.logo-group {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-header-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(to right, #10b981, #14b8a6);
+    color: white;
+    font-weight: bold;
+    font-size: 1.125rem;
+    border-radius: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.logo-text {
+    font-size: 1.25rem;
+    font-weight: bold;
+    background: linear-gradient(to right, #059669, #0d9488);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.nav {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.nav-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+    border-radius: 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out;
+}
+
+.nav-btn:hover {
+    color: #10b981;
+    background-color: #f9fafb;
+}
+
+.nav-btn.active {
+    background: linear-gradient(to right, #10b981, #14b8a6);
+    color: white;
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+}
+
+.header-icon {
+    width: 1rem;
+    height: 1rem;
+}
+
+.right-group {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+
+.user-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #4b5563;
+    border-radius: 0.75rem;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s all ease-in-out;
+}
+
+.user-btn:hover {
+    color: #10b981;
+    background-color: #f9fafb;
+}

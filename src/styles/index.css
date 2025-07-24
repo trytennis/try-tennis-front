@@ -1,0 +1,22 @@
+/* 전체 페이지 설정 */
+html, body, #root {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  min-height: 100vh;
+  background-color: #f9fafb;
+  font-family: 'Segoe UI', sans-serif;
+  box-sizing: border-box;
+}
+
+/* hidden 클래스 화면 표시 숨김 */
+.hidden {
+  display: none;
+}
+
+/* 상위 페이지 전체 */
+.page-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 40px 20px;
+}

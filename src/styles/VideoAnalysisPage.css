@@ -1,0 +1,15 @@
+.analyze-button {
+    margin: 24px 0;
+    padding: 12px 20px;
+    background-color: #32c48d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.analyze-button:hover {
+    background-color: #28b07b;
+}
