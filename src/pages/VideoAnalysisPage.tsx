@@ -2,18 +2,12 @@ import React, { useState } from 'react';
 import VideoUpload from '../components/VideoUpload';
 import AnalysisResult from '../components/AnalysisResult';
 import '../styles/VideoAnalysisPage.css';
-
-type AnalysisData = {
-  average_angle: number;
-  average_speed: number;
-  max_speed: number;
-  frame_count: number;
-};
+import type { AnalysisData } from '../types/AnalysisData';
+import { post } from '../utils/api';
 
 const VideoAnalysisPage: React.FC = () => {
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
 
-  // 추후 API 연동 시 여기에 setAnalysisData 호출
   const handleDummyUpload = () => {
     setAnalysisData({
       average_angle: 42.5,
@@ -23,10 +17,35 @@ const VideoAnalysisPage: React.FC = () => {
     });
   };
 
+  const handleUploadAndAnalyze = async (publicUrl: string, videoId: string) => {
+    try {
+      const result = await post('/api/analyze', {
+        video_url: publicUrl,
+        video_id: videoId,
+      });
+  
+      const jsonUrl = result.urls["result.json"];
+      const resJson = await fetch(jsonUrl);
+      const parsed = await resJson.json();
+  
+      setAnalysisData({
+        average_angle: parsed.average_angle,
+        average_speed: parsed.average_speed,
+        max_speed: parsed.max_speed,
+        frame_count: parsed.frame_count,
+      });
+    } catch (err) {
+      console.error('[🔥] 분석 요청 실패:', err);
+      alert('분석 요청에 실패했습니다.');
+    }
+  };
+  
   return (
     <div className="page-container">
-      <VideoUpload />
-      <button onClick={handleDummyUpload} className="analyze-button">분석 결과 불러오기 (더미)</button>
+      <VideoUpload onUploadComplete={handleUploadAndAnalyze} />
+      <button onClick={handleDummyUpload} className="analyze-button">
+        분석 결과 불러오기 (더미)
+      </button>
       {analysisData && <AnalysisResult data={analysisData} />}
     </div>
   );
