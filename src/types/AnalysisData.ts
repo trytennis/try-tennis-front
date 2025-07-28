@@ -5,4 +5,7 @@ export interface AnalysisData {
     average_speed: number;
     max_speed: number;
     frame_count: number;
+    chartUrl: string;
+    gifUrl: string;
+    videoUrl: string
 };
