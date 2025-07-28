@@ -1,0 +1,31 @@
+.media-row {
+    display: flex;
+    gap: 24px;
+    margin-top: 24px;
+  }
+  
+  .media-card {
+    flex: 1;
+    background: white;
+    padding: 24px;
+    border-radius: 16px;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+  }
+  
+  .media-title {
+    font-size: 18px;
+    font-weight: bold;
+    margin-bottom: 16px;
+    color: #333;
+  }
+  
+  .media-img,
+  .media-video {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #ddd;
+    max-height: 500px;
+    object-fit: contain;
+  }
+  
