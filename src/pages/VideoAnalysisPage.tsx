@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import VideoUpload from '../components/VideoUpload';
 import AnalysisResult from '../components/AnalysisResult';
-import '../styles/VideoAnalysisPage.css';
 import type { AnalysisData } from '../types/AnalysisData';
 import { post } from '../utils/api';
 import AnalysisMedia from '../components/AnalysisMedia';
@@ -34,7 +33,7 @@ const VideoAnalysisPage: React.FC = () => {
       alert('분석 요청에 실패했습니다.');
     }
   };
-  
+
   return (
     <div className="page-container">
       <VideoUpload onUploadComplete={handleUploadAndAnalyze} />

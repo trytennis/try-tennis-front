@@ -1,0 +1,51 @@
+.ticket-card {
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 16px;
+    padding: 16px;
+    transition: all 0.2s ease-in-out;
+}
+
+.ticket-card:hover {
+    box-shadow: 0 6px 16px rgba(0, 128, 128, 0.1);
+    border-color: #a7f3d0;
+}
+
+.ticket-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
+    margin-bottom: 12px;
+}
+
+.ticket-info {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+    color: #4b5563;
+}
+
+.border-top {
+    border-top: 1px solid #f3f4f6;
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+.price {
+    font-size: 16px;
+    font-weight: bold;
+    background: linear-gradient(to right, #059669, #14b8a6);
+    -webkit-background-clip: text;
+    color: transparent;
+}
+
+.price-per {
+    color: #059669;
+    font-weight: 600;
+}

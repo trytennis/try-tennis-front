@@ -1,0 +1,32 @@
+.ticket-wrapper {
+    padding: 32px;
+}
+
+.header h2 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #1f2937;
+}
+
+.add-button {
+    background: linear-gradient(to right, #10b981, #14b8a6);
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.ticket-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 16px;
+}
