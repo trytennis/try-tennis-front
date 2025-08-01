@@ -1,8 +1,11 @@
 import React from 'react';
 import '../styles/Header.css';
-import { Calendar, Ticket, User, UserCircle, Users, Video } from 'lucide-react';
+import { Calendar, Ticket, UserCircle, Users, Video } from 'lucide-react';
+import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
+  const location = useLocation();
+
   return (
     <header className="header">
       <div className="header-container">
@@ -13,27 +16,27 @@ const Header = () => {
               <span className="logo-text">Try Tennis</span>
             </div>
             <nav className="nav">
-              <button className="nav-btn">
-                <Calendar className='header-icon'/> 
+              <Link to="/schedule" className={`nav-btn ${location.pathname === '/schedule' ? 'active' : ''}`}>
+                <Calendar className="header-icon" />
                 일정
-              </button>
-              <button className="nav-btn">
-                <Users className='header-icon'/>
+              </Link>
+              <Link to="/members" className={`nav-btn ${location.pathname === '/members' ? 'active' : ''}`}>
+                <Users className="header-icon" />
                 회원 관리
-              </button>
-              <button className="nav-btn active">
-                <Video className='header-icon'/>
+              </Link>
+              <Link to="/videos" className={`nav-btn ${location.pathname === '/videos' ? 'active' : ''}`}>
+                <Video className="header-icon" />
                 영상 분석
-              </button>
-              <button className="nav-btn">
-                <Ticket className='header-icon' />
+              </Link>
+              <Link to="/tickets" className={`nav-btn ${location.pathname === '/tickets' ? 'active' : ''}`}>
+                <Ticket className="header-icon" />
                 수강권
-              </button>
+              </Link>
             </nav>
           </div>
           <div className="right-group">
             <button className="user-btn">
-                <UserCircle className='header-icon'/>
+              <UserCircle className="header-icon" />
               김관리자
             </button>
           </div>
