@@ -2,10 +2,11 @@
     padding: 32px;
 }
 
-.header h2 {
-    font-size: 24px;
-    font-weight: bold;
-    color: #1f2937;
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
 }
 
 .add-button {
