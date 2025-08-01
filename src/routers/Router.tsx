@@ -4,6 +4,7 @@ import Layout from '../components/Layout';
 // import MembersPage from '../pages/MembersPage';
 import VideoAnalysisPage from '../pages/VideoAnalysisPage';
 import TicketsPage from '../pages/TicketsPage';
+import AddTicketPage from '../pages/AddTicketPage';
 // import LoginPage from '../pages/LoginPage';
 // import RegisterPage from '../pages/RegisterPage';
 // import PrivateRoute from './PrivateRoute';
@@ -18,6 +19,7 @@ export default function Router() {
           {/* <Route path="members" element={<MembersPage />} /> */}
           <Route path="videos" element={<VideoAnalysisPage />} />
           <Route path="tickets" element={<TicketsPage />} />
+          <Route path="tickets/add" element={<AddTicketPage />} />
         </Route>
 
       </Routes>
