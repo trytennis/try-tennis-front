@@ -7,11 +7,12 @@ type Props = {
   duration: string;
   price: string;
   pricePer: string;
+  onClick?: () => void;
 };
 
-const TicketCard = ({ name, count, duration, price, pricePer }: Props) => {
+const TicketCard = ({ name, count, duration, price, pricePer, onClick }: Props) => {
   return (
-    <div className="ticket-card">
+    <div className="ticket-card clickable" onClick={onClick}> 
       <h3 className="ticket-name">{name}</h3>
       <div className="ticket-info">
         <div className="info-row">

@@ -11,6 +11,17 @@
     border-color: #a7f3d0;
 }
 
+.ticket-card.clickable {
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.ticket-card.clickable:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+}
+
+
 .ticket-name {
     font-size: 18px;
     font-weight: 600;

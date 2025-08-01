@@ -47,6 +47,7 @@ const TicketsPage: React.FC = () => {
                                 duration={`${ticket.valid_days}일`}
                                 price={`${ticket.price.toLocaleString()}원`}
                                 pricePer={`${ticket.price_per_lesson.toLocaleString()}원`}
+                                onClick={() => navigate(`/tickets/${ticket.id}`)}
                             />
                         ))
                     }
