@@ -7,22 +7,43 @@ const API_URL = import.meta.env.VITE_API_URL;
  * @returns 응답 JSON
  */
 export async function post<T = any>(path: string, body: object): Promise<T> {
-  const url = `${API_URL}${path}`;
+    const url = `${API_URL}${path}`;
 
-  console.log(`[📡] POST 요청: ${url}`, body);
+    console.log(`[📡] POST 요청: ${url}`, body);
 
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  });
+    const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    });
 
-  if (!res.ok) {
-    console.error(`[❌] API 요청 실패 (${res.status}): ${res.statusText}`);
-    throw new Error(`API 요청 실패: ${res.status}`);
-  }
+    if (!res.ok) {
+        console.error(`[❌] API 요청 실패 (${res.status}): ${res.statusText}`);
+        throw new Error(`API 요청 실패: ${res.status}`);
+    }
 
-  const json = await res.json();
-  console.log('[✅] 응답:', json);
-  return json;
+    const json = await res.json();
+    console.log('[✅] 응답:', json);
+    return json;
+}
+
+
+/**
+ * 공통 GET 요청 함수
+ * @param path API 경로 (예: "/api/tickets")
+ * @returns 응답 JSON
+ */
+export async function get<T = any>(path: string): Promise<T> {
+    const url = `${API_URL}${path}`;
+    console.log(`[📡] GET 요청: ${url}`);
+
+    const res = await fetch(url);
+    if (!res.ok) {
+        console.error(`[❌] GET 실패 (${res.status}): ${res.statusText}`);
+        throw new Error(`GET 실패: ${res.status}`);
+    }
+
+    const json = await res.json();
+    console.log('[✅] 응답:', json);
+    return json;
 }
