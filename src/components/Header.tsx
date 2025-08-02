@@ -20,7 +20,7 @@ const Header = () => {
                 <Calendar className="header-icon" />
                 일정
               </Link>
-              <Link to="/members" className={`nav-btn ${location.pathname === '/members' ? 'active' : ''}`}>
+              <Link to="/users" className={`nav-btn ${location.pathname === '/users' ? 'active' : ''}`}>
                 <Users className="header-icon" />
                 회원 관리
               </Link>
