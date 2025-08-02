@@ -1,0 +1,52 @@
+ .user-table {
+     width: 100%;
+     border-collapse: collapse;
+     font-size: 15px;
+     border: 1px solid #a7f3d0;
+     border-radius: 12px;
+     overflow: hidden;
+     background-color: white;
+ }
+
+ .user-table th,
+ .user-table td {
+     padding: 12px 16px;
+     text-align: left;
+     border-bottom: 1px solid #f3f4f6;
+     color: #4b5563;
+ }
+
+ .user-table th {
+     background-color: #ecfdf5;
+     font-weight: 600;
+     color: #059669;
+ }
+
+ .inactive-row {
+     opacity: 0.5;
+ }
+
+ /* 역할 뱃지 */
+ .badge {
+     padding: 4px 8px;
+     font-size: 12px;
+     border-radius: 8px;
+     font-weight: 500;
+     color: white;
+ }
+
+ .badge.coach {
+     background-color: #14b8a6;
+ }
+
+ .badge.student {
+     background-color: #10b981;
+ }
+
+ .badge.facility_admin {
+     background-color: #0ea5e9;
+ }
+
+ .badge.super_admin {
+     background-color: #6366f1;
+ }
