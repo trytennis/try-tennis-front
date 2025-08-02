@@ -1,3 +1,4 @@
+import { useNavigate } from 'react-router-dom';
 import '../styles/UserListTable.css';
 import type { User } from '../types/User';
 
@@ -6,6 +7,8 @@ interface Props {
 }
 
 const UserListTable = ({ users }: Props) => {
+  const navigate = useNavigate();
+
   return (
     <table className="user-table">
       <thead>
@@ -19,7 +22,11 @@ const UserListTable = ({ users }: Props) => {
       </thead>
       <tbody>
         {users.map((u) => (
-          <tr key={u.id} className={!u.is_active ? 'inactive-row' : ''}>
+          <tr
+            key={u.id}
+            className={`user-row ${!u.is_active ? 'inactive-row' : ''}`}
+            onClick={() => navigate(`/users/${u.id}`)}
+          >
             <td>{u.name}</td>
             <td>
               <span className={`badge ${u.user_type}`}>{roleLabel(u.user_type)}</span>
@@ -39,8 +46,7 @@ export default UserListTable;
 const roleLabel = (role: string) =>
   role === 'student' ? '수강생' :
   role === 'coach' ? '코치' :
-  role === 'facility_admin' ? '시설 관리자' :
-  '총 관리자';
+  role === 'facility_admin' ? '시설 관리자' : '총 관리자';
 
 const genderLabel = (g: string | null) =>
   g === 'male' ? '남' : g === 'female' ? '여' : '-';
