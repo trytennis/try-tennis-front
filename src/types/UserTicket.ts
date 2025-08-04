@@ -4,7 +4,9 @@ export interface UserTicket {
     assigned_at: string;
     expires_at: string;
     tickets: {
-        name: string;
+      name: string;
+      price: number;
+      lesson_count: number;
     };
-}
+  }
   
