@@ -42,7 +42,7 @@ const TicketDetailPage: React.FC = () => {
 
   return (
     <div className="ticket-detail-page">
-      <div className="ticket-summary">
+      <div className="ticket-info-summary">
         <h2>{ticket.name}</h2>
         <div className="summary-grid">
           <div><strong>횟수:</strong> {ticket.lesson_count}회</div>

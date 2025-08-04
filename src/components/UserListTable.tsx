@@ -1,52 +1,64 @@
 import { useNavigate } from 'react-router-dom';
 import '../styles/UserListTable.css';
 import type { User } from '../types/User';
+import { formatDate, formatPrice } from '../utils/format';
 
 interface Props {
-  users: User[];
+    users: User[];
 }
 
 const UserListTable = ({ users }: Props) => {
-  const navigate = useNavigate();
+    const navigate = useNavigate();
 
-  return (
-    <table className="user-table">
-      <thead>
-        <tr>
-          <th>이름</th>
-          <th>역할</th>
-          <th>성별</th>
-          <th>전화번호</th>
-          <th>활성</th>
-        </tr>
-      </thead>
-      <tbody>
-        {users.map((u) => (
-          <tr
-            key={u.id}
-            className={`user-row ${!u.is_active ? 'inactive-row' : ''}`}
-            onClick={() => navigate(`/users/${u.id}`)}
-          >
-            <td>{u.name}</td>
-            <td>
-              <span className={`badge ${u.user_type}`}>{roleLabel(u.user_type)}</span>
-            </td>
-            <td>{genderLabel(u.gender)}</td>
-            <td>{u.phone ?? '-'}</td>
-            <td>{u.is_active ? '✅' : '❌'}</td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  );
+    return (
+        <table className="user-table">
+            <thead>
+                <tr>
+                    <th>이름</th>
+                    <th>역할</th>
+                    <th>성별</th>
+                    <th>전화번호</th>
+                    <th>등록일</th>
+                    <th>수강권</th>
+                </tr>
+            </thead>
+            <tbody>
+                {users.map((u) => (
+                    <tr
+                        key={u.id}
+                        className={`user-row ${!u.is_active ? 'inactive-row' : ''}`}
+                        onClick={() => navigate(`/users/${u.id}`)}
+                    >
+                        <td>{u.name}</td>
+                        <td>
+                            <span className={`badge ${u.user_type}`}>{roleLabel(u.user_type)}</span>
+                        </td>
+                        <td>{genderLabel(u.gender)}</td>
+                        <td>{u.phone ?? '-'}</td>
+                        <td>{formatDate(u.created_at)}</td>
+                        <td>
+                            {u.ticket ? (
+                                <div className="ticket-summary">
+                                    <div className="name">{u.ticket.tickets.name}</div>
+                                    <div className="sub">잔여: {u.ticket.remaining_count}회 | {formatDate(u.ticket.expires_at)}</div>
+                                </div>
+                            ) : (
+                                <div className="sub">수강권 없음</div>
+                            )}
+                        </td>
+                    </tr>
+                ))}
+            </tbody>
+        </table>
+    );
 };
 
 export default UserListTable;
 
 const roleLabel = (role: string) =>
-  role === 'student' ? '수강생' :
-  role === 'coach' ? '코치' :
-  role === 'facility_admin' ? '시설 관리자' : '총 관리자';
+    role === 'student' ? '수강생' :
+        role === 'coach' ? '코치' :
+            role === 'facility_admin' ? '시설 관리자' : '총 관리자';
 
 const genderLabel = (g: string | null) =>
-  g === 'male' ? '남' : g === 'female' ? '여' : '-';
+    g === 'male' ? '남' : g === 'female' ? '여' : '-';

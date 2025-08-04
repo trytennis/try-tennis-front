@@ -2,10 +2,10 @@
     padding: 32px;
     max-width: 1000px;
     margin: 0 auto;
-  }
-  
-  /* 수강권 요약 카드 */
-  .ticket-summary {
+}
+
+/* 수강권 카드 */
+.ticket-info-summary {
     background: white;
     border: 1px solid #eee;
     border-radius: 16px;
@@ -13,70 +13,69 @@
     max-width: 800px;
     justify-self: center;
     margin-bottom: 40px;
-    box-shadow: 0 8px 20px rgba(0, 128, 128, 0.06); 
+    box-shadow: 0 8px 20px rgba(0, 128, 128, 0.06);
     transition: all 0.2s ease-in-out;
-  }
-  
-  .ticket-summary h2 {
+}
+
+.ticket-info-summary h2 {
     font-size: 22px;
     font-weight: 600;
     color: #1f2937;
     margin-bottom: 20px;
-  }
-  
-  .summary-grid {
+}
+
+.summary-grid {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
     font-size: 15px;
     color: #4b5563;
-  }
-  
-  .summary-grid > div {
+}
+
+.summary-grid>div {
     flex: 1 1 40%;
     display: flex;
     justify-content: space-between;
     border-top: 1px solid #f3f4f6;
     padding-top: 10px;
-  }
-  
-  /* 유저 목록 섹션 */
-  .user-list-section {
+}
+
+/* 유저 목록 섹션 */
+.user-list-section {
     margin-top: 24px;
-  }
-  
-  .user-list-section h3 {
+}
+
+.user-list-section h3 {
     font-size: 18px;
     font-weight: 600;
     color: #1f2937;
     margin-bottom: 16px;
-  }
-  
-  /* 유저 테이블 */
-  .user-table {
+}
+
+/* 유저 테이블 */
+.user-table {
     width: 100%;
     border-collapse: collapse;
     font-size: 15px;
     border: 1px solid #a7f3d0;
     border-radius: 12px;
     overflow: hidden;
-  }
-  
-  .user-table th,
-  .user-table td {
+}
+
+.user-table th,
+.user-table td {
     padding: 12px 16px;
     text-align: left;
     border-bottom: 1px solid #f3f4f6;
     color: #4b5563;
-  }
-  
-  .user-table th {
+}
+
+.user-table th {
     background-color: #ecfdf5;
     font-weight: 600;
-    color: #059669; 
-  }
-  
-  .user-table tr:last-child td {
+    color: #059669;
+}
+
+.user-table tr:last-child td {
     border-bottom: none;
-  }
-  
+}
