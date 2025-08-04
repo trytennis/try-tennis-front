@@ -1,34 +1,211 @@
-.user-header {
+.user-detail-main {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 32px 16px;
+}
+
+.user-detail-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 24px;
-}
-
-.role-badge {
-    margin-top: 4px;
-    font-size: 13px;
-    color: white;
-    background-color: #14b8a6;
-    padding: 4px 8px;
-    border-radius: 6px;
-    display: inline-block;
-}
-
-.user-info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 12px;
-    font-size: 15px;
     margin-bottom: 32px;
 }
 
-.ticket-section {
-    margin-bottom: 40px;
+.header-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.back-button {
+    background: none;
+    color: #4b5563;
+    font-size: 15px;
+    cursor: pointer;
+    transition: color 0.2s;
+    border: none;
+}
+
+.back-button:hover {
+    color: #111827;
+}
+
+.edit-button {
+    background: linear-gradient(to right, #10b981, #14b8a6);
+    color: white;
+    padding: 10px 24px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.edit-button:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
+
+.card-section {
+    background-color: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 16px;
+    padding: 24px;
+    margin-bottom: 32px;
+}
+
+.card-section h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 16px;
+    color: #111827;
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    font-size: 15px;
+    margin-bottom: 14px;
+}
+
+.info-grid label {
+    color: #6b7280;
+    font-weight: 500;
+    font-size: 14px;
+}
+
+.info-grid div {
+    color: #111827;
+    font-weight: 500;
+}
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+/* 공통 카드 크기 */
+.current-ticket-card,
+.assign-card-button {
+    width: 300px;
+    flex-shrink: 0;
+    border-radius: 12px;
+}
+
+/* 기존 카드 스타일 */
+.current-ticket-card {
+    background: linear-gradient(to bottom right, #ecfdf5, #f0fdfa);
+    border: 1px solid #a7f3d0;
+    padding: 16px;
+}
+
+/* 배정 카드 스타일 */
+.assign-card-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px dashed #a7f3d0;
+    background: #f0fdfa;
+    font-size: 40px;
+    font-weight: bold;
+    color: #10b981;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.assign-card-button:hover {
+    background-color: #ecfdf5;
+    border-color: #34d399;
+    transform: scale(1.03);
+    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.1);
+}
+
+.plus-icon {
+    pointer-events: none;
+}
+
+.ticket-list-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
+.ticket-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+    color: #111827;
+}
+
+.ticket-header h4 {
+    font-weight: 600;
+}
+
+.price {
+    color: #059669;
+    font-weight: bold;
+    font-size: 15px;
+}
+
+.ticket-list-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    max-width: 100%;
 }
 
 .ticket-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    gap: 12px;
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.ticket-grid span {
+    color: #6b7280;
+    font-size: 13px;
+}
+
+.past-ticket-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 16px;
+}
+
+.past-ticket-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.past-ticket-card .ticket-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+}
+
+.badge {
+    background-color: #e5e7eb;
+    color: #4b5563;
+    font-size: 12px;
+    padding: 4px 8px;
+    border-radius: 9999px;
+    font-weight: 500;
+}
+
+.ticket-info {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 14px;
+}
+
+.ticket-info span:first-child {
+    color: #6b7280;
 }

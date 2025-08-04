@@ -1,15 +1,18 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { get } from '../utils/api';
 import type { User } from '../types/User';
 import type { UserTicket } from '../types/UserTicket';
 import '../styles/UserDetailPage.css';
 import UserTicketCard from '../components/UserTicketCard';
+import { formatDate, formatPrice } from '../utils/format';
 
 const UserDetailPage = () => {
     const { userId } = useParams();
     const [user, setUser] = useState<User | null>(null);
     const [tickets, setTickets] = useState<UserTicket[]>([]);
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,48 +35,78 @@ const UserDetailPage = () => {
     const expiredTickets = tickets.filter(t => t.remaining_count <= 0 || new Date(t.expires_at) < now);
 
     return (
-        <div className="page-container">
-            <div className="user-header">
-                <div>
-                    <h2>{user.name}</h2>
-                    <p className="role-badge">{roleLabel(user.user_type)}</p>
+        <main className="user-detail-main">
+            <div className="user-detail-header">
+                <div className="header-left">
+                    <button className="back-button" onClick={() => navigate('/users')}>← 뒤로</button>
+                    <h2>회원 상세</h2>
                 </div>
-                <button className="add-button">+ 수강권 배정</button>
+                <div className="header-right">
+                    <button className="edit-button">수정</button>
+                </div>
             </div>
 
-            <div className="user-info-grid">
-                <div><strong>성별:</strong> {genderLabel(user.gender)}</div>
-                <div><strong>전화번호:</strong> {user.phone ?? '-'}</div>
-                <div><strong>활성 여부:</strong> {user.is_active ? '✅' : '❌'}</div>
-                <div><strong>가입일:</strong> {new Date(user.created_at).toLocaleDateString()}</div>
-            </div>
+            <section className="card-section">
+                <h3>기본 정보</h3>
+                <div className="info-grid">
+                    <div><label>이름</label><div>{user.name}</div></div>
+                    <div><label>연락처</label><div>{user.phone || '-'}</div></div>
+                    <div><label>등록일</label><div>{formatDate(user.created_at)}</div></div>
+                    <div>
+                        <label>회원 상태</label>
+                        <div><input type="checkbox" checked={user.is_active} disabled /> 활성화</div>
+                    </div>
+                </div>
+            </section>
 
-            <div className="ticket-section">
-                <h3>현재 수강권</h3>
-                {activeTickets.length === 0 ? (
-                    <p>사용 중인 수강권이 없습니다.</p>
-                ) : (
-                    <div className="ticket-grid">
-                        {activeTickets.map((t, i) => (
-                            <UserTicketCard key={i} ticket={t} />
+            <section className="card-section">
+                <div className="section-header">
+                    <h3>현재 수강권</h3>
+                    {/* <button className="assign-button">수강권 배정</button> */}
+                </div>
+                <div className='ticket-list-row'>
+                    {/* 배정 카드 */}
+                    <button className="assign-card-button" onClick={() => console.log('수강권 배정')}>
+                        <span className="plus-icon">＋</span>
+                    </button>
+                    <div className="ticket-list-grid">
+                        {activeTickets.map((ticket, i) => (
+                            <div key={i} className="current-ticket-card">
+                                <div className="ticket-header">
+                                    <h4>{ticket.tickets.name}</h4>
+                                    <span className="price">{formatPrice(ticket.tickets.price)}</span>
+                                </div>
+                                <div className="ticket-grid">
+                                    <div><span>총 횟수</span><div>{ticket.tickets.lesson_count}회</div></div>
+                                    <div><span>잔여 횟수</span><div>{ticket.remaining_count}회</div></div>
+                                    <div><span>시작일</span><div>{formatDate(ticket.assigned_at)}</div></div>
+                                    <div><span>만료일</span><div>{formatDate(ticket.expires_at)}</div></div>
+                                </div>
+                            </div>
                         ))}
                     </div>
-                )}
-            </div>
+                </div>
+            </section>
 
-            <div className="ticket-section">
+            <section className="card-section">
                 <h3>지난 수강권</h3>
-                {expiredTickets.length === 0 ? (
-                    <p>지난 수강권 내역이 없습니다.</p>
-                ) : (
-                    <div className="ticket-grid">
-                        {expiredTickets.map((t, i) => (
-                            <UserTicketCard key={i} ticket={t} />
-                        ))}
-                    </div>
-                )}
-            </div>
-        </div>
+                <div className="ticket-list-grid">
+                    {expiredTickets.map((ticket, i) => (
+                        <div key={i} className="past-ticket-card">
+                            <div className="ticket-header">
+                                <h4>{ticket.tickets.name}</h4>
+                                <span className="badge">완료</span>
+                            </div>
+                            <div className="ticket-info">
+                                <div><span>횟수</span><span>{ticket.tickets.lesson_count}회</span></div>
+                                <div><span>기간</span><span>{formatDate(ticket.assigned_at)} ~ {formatDate(ticket.expires_at)}</span></div>
+                                <div><span>금액</span><span>{formatPrice(ticket.tickets.price)}</span></div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </section>
+        </main>
     );
 };
 
