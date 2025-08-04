@@ -1,3 +1,5 @@
+import type { TicketSummary } from "./TicketSummary";
+
 export interface User {
     id: string;
     name: string;
@@ -8,5 +10,6 @@ export interface User {
     is_active: boolean;
     created_at: string;
     memo?: string | null;
+    ticket?: TicketSummary | null;
   }
   
