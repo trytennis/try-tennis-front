@@ -5,26 +5,30 @@ import type { User } from '../types/User';
 import type { UserTicket } from '../types/UserTicket';
 import '../styles/UserDetailPage.css';
 import UserTicketCard from '../components/UserTicketCard';
+import AssignTicketModal from '../components/AssignTicketModal';
 import { formatDate, formatPrice } from '../utils/format';
 
 const UserDetailPage = () => {
     const { userId } = useParams();
     const [user, setUser] = useState<User | null>(null);
     const [tickets, setTickets] = useState<UserTicket[]>([]);
+    const [showModal, setShowModal] = useState(false);
 
     const navigate = useNavigate();
 
+    const fetchData = async () => {
+        if (!userId) return;
+        try {
+            const user = await get<User>(`/api/users/${userId}`);
+            const userTickets = await get<UserTicket[]>(`/api/users/${userId}/tickets`);
+            setUser(user);
+            setTickets(userTickets);
+        } catch (err) {
+            console.error('회원 정보 조회 실패', err);
+        }
+    };
+
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const user = await get<User>(`/api/users/${userId}`);
-                const userTickets = await get<UserTicket[]>(`/api/users/${userId}/tickets`);
-                setUser(user);
-                setTickets(userTickets);
-            } catch (err) {
-                console.error('회원 정보 조회 실패', err);
-            }
-        };
         fetchData();
     }, [userId]);
 
@@ -62,11 +66,10 @@ const UserDetailPage = () => {
             <section className="card-section">
                 <div className="section-header">
                     <h3>현재 수강권</h3>
-                    {/* <button className="assign-button">수강권 배정</button> */}
                 </div>
                 <div className='ticket-list-row'>
                     {/* 배정 카드 */}
-                    <button className="assign-card-button" onClick={() => console.log('수강권 배정')}>
+                    <button className="assign-card-button" onClick={() => setShowModal(true)}>
                         <span className="plus-icon">＋</span>
                     </button>
                     <div className="ticket-list-grid">
@@ -106,14 +109,16 @@ const UserDetailPage = () => {
                     ))}
                 </div>
             </section>
+
+            {showModal && (
+                <AssignTicketModal
+                    userId={user.id}
+                    onClose={() => setShowModal(false)}
+                    onAssigned={fetchData}
+                />
+            )}
         </main>
     );
 };
 
 export default UserDetailPage;
-
-const roleLabel = (r: string) =>
-    r === 'student' ? '수강생' : r === 'coach' ? '코치' : r === 'facility_admin' ? '시설 관리자' : '총 관리자';
-
-const genderLabel = (g: string | null) =>
-    g === 'male' ? '남' : g === 'female' ? '여' : '-';
