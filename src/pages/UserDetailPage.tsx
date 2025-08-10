@@ -1,19 +1,26 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { get } from '../utils/api';
-import type { User } from '../types/User';
+import { get, put } from '../utils/api';
+import type { User, EditableUserFields } from '../types/User';
 import type { UserTicket } from '../types/UserTicket';
 import '../styles/UserDetailPage.css';
-import UserTicketCard from '../components/UserTicketCard';
 import AssignTicketModal from '../components/AssignTicketModal';
 import { formatDate, formatPrice } from '../utils/format';
+import UserInfoCard from '../components/UserInfoCard';
 
 const UserDetailPage = () => {
     const { userId } = useParams();
     const [user, setUser] = useState<User | null>(null);
     const [tickets, setTickets] = useState<UserTicket[]>([]);
     const [showModal, setShowModal] = useState(false);
-
+    const [editing, setEditing] = useState(false);
+    const [form, setForm] = useState<EditableUserFields>({
+        name: '',
+        gender: null,
+        phone: '',
+        birthdate: null
+    });
+    const [saving, setSaving] = useState(false);
     const navigate = useNavigate();
 
     const fetchData = async () => {
@@ -23,9 +30,45 @@ const UserDetailPage = () => {
             const userTickets = await get<UserTicket[]>(`/api/users/${userId}/tickets`);
             setUser(user);
             setTickets(userTickets);
+            // 사용자 정보를 form에도 설정
+            setForm({
+                name: user.name,
+                gender: user.gender,
+                phone: user.phone || '',
+                birthdate: user.birthdate
+            });
         } catch (err) {
             console.error('회원 정보 조회 실패', err);
         }
+    };
+
+    const handleSave = async () => {
+        if (!userId || !user) return;
+        
+        setSaving(true);
+        try {
+            const updatedUser = await put<User>(`/api/users/${userId}`, form);
+            setUser(updatedUser);
+            setEditing(false);
+            console.log('회원 정보 수정 성공');
+        } catch (err) {
+            console.error('회원 정보 수정 실패', err);
+            alert('수정에 실패했습니다. 다시 시도해주세요.');
+        } finally {
+            setSaving(false);
+        }
+    };
+
+    const handleCancel = () => {
+        if (!user) return;
+        // 원래 값으로 복원
+        setForm({
+            name: user.name,
+            gender: user.gender,
+            phone: user.phone || '',
+            birthdate: user.birthdate
+        });
+        setEditing(false);
     };
 
     useEffect(() => {
@@ -46,21 +89,30 @@ const UserDetailPage = () => {
                     <h2>회원 상세</h2>
                 </div>
                 <div className="header-right">
-                    <button className="edit-button">수정</button>
+                    {editing ? (
+                        <>
+                            <button 
+                                className="save-button" 
+                                onClick={handleSave}
+                                disabled={saving}
+                            >
+                                {saving ? '저장 중...' : '저장'}
+                            </button>
+                            <button className="cancel-button" onClick={handleCancel}>취소</button>
+                        </>
+                    ) : (
+                        <button className="edit-button" onClick={() => setEditing(true)}>수정</button>
+                    )}
                 </div>
             </div>
 
             <section className="card-section">
-                <h3>기본 정보</h3>
-                <div className="info-grid">
-                    <div><label>이름</label><div>{user.name}</div></div>
-                    <div><label>연락처</label><div>{user.phone || '-'}</div></div>
-                    <div><label>등록일</label><div>{formatDate(user.created_at)}</div></div>
-                    <div>
-                        <label>회원 상태</label>
-                        <div><input type="checkbox" checked={user.is_active} disabled /> 활성화</div>
-                    </div>
-                </div>
+                <UserInfoCard 
+                    user={user}
+                    editing={editing}
+                    form={form}
+                    setForm={setForm}
+                />
             </section>
 
             <section className="card-section">

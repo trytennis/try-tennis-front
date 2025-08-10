@@ -30,14 +30,28 @@
     color: #111827;
 }
 
-.edit-button {
+.edit-button, .save-button {
     background: linear-gradient(to right, #10b981, #14b8a6);
     color: white;
     padding: 10px 24px;
+    margin-right: 8px;
     border: none;
     border-radius: 12px;
     font-weight: 500;
     box-shadow: 0 4px 10px rgba(16, 185, 129, 0.25);
+    transition: all 0.2s ease-in-out;
+    cursor: pointer;
+}
+
+.cancel-button {
+    background: linear-gradient(to right, #ddd, #ddd);
+    color: white;
+    padding: 10px 24px;
+    margin-right: 8px;
+    border: none;
+    border-radius: 12px;
+    font-weight: 500;
+    box-shadow: 0 4px 10px rgba(173, 173, 173, 0.25);
     transition: all 0.2s ease-in-out;
     cursor: pointer;
 }
@@ -60,25 +74,6 @@
     font-weight: 600;
     margin-bottom: 16px;
     color: #111827;
-}
-
-.info-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 20px;
-    font-size: 15px;
-    margin-bottom: 14px;
-}
-
-.info-grid label {
-    color: #6b7280;
-    font-weight: 500;
-    font-size: 14px;
-}
-
-.info-grid div {
-    color: #111827;
-    font-weight: 500;
 }
 
 .section-header {

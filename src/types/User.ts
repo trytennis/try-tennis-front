@@ -12,5 +12,7 @@ export interface User {
     memo?: string | null;
     birthdate: string | null;
     ticket?: TicketSummary | null;
-  }
-  
+}
+
+// UserInfoCard에서 보여주고 수정하는 필드만 form의 대상이 되도록 User 타입을 필요한 부분만 Pick해서 제한
+export type EditableUserFields = Pick<User, 'name' | 'gender' | 'phone' | 'birthdate'>;

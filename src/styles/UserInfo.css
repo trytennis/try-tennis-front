@@ -1,0 +1,148 @@
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin-bottom: 14px;
+}
+
+.info-grid .label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    margin-bottom: 4px;
+}
+
+.info-grid .value {
+    font-size: 15px;
+    font-weight: 500;
+    color: #111827;
+}
+
+.large-name {
+    grid-column: 1 / -1;
+}
+
+.large-name .value {
+    font-size: 20px;
+    font-weight: 600;
+}
+
+/* 인라인 편집 모드 스타일 */
+.info-grid>div {
+    display: flex;
+    flex-direction: column;
+}
+
+.info-grid label {
+    font-size: 13px;
+    font-weight: 500;
+    color: #6b7280;
+    margin-bottom: 6px;
+    display: block;
+}
+
+.info-grid input,
+.info-grid select {
+    padding: 8px 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #111827;
+    background-color: #ffffff;
+    transition: all 0.2s ease;
+    outline: none;
+}
+
+.info-grid input:focus,
+.info-grid select:focus {
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.info-grid input:hover,
+.info-grid select:hover {
+    border-color: #9ca3af;
+}
+
+.info-grid input::placeholder {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+.info-grid select {
+    cursor: pointer;
+}
+
+.info-grid select option {
+    padding: 8px;
+}
+
+/* 읽기 전용 필드 (편집 모드에서 수정 불가능한 필드) */
+.readonly-field {
+    padding: 8px 12px;
+    background-color: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .info-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+    }
+
+    .large-name {
+        grid-column: 1;
+    }
+
+    .info-grid input,
+    .info-grid select {
+        padding: 10px 14px;
+        font-size: 16px;
+        /* iOS zoom 방지 */
+    }
+}
+
+/* 접근성 개선 */
+.info-grid input:invalid {
+    border-color: #ef4444;
+}
+
+.info-grid input:invalid:focus {
+    border-color: #ef4444;
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+}
+
+/* 다크모드 대응 (선택사항) */
+@media (prefers-color-scheme: dark) {
+    .info-grid .label {
+        color: #9ca3af;
+    }
+
+    .info-grid .value {
+        color: #f9fafb;
+    }
+
+    .info-grid input,
+    .info-grid select {
+        background-color: #374151;
+        border-color: #4b5563;
+        color: #f9fafb;
+    }
+
+    .info-grid input:focus,
+    .info-grid select:focus {
+        border-color: #60a5fa;
+        box-shadow: 0 0 0 3px rgba(96, 165, 250, 0.1);
+    }
+
+    .readonly-field {
+        background-color: #374151;
+        border-color: #4b5563;
+        color: #9ca3af;
+    }
+}
