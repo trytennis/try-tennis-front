@@ -10,6 +10,7 @@ export interface User {
     is_active: boolean;
     created_at: string;
     memo?: string | null;
+    birthdate: string | null;
     ticket?: TicketSummary | null;
   }
   
