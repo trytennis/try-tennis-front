@@ -27,6 +27,32 @@ export async function post<T = any>(path: string, body: object): Promise<T> {
     return json;
 }
 
+/**
+ * 공통 PUT 요청 함수
+ * @param path API 경로 (예: "/api/users/123")
+ * @param body 요청 바디 JSON
+ * @returns 응답 JSON
+ */
+export async function put<T = any>(path: string, body: object): Promise<T> {
+    const url = `${API_URL}${path}`;
+
+    console.log(`[📡] PUT 요청: ${url}`, body);
+
+    const res = await fetch(url, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+        console.error(`[❌] PUT 실패 (${res.status}): ${res.statusText}`);
+        throw new Error(`PUT 실패: ${res.status}`);
+    }
+
+    const json = await res.json();
+    console.log('[✅] 응답:', json);
+    return json;
+}
 
 /**
  * 공통 GET 요청 함수
