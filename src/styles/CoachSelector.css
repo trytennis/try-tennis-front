@@ -1,0 +1,187 @@
+.coach-selector {
+    width: 100%;
+}
+
+.no-coaches {
+    text-align: center;
+    padding: 32px;
+    color: #6b7280;
+}
+
+.coach-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 16px;
+}
+
+.coach-card {
+    background: white;
+    border: 2px solid #e5e7eb;
+    border-radius: 12px;
+    padding: 20px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.coach-card:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.coach-card.selected {
+    border-color: #3b82f6;
+    background: #eff6ff;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+.coach-avatar {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #3b82f6, #1d4ed8);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    position: relative;
+    overflow: hidden;
+}
+
+.coach-initial {
+    color: white;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.coach-info {
+    flex: 1;
+    min-width: 0;
+}
+
+.coach-name {
+    font-size: 18px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0 0 4px 0;
+}
+
+.coach-card.selected .coach-name {
+    color: #1d4ed8;
+}
+
+.coach-title {
+    font-size: 14px;
+    color: #6b7280;
+    margin: 0 0 8px 0;
+}
+
+.coach-phone {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 0;
+    font-family: 'SF Mono', 'Monaco', 'Cascadia Code', monospace;
+}
+
+.selected-indicator {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 24px;
+    height: 24px;
+    background: #3b82f6;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* 코치별 아바타 색상 변형 */
+.coach-card:nth-child(2) .coach-avatar {
+    background: linear-gradient(135deg, #10b981, #059669);
+}
+
+.coach-card:nth-child(3) .coach-avatar {
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+}
+
+.coach-card:nth-child(4) .coach-avatar {
+    background: linear-gradient(135deg, #ef4444, #dc2626);
+}
+
+.coach-card:nth-child(5) .coach-avatar {
+    background: linear-gradient(135deg, #8b5cf6, #7c3aed);
+}
+
+.coach-card:nth-child(6) .coach-avatar {
+    background: linear-gradient(135deg, #ec4899, #db2777);
+}
+
+/* 반응형 */
+@media (max-width: 768px) {
+    .coach-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .coach-card {
+        padding: 16px;
+        gap: 12px;
+    }
+
+    .coach-avatar {
+        width: 50px;
+        height: 50px;
+    }
+
+    .coach-initial {
+        font-size: 20px;
+    }
+
+    .coach-name {
+        font-size: 16px;
+    }
+}
+
+@media (max-width: 480px) {
+    .coach-card {
+        padding: 12px;
+        gap: 10px;
+        flex-direction: row;
+    }
+
+    .coach-avatar {
+        width: 44px;
+        height: 44px;
+    }
+
+    .coach-initial {
+        font-size: 18px;
+    }
+
+    .coach-name {
+        font-size: 15px;
+    }
+
+    .coach-title {
+        font-size: 13px;
+    }
+
+    .coach-phone {
+        font-size: 12px;
+    }
+
+    .selected-indicator {
+        top: 8px;
+        right: 8px;
+        width: 20px;
+        height: 20px;
+        font-size: 10px;
+    }
+}
