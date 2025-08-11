@@ -1,0 +1,457 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    padding: 20px;
+}
+
+.modal-content {
+    background: white;
+    border-radius: 12px;
+    width: 100%;
+    max-width: 500px;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    animation: modalSlideIn 0.3s ease-out;
+}
+
+@keyframes modalSlideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 24px 0;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    font-size: 20px;
+    font-weight: 600;
+    color: #111827;
+    margin: 0;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: #6b7280;
+    cursor: pointer;
+    padding: 4px;
+    line-height: 1;
+    transition: color 0.2s ease;
+}
+
+.close-button:hover {
+    color: #374151;
+}
+
+.modal-body {
+    padding: 0 24px;
+    margin-bottom: 20px;
+}
+
+.reservation-info {
+    margin-bottom: 24px;
+}
+
+.reservation-info h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+.info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+}
+
+.info-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.info-row:last-child {
+    margin-bottom: 0;
+}
+
+.info-row .label {
+    font-size: 14px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.info-row .value {
+    font-size: 14px;
+    color: #111827;
+    font-weight: 500;
+    text-align: right;
+}
+
+.duration,
+.note {
+    font-size: 12px;
+    color: #6b7280;
+    font-weight: 400;
+    margin-left: 4px;
+}
+
+.ticket-selection {
+    margin-bottom: 24px;
+}
+
+.ticket-selection h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+.no-tickets {
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    padding: 16px;
+    text-align: center;
+}
+
+.no-tickets p {
+    color: #dc2626;
+    font-size: 14px;
+    margin: 0;
+}
+
+.ticket-options {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ticket-option {
+    display: flex;
+    align-items: center;
+    padding: 12px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.ticket-option:hover {
+    border-color: #10b981;
+    background: #ecfdf5;
+}
+
+.ticket-option input[type="radio"] {
+    margin-right: 12px;
+    accent-color: #10b981;
+}
+
+.ticket-info {
+    flex: 1;
+}
+
+.ticket-name {
+    font-size: 14px;
+    font-weight: 500;
+    color: #111827;
+    margin-bottom: 4px;
+}
+
+.ticket-details {
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.memo-section {
+    margin-bottom: 24px;
+}
+
+.memo-section label {
+    display: block;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.memo-section textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 8px;
+    font-size: 14px;
+    font-family: inherit;
+    resize: vertical;
+    transition: border-color 0.2s ease;
+}
+
+.memo-section textarea:focus {
+    outline: none;
+    border-color: #10b981;
+    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.1);
+}
+
+.char-count {
+    text-align: right;
+    font-size: 12px;
+    color: #6b7280;
+    margin-top: 4px;
+}
+
+.modal-footer {
+    display: flex;
+    gap: 12px;
+    padding: 0 24px 20px;
+}
+
+.cancel-button,
+.confirm-button {
+    flex: 1;
+    padding: 12px 24px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.cancel-button {
+    background: white;
+    color: #6b7280;
+    border: 1px solid #d1d5db;
+}
+
+.cancel-button:hover {
+    background: #f9fafb;
+    color: #374151;
+    border-color: #9ca3af;
+}
+
+.confirm-button {
+    background: #10b981;
+    color: white;
+    border: 1px solid #10b981;
+}
+
+.confirm-button:hover:not(:disabled) {
+    background: #059669;
+    border-color: #059669;
+}
+
+.confirm-button:disabled {
+    background: #9ca3af;
+    border-color: #9ca3af;
+    cursor: not-allowed;
+}
+
+.reservation-notice {
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    padding: 12px;
+    margin: 0 24px 20px;
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+}
+
+.reservation-notice .notice-icon {
+    font-size: 16px;
+    margin-top: 2px;
+}
+
+.reservation-notice p {
+    font-size: 13px;
+    color: #1e40af;
+    margin: 0;
+    line-height: 1.4;
+}
+
+/* 개인 레슨 예약 모달 추가 스타일 */
+.reservation-summary {
+    margin-bottom: 24px;
+}
+
+.reservation-summary h3 {
+    font-size: 16px;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 12px;
+}
+
+.summary-card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.summary-item .label {
+    font-size: 14px;
+    color: #64748b;
+    font-weight: 500;
+}
+
+.summary-item .value {
+    font-size: 14px;
+    color: #0f172a;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.duration-badge {
+    background: #3b82f6;
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    padding: 2px 6px;
+    border-radius: 4px;
+}
+
+.ticket-option {
+    display: flex;
+    align-items: flex-start;
+    padding: 16px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    gap: 12px;
+}
+
+.ticket-option:hover {
+    border-color: #3b82f6;
+    background: #f8fafc;
+}
+
+.ticket-option input[type="radio"] {
+    margin: 0;
+    accent-color: #3b82f6;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.ticket-option-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.ticket-option-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.ticket-option .ticket-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.ticket-option .ticket-count {
+    display: flex;
+    align-items: baseline;
+    gap: 2px;
+    font-weight: 600;
+}
+
+.ticket-option .remaining {
+    font-size: 18px;
+    color: #3b82f6;
+}
+
+.ticket-option .separator,
+.ticket-option .total,
+.ticket-option .unit {
+    font-size: 14px;
+    color: #6b7280;
+}
+
+.ticket-option-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    color: #6b7280;
+}
+
+.usage-info {
+    color: #059669;
+    font-weight: 500;
+}
+
+.notice-content {
+    flex: 1;
+}
+
+.notice-content p {
+    margin: 0 0 4px 0;
+    line-height: 1.4;
+}
+
+.notice-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* 반응형 모달 업데이트 */
+@media (max-width: 480px) {
+    .summary-item {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+
+    .summary-item .value {
+        align-self: flex-end;
+    }
+
+    .ticket-option-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 8px;
+    }
+
+    .ticket-option-footer {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 4px;
+    }
+}
