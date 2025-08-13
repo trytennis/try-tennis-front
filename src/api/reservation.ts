@@ -17,7 +17,7 @@ export const fetchUserTickets = async (userId: string): Promise<UserTicket[]> =>
 export const fetchAvailableSlots = async (
     coachId: string,
     date: string,
-    lessonMinutes = 30
+    lessonMinutes = 20
 ): Promise<TimeSlot[]> => {
     const query = `/api/schedule/available-time?coach_id=${coachId}&date=${date}&lesson_minutes=${lessonMinutes}`;
     const res = await get<{ time_slots: TimeSlot[] }>(query);
