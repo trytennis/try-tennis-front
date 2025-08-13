@@ -1,0 +1,50 @@
+.reservation-ticket-card.compact {
+    background: #f0f9ff;
+    border: 1px solid #bae6fd;
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.reservation-ticket-card.compact:hover {
+    border-color: #3b82f6;
+    box-shadow: 0 4px 8px rgba(59, 130, 246, 0.15);
+}
+
+.reservation-ticket-card.compact.selected {
+    background: #dbeafe;
+    border-color: #3b82f6;
+}
+
+.reservation-ticket-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #0369a1;
+}
+
+.reservation-ticket-count {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.remaining {
+    font-size: 24px;
+    font-weight: 700;
+    color: #0369a1;
+}
+
+.total,
+.unit {
+    font-size: 16px;
+    color: #0369a1;
+}
+
+.reservation-ticket-expires {
+    font-size: 12px;
+    color: #6b7280;
+}
