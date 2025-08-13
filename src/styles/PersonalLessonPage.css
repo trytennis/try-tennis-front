@@ -245,3 +245,46 @@
         font-size: 36px;
     }
 }
+
+.selected-slot-info {
+    margin-top: 24px;
+    padding: 20px;
+    background: #eff6ff;
+    border: 1px solid #bfdbfe;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 16px;
+}
+
+.slot-info-text {
+    font-size: 15px;
+    color: #1e40af;
+    font-weight: 500;
+    line-height: 1.6;
+}
+
+.reserve-button {
+    padding: 12px 24px;
+    background: linear-gradient(to right, #3b82f6, #2563eb);
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.15s ease;
+}
+
+.reserve-button:hover:enabled {
+    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+}
+
+.reserve-button:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+    box-shadow: none;
+}

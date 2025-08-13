@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import type { TimeSlot } from "../types/TimeSlot";
 import type { Coach } from "../types/Coach";
-import type { Ticket } from "../types/Ticket";
-import TimeSlotGrid from "../components/TimeSlotGrid";
-import { fetchAvailableSlots, fetchCoaches, fetchUserTickets } from "../api/reservation";
-import "../styles/PersonalLessonPage.css";
-import CoachCard from "../components/CoachCard";
-import ReservationTicketCard from "../components/ReservationTicketCard";
 import type { UserTicket } from "../types/UserTicket";
+import TimeSlotGrid from "../components/TimeSlotGrid";
+import CoachCard from "../components/CoachCard";
+import { fetchAvailableSlots, fetchCoaches, fetchUserTickets } from "../api/reservation";
+import { post } from "../utils/api";
+import "../styles/PersonalLessonPage.css";
+import ReservationTicketCard from "../components/ReservationTicketCard";
 
 const PersonalLessonPage = () => {
     const [date, setDate] = useState("2025-08-21");
@@ -17,6 +17,7 @@ const PersonalLessonPage = () => {
     const [availableSlots, setAvailableSlots] = useState<TimeSlot[]>([]);
     const [coaches, setCoaches] = useState<Coach[]>([]);
     const [tickets, setTickets] = useState<UserTicket[]>([]);
+    const [reserving, setReserving] = useState(false);
 
     useEffect(() => {
         const loadSlots = async () => {
@@ -43,16 +44,28 @@ const PersonalLessonPage = () => {
         loadTickets();
     }, []);
 
-    const handleReserve = () => {
+    const handleReserve = async () => {
         if (!selectedCoach || !selectedSlot || !selectedTicket) return;
-        console.log("예약 요청:", {
+
+        const payload = {
             coach_id: selectedCoach.id,
-            ticket_id: selectedTicket.ticket_id,
+            user_ticket_id: selectedTicket.ticket_id,
             date,
             start_time: selectedSlot.start,
             end_time: selectedSlot.end
-        });
-        // TODO: 예약 생성 API 호출
+        };
+
+        try {
+            setReserving(true);
+            const result = await post("/api/reservations", payload);
+            console.log("[✅] 예약 성공", result);
+            alert("예약이 완료되었습니다!");
+        } catch (err) {
+            console.error("[❌] 예약 실패", err);
+            alert("예약에 실패했습니다. 다시 시도해주세요.");
+        } finally {
+            setReserving(false);
+        }
     };
 
     return (
@@ -111,12 +124,19 @@ const PersonalLessonPage = () => {
             </div>
 
             <div className="selected-slot-info">
-                {selectedSlot && selectedCoach && (
+                {selectedSlot && selectedCoach && selectedTicket && (
                     <>
                         <p>
-                            <strong>{selectedCoach.name}</strong> 코치와 {selectedSlot.start} ~ {selectedSlot.end} 예약
+                            <strong>{selectedCoach.name}</strong> 코치와 {selectedSlot.start} ~ {selectedSlot.end} 예약<br />
+                            {selectedTicket.tickets.name}
                         </p>
-                        <button onClick={handleReserve} className="reserve-button">예약하기</button>
+                        <button
+                            onClick={handleReserve}
+                            className="reserve-button"
+                            disabled={reserving}
+                        >
+                            {reserving ? "예약 중..." : "예약하기"}
+                        </button>
                     </>
                 )}
             </div>
