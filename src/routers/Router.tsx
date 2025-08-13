@@ -8,6 +8,8 @@ import AddTicketPage from '../pages/AddTicketPage';
 import TicketDetailPage from '../pages/TicketDetailPage';
 import UsersPage from '../pages/UsersPage';
 import UserDetailPage from '../pages/UserDetailPage';
+import UserProfileCreatePage from '../pages/UserProfileCreatePage';
+import PersonalLessonPage from '../pages/PersonalLessonPage';
 // import LoginPage from '../pages/LoginPage';
 // import RegisterPage from '../pages/RegisterPage';
 // import PrivateRoute from './PrivateRoute';
@@ -19,12 +21,14 @@ export default function Router() {
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="videos" replace />} />
           {/* <Route path="schedule" element={<SchedulePage />} /> */}
+          <Route path="reservation" element={<PersonalLessonPage />} />
           <Route path="users" element={<UsersPage />} />
-          <Route path="/users/:userId" element={<UserDetailPage />} />
+          <Route path="users/new" element={<UserProfileCreatePage />} />
+          <Route path="users/:userId" element={<UserDetailPage />} />
           <Route path="videos" element={<VideoAnalysisPage />} />
           <Route path="tickets" element={<TicketsPage />} />
           <Route path="tickets/add" element={<AddTicketPage />} />
-          <Route path="/tickets/:ticketId" element={<TicketDetailPage />} />
+          <Route path="tickets/:ticketId" element={<TicketDetailPage />} />
         </Route>
 
       </Routes>
