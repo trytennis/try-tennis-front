@@ -1,4 +1,5 @@
 export interface UserTicket {
+    id: string;
     ticket_id: string;
     remaining_count: number;
     assigned_at: string;

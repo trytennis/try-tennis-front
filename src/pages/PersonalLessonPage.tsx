@@ -48,8 +48,9 @@ const PersonalLessonPage = () => {
         if (!selectedCoach || !selectedSlot || !selectedTicket) return;
 
         const payload = {
+            user_id: "00000000-0000-0000-0000-000000000003", // TODO: 로그인 연동 시 교체
             coach_id: selectedCoach.id,
-            user_ticket_id: selectedTicket.ticket_id,
+            user_ticket_id: selectedTicket.id,
             date,
             start_time: selectedSlot.start,
             end_time: selectedSlot.end
@@ -80,9 +81,9 @@ const PersonalLessonPage = () => {
                 <div className="ticket-grid">
                     {tickets.map((ticket) => (
                         <ReservationTicketCard
-                            key={ticket.ticket_id}
+                            key={ticket.id}
                             ticket={ticket}
-                            isSelected={selectedTicket?.ticket_id === ticket.ticket_id}
+                            isSelected={selectedTicket?.id === ticket.id}
                             onClick={() => setSelectedTicket(ticket)}
                         />
                     ))}
