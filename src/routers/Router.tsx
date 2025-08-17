@@ -8,7 +8,7 @@ import AddTicketPage from '../pages/AddTicketPage';
 import TicketDetailPage from '../pages/TicketDetailPage';
 import UsersPage from '../pages/UsersPage';
 import UserDetailPage from '../pages/UserDetailPage';
-import UserProfileCreatePage from '../pages/UserProfileCreatePage';
+// import UserProfileCreatePage from '../pages/UserProfileCreatePage';
 import PersonalLessonPage from '../pages/PersonalLessonPage';
 import ReservationManagePage from '../pages/ReservationManagementPage';
 // import LoginPage from '../pages/LoginPage';
@@ -25,7 +25,7 @@ export default function Router() {
           <Route path="reservation" element={<PersonalLessonPage />} />
           <Route path="reservation-manage" element={<ReservationManagePage />} />
           <Route path="users" element={<UsersPage />} />
-          <Route path="users/new" element={<UserProfileCreatePage />} />
+          {/* <Route path="users/new" element={<UserProfileCreatePage />} /> */}
           <Route path="users/:userId" element={<UserDetailPage />} />
           <Route path="videos" element={<VideoAnalysisPage />} />
           <Route path="tickets" element={<TicketsPage />} />
