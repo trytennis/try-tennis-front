@@ -1,6 +1,6 @@
 import React from 'react';
 import '../styles/Header.css';
-import { Calendar, Ticket, UserCircle, Users, Video, NotebookPen } from 'lucide-react';
+import { Calendar, Ticket, UserCircle, Users, Video, NotebookPen, ListCheck } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 
 const Header = () => {
@@ -19,6 +19,10 @@ const Header = () => {
               <Link to="/reservation" className={`nav-btn ${location.pathname === '/reservation' ? 'active' : ''}`}>
                 <NotebookPen className="header-icon" />
                 예약
+              </Link>
+              <Link to="/reservation-manage" className={`nav-btn ${location.pathname === '/reservation-manage' ? 'active' : ''}`}>
+                <ListCheck className="header-icon" />
+                예약 관리
               </Link>
               <Link to="/schedule" className={`nav-btn ${location.pathname === '/schedule' ? 'active' : ''}`}>
                 <Calendar className="header-icon" />

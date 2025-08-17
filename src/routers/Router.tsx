@@ -10,6 +10,7 @@ import UsersPage from '../pages/UsersPage';
 import UserDetailPage from '../pages/UserDetailPage';
 import UserProfileCreatePage from '../pages/UserProfileCreatePage';
 import PersonalLessonPage from '../pages/PersonalLessonPage';
+import ReservationManagePage from '../pages/ReservationManagementPage';
 // import LoginPage from '../pages/LoginPage';
 // import RegisterPage from '../pages/RegisterPage';
 // import PrivateRoute from './PrivateRoute';
@@ -22,6 +23,7 @@ export default function Router() {
           <Route index element={<Navigate to="videos" replace />} />
           {/* <Route path="schedule" element={<SchedulePage />} /> */}
           <Route path="reservation" element={<PersonalLessonPage />} />
+          <Route path="reservation-manage" element={<ReservationManagePage />} />
           <Route path="users" element={<UsersPage />} />
           <Route path="users/new" element={<UserProfileCreatePage />} />
           <Route path="users/:userId" element={<UserDetailPage />} />
