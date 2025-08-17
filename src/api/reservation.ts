@@ -1,7 +1,8 @@
-import { get } from "../utils/api";
+import { get, patch } from "../utils/api";
 import type { Coach } from "../types/Coach";
 import type { TimeSlot } from "../types/TimeSlot";
 import type { UserTicket } from "../types/UserTicket";
+import type { Reservation } from "../types/Reservation";
 
 // 코치 목록 가져오기
 export const fetchCoaches = async (): Promise<Coach[]> => {
@@ -23,3 +24,41 @@ export const fetchAvailableSlots = async (
     const res = await get<{ time_slots: TimeSlot[] }>(query);
     return res.time_slots;
 };
+
+// 예약 목록 조회 (코치 기준)
+export const fetchReservationsByCoach = async (
+    coachId: string, 
+    status?: string, 
+    date?: string
+  ): Promise<Reservation[]> => {
+    let url = `/api/reservations/coach/${coachId}`;
+    const params = new URLSearchParams();
+    
+    if (status && status !== 'all') {
+      params.append('status', status);
+    }
+    if (date) {
+      params.append('date', date);
+    }
+    
+    if (params.toString()) {
+      url += `?${params.toString()}`;
+    }
+    
+    const res = await get(url);
+    return res.reservations || res; // API 응답 구조에 따라
+  };
+  
+  // 예약 상태 변경
+  export const updateReservationStatus = async (
+    reservationId: string,
+    status: "confirmed" | "rejected",
+    changedBy: string,
+    reason?: string
+  ): Promise<void> => {
+    await patch(`/api/reservations/${reservationId}/status`, {
+      status,
+      changed_by: changedBy,
+      reason,
+    });
+  };
