@@ -73,3 +73,30 @@ export async function get<T = any>(path: string): Promise<T> {
     console.log('[✅] 응답:', json);
     return json;
 }
+
+/**
+ * 공통 PATCH 요청 함수
+ * @param path API 경로 (예: "/api/reservations/abc123/status")
+ * @param body 요청 바디 JSON
+ * @returns 응답 JSON
+ */
+export async function patch<T = any>(path: string, body: object): Promise<T> {
+    const url = `${API_URL}${path}`;
+
+    console.log(`[📡] PATCH 요청: ${url}`, body);
+
+    const res = await fetch(url, {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+    });
+
+    if (!res.ok) {
+        console.error(`[❌] PATCH 실패 (${res.status}): ${res.statusText}`);
+        throw new Error(`PATCH 실패: ${res.status}`);
+    }
+
+    const json = await res.json();
+    console.log('[✅] 응답:', json);
+    return json;
+}
