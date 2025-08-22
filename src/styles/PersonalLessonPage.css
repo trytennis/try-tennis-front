@@ -107,6 +107,11 @@
     color: #6b7280;
 }
 
+.coach-grid {
+    display: grid;
+    gap: 8px;
+}
+
 /* 섹션 공통 스타일 */
 .date-selector,
 .coach-selection,
