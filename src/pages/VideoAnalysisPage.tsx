@@ -4,11 +4,14 @@ import AnalysisResult from '../components/AnalysisResult';
 import type { AnalysisData } from '../types/AnalysisData';
 import { post } from '../utils/api';
 import AnalysisMedia from '../components/AnalysisMedia';
+import LoadingOverlay from '../components/LoadingOverlay';
 
 const VideoAnalysisPage: React.FC = () => {
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const handleUploadAndAnalyze = async (publicUrl: string, videoId: string) => {
+    setIsLoading(true);
     try {
       const result = await post('/api/analyze', {
         video_url: publicUrl,
@@ -31,11 +34,14 @@ const VideoAnalysisPage: React.FC = () => {
     } catch (err) {
       console.error('[🔥] 분석 요청 실패:', err);
       alert('분석 요청에 실패했습니다.');
+    } finally {
+      setIsLoading(false);
     }
   };
 
   return (
     <div className="page-container">
+      {isLoading && <LoadingOverlay />}
       <VideoUpload onUploadComplete={handleUploadAndAnalyze} />
       {analysisData && (
         <>
