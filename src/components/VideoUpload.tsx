@@ -1,4 +1,5 @@
 import React from 'react';
+import { ulid } from 'ulid';
 import { uploadToSupabase } from '../utils/uploadToSupabase';
 import '../styles/VideoUpload.css';
 
@@ -11,7 +12,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const videoId = `vid-${Date.now()}`;
+    const videoId = `vid-${ulid()}`; 
     try {
       const publicUrl = await uploadToSupabase(file, videoId);
       onUploadComplete(publicUrl, videoId);
