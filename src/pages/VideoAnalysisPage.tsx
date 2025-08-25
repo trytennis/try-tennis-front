@@ -10,12 +10,15 @@ const VideoAnalysisPage: React.FC = () => {
   const [analysisData, setAnalysisData] = useState<AnalysisData | null>(null);
   const [isLoading, setIsLoading] = useState(false);
 
+  const TEST_USER_ID = import.meta.env.VITE_TEST_USER_ID;
+
   const handleUploadAndAnalyze = async (publicUrl: string, videoId: string) => {
     setIsLoading(true);
     try {
       const result = await post('/api/analyze', {
         video_url: publicUrl,
         video_id: videoId,
+        uploader_user_id: TEST_USER_ID // 로그인 붙으면 삭제
       });
 
       const jsonUrl = result.urls["result.json"];
