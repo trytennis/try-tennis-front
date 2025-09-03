@@ -1,5 +1,5 @@
-
-import React, { useEffect, useState } from "react";
+// ReservationManagementPage.tsx
+import React, { useEffect, useState, useMemo } from "react";
 import type { Reservation } from "../types/Reservation";
 import ReservationItem from "../components/ReservationItem";
 import "../styles/ReservationManagement.css";
@@ -7,7 +7,7 @@ import { fetchReservationsByCoach, updateReservationStatus } from "../api/reserv
 
 const ReservationManagePage = () => {
     const [reservations, setReservations] = useState<Reservation[]>([]);
-    const [statusFilter, setStatusFilter] = useState("all");
+    const [statusFilter, setStatusFilter] = useState<"all" | "completed" | "cancelled">("all");
     const [dateFilter, setDateFilter] = useState("");
     const [loading, setLoading] = useState(false);
     const [coachName, setCoachName] = useState("코치님");
@@ -17,16 +17,13 @@ const ReservationManagePage = () => {
     const loadReservations = async () => {
         try {
             setLoading(true);
-            const data = await fetchReservationsByCoach(
-                coachId,
-                statusFilter,
-                dateFilter
-            );
-            setReservations(data);
+            const data = await fetchReservationsByCoach(coachId, statusFilter, dateFilter);
+            // 요구사항: pending/rejected는 화면에서 제외
+            const visible = data.filter(r => ["confirmed", "completed", "cancelled"].includes(r.status));
+            setReservations(visible);
 
-            // 첫 번째 예약에서 코치 이름 추출
-            if (data.length > 0 && data[0].coach_name) {
-                setCoachName(data[0].coach_name);
+            if (visible.length > 0 && visible[0].coach_name) {
+                setCoachName(visible[0].coach_name);
             }
         } catch (err) {
             console.error("예약 목록 조회 실패", err);
@@ -36,42 +33,29 @@ const ReservationManagePage = () => {
         }
     };
 
-    const handleApprove = async (id: string) => {
+    const handleCancel = async (id: string) => {
+        if (!confirm("정말로 이 예약을 취소하시겠습니까?")) return;
         try {
-            await updateReservationStatus(id, "confirmed", coachId);
-            alert("예약이 승인되었습니다.");
+            await updateReservationStatus(id, "cancelled", coachId, "코치 측 취소");
+            alert("예약이 취소되었습니다.");
             await loadReservations();
         } catch (err) {
-            console.error("예약 승인 실패", err);
-            alert("예약 승인에 실패했습니다.");
+            console.error("예약 취소 실패", err);
+            alert("예약 취소에 실패했습니다.");
         }
     };
 
-    const handleReject = async (id: string) => {
-        if (!confirm("정말로 거절하시겠습니까?")) return;
-
-        try {
-            await updateReservationStatus(id, "rejected", coachId);
-            alert("예약이 거절되었습니다.");
-            await loadReservations();
-        } catch (err) {
-            console.error("예약 거절 실패", err);
-            alert("예약 거절에 실패했습니다.");
-        }
-    };
-
-    // 통계 계산
-    const stats = {
-        total: reservations.length,
-        pending: reservations.filter(r => r.status === 'pending').length,
-        confirmed: reservations.filter(r => r.status === 'confirmed').length,
-        rejected: reservations.filter(r => r.status === 'rejected').length,
-        cancelled: reservations.filter(r => r.status === 'cancelled').length,
-        completed: reservations.filter(r => r.status === 'completed').length,
-    };
+    // 통계 (전체/완료/취소만)
+    const stats = useMemo(() => {
+        const total = reservations.length;
+        const completed = reservations.filter(r => r.status === "completed").length;
+        const cancelled = reservations.filter(r => r.status === "cancelled").length;
+        return { total, completed, cancelled };
+    }, [reservations]);
 
     useEffect(() => {
         loadReservations();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [statusFilter, dateFilter]);
 
     return (
@@ -81,7 +65,7 @@ const ReservationManagePage = () => {
                 <p><span className="coach-name">{coachName}</span> 코치님의 개인 레슨 예약을 관리하세요</p>
             </div>
 
-            {/* 통계 섹션 추가 */}
+            {/* 통계 섹션 */}
             <div className="stats-section">
                 <h2>예약 현황</h2>
                 <div className="stats-grid">
@@ -89,17 +73,13 @@ const ReservationManagePage = () => {
                         <span className="stat-label">전체</span>
                         <span className="stat-value">{stats.total}</span>
                     </div>
-                    <div className="stat-item pending">
-                        <span className="stat-label">대기중</span>
-                        <span className="stat-value">{stats.pending}</span>
-                    </div>
                     <div className="stat-item confirmed">
-                        <span className="stat-label">승인</span>
-                        <span className="stat-value">{stats.confirmed}</span>
+                        <span className="stat-label">완료</span>
+                        <span className="stat-value">{stats.completed}</span>
                     </div>
-                    <div className="stat-item rejected">
-                        <span className="stat-label">거절</span>
-                        <span className="stat-value">{stats.rejected}</span>
+                    <div className="stat-item cancelled">
+                        <span className="stat-label">취소</span>
+                        <span className="stat-value">{stats.cancelled}</span>
                     </div>
                 </div>
             </div>
@@ -112,15 +92,12 @@ const ReservationManagePage = () => {
                         <select
                             id="status-filter"
                             value={statusFilter}
-                            onChange={(e) => setStatusFilter(e.target.value)}
+                            onChange={(e) => setStatusFilter(e.target.value as any)}
                             disabled={loading}
                         >
                             <option value="all">전체</option>
-                            <option value="pending">대기중</option>
-                            <option value="confirmed">승인</option>
-                            <option value="rejected">거절</option>
-                            <option value="cancelled">취소</option>
                             <option value="completed">완료</option>
+                            <option value="cancelled">취소</option>
                         </select>
                     </div>
                     <div className="filter-item">
@@ -158,8 +135,9 @@ const ReservationManagePage = () => {
                         <ReservationItem
                             key={reservation.id}
                             reservation={reservation}
-                            onApprove={handleApprove}
-                            onReject={handleReject}
+                            // 승인/거절 제거, 취소만 전달
+                            onCancel={handleCancel}
+                            showActions={true}
                         />
                     ))
                 )}

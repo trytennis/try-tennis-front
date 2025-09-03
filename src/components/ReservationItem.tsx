@@ -1,26 +1,24 @@
-
+// ReservationItem.tsx
 import React from "react";
 import type { Reservation } from "../types/Reservation";
 
 interface Props {
     reservation: Reservation;
-    onApprove?: (id: string) => void;
-    onReject?: (id: string) => void;
+    onCancel?: (id: string) => void;
     showActions?: boolean;
 }
 
-const ReservationItem = ({ reservation, onApprove, onReject, showActions = true }: Props) => {
-    const handleApprove = () => onApprove?.(reservation.id);
-    const handleReject = () => onReject?.(reservation.id);
+const ReservationItem = ({ reservation, onCancel, showActions = true }: Props) => {
+    const handleCancel = () => onCancel?.(reservation.id);
 
     const getStatusClass = () => {
         switch (reservation.status) {
-            case "pending":
-                return "status-badge status-pending";
             case "confirmed":
-                return "status-badge status-approved";
-            case "rejected":
-                return "status-badge status-rejected";
+                return "status-badge status-approved";   // 예약됨
+            case "completed":
+                return "status-badge status-completed";
+            case "cancelled":
+                return "status-badge status-cancelled";
             default:
                 return "status-badge";
         }
@@ -28,16 +26,13 @@ const ReservationItem = ({ reservation, onApprove, onReject, showActions = true 
 
     const getStatusText = () => {
         switch (reservation.status) {
-            case "pending": return "대기중";
-            case "confirmed": return "승인";
-            case "rejected": return "거절";
-            case "cancelled": return "취소";
+            case "confirmed": return "예약됨";
             case "completed": return "완료";
+            case "cancelled": return "취소";
             default: return reservation.status;
         }
     };
 
-    // 요청 시간 포맷팅
     const formatRequestTime = (dateString: string) => {
         const date = new Date(dateString);
         return date.toLocaleString('ko-KR', {
@@ -54,12 +49,8 @@ const ReservationItem = ({ reservation, onApprove, onReject, showActions = true 
             <div className="reservation-info">
                 <div className="basic-info">
                     <h3>{reservation.user_name}</h3>
-                    <span className={getStatusClass()}>
-                        {getStatusText()}
-                    </span>
-                    <span className="request-time">
-                        {formatRequestTime(reservation.reservation_date)} 요청
-                    </span>
+                    <span className={getStatusClass()}>{getStatusText()}</span>
+                    <span className="request-time">{formatRequestTime(reservation.reservation_date)} 요청</span>
                 </div>
 
                 <div className="reservation-details">
@@ -87,9 +78,7 @@ const ReservationItem = ({ reservation, onApprove, onReject, showActions = true 
 
                 <div className="contact-info">
                     <span>📞 {reservation.user_phone || '연락처 없음'}</span>
-                    {reservation.facility_name && (
-                        <span>🏢 {reservation.facility_name}</span>
-                    )}
+                    {reservation.facility_name && <span>🏢 {reservation.facility_name}</span>}
                 </div>
 
                 {reservation.memo && (
@@ -98,7 +87,6 @@ const ReservationItem = ({ reservation, onApprove, onReject, showActions = true 
                         <p className="note-content">{reservation.memo}</p>
                     </div>
                 )}
-
                 {reservation.admin_memo && (
                     <div className="note-section">
                         <span className="note-label">관리자 메모</span>
@@ -106,23 +94,20 @@ const ReservationItem = ({ reservation, onApprove, onReject, showActions = true 
                     </div>
                 )}
 
-                {/* 수강권 정보 표시 */}
                 {reservation.ticket_price && (
                     <div className="ticket-info">
                         <span className="ticket-price">수강료: {reservation.ticket_price?.toLocaleString()}원</span>
                         {reservation.price_per_lesson && (
-                            <span className="lesson-price">
-                                (회당 {reservation.price_per_lesson?.toLocaleString()}원)
-                            </span>
+                            <span className="lesson-price">(회당 {reservation.price_per_lesson?.toLocaleString()}원)</span>
                         )}
                     </div>
                 )}
             </div>
 
-            {showActions && reservation.status === "pending" && (
+            {/* 취소만 노출: 확정 상태일 때만 버튼 표시(완료/취소 건은 숨김) */}
+            {showActions && reservation.status === "confirmed" && (
                 <div className="action-buttons">
-                    <button className="approve-btn" onClick={handleApprove}>✓ 승인</button>
-                    <button className="reject-btn" onClick={handleReject}>✕ 거절</button>
+                    <button className="reject-btn" onClick={handleCancel}>✕ 취소</button>
                 </div>
             )}
         </div>
