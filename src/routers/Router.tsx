@@ -8,9 +8,10 @@ import AddTicketPage from '../pages/AddTicketPage';
 import TicketDetailPage from '../pages/TicketDetailPage';
 import UsersPage from '../pages/UsersPage';
 import UserDetailPage from '../pages/UserDetailPage';
-// import UserProfileCreatePage from '../pages/UserProfileCreatePage';
 import PersonalLessonPage from '../pages/PersonalLessonPage';
 import ReservationManagePage from '../pages/ReservationManagementPage';
+import UserProfileCreatePage from '../pages/UserProfileCreatePage';
+import CoachCalendar from '../pages/CoachCalenderPage';
 // import LoginPage from '../pages/LoginPage';
 // import RegisterPage from '../pages/RegisterPage';
 // import PrivateRoute from './PrivateRoute';
@@ -21,11 +22,11 @@ export default function Router() {
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<Navigate to="videos" replace />} />
-          {/* <Route path="schedule" element={<SchedulePage />} /> */}
+          <Route path="schedule" element={<CoachCalendar />} />
           <Route path="reservation" element={<PersonalLessonPage />} />
           <Route path="reservation-manage" element={<ReservationManagePage />} />
           <Route path="users" element={<UsersPage />} />
-          {/* <Route path="users/new" element={<UserProfileCreatePage />} /> */}
+          <Route path="users/new" element={<UserProfileCreatePage />} />
           <Route path="users/:userId" element={<UserDetailPage />} />
           <Route path="videos" element={<VideoAnalysisPage />} />
           <Route path="tickets" element={<TicketsPage />} />
