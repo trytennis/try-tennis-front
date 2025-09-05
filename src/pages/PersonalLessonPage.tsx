@@ -4,13 +4,26 @@ import type { Coach } from "../types/Coach";
 import type { UserTicket } from "../types/UserTicket";
 import TimeSlotGrid from "../components/TimeSlotGrid";
 import CoachCard from "../components/CoachCard";
-import { fetchAvailableSlots, fetchCoaches, fetchUserTickets } from "../api/reservation";
-import { post } from "../utils/api";
+import {
+    fetchAvailableSlots,
+    fetchCoaches,
+    fetchUserTickets,
+    createReservation,
+} from "../api/lesson";
 import "../styles/PersonalLessonPage.css";
 import ReservationTicketCard from "../components/ReservationTicketCard";
 
+// 로컬(브라우저) 기준 오늘 날짜 'YYYY-MM-DD'
+const todayLocal = () => {
+    const d = new Date();
+    const y = d.getFullYear();
+    const m = String(d.getMonth() + 1).padStart(2, "0");
+    const day = String(d.getDate()).padStart(2, "0");
+    return `${y}-${m}-${day}`;
+};
+
 const PersonalLessonPage = () => {
-    const [date, setDate] = useState("2025-08-21");
+    const [date, setDate] = useState(todayLocal()); // 오늘 날짜로 초기화
     const [selectedCoach, setSelectedCoach] = useState<Coach | null>(null);
     const [selectedSlot, setSelectedSlot] = useState<TimeSlot | null>(null);
     const [selectedTicket, setSelectedTicket] = useState<UserTicket | null>(null);
@@ -19,12 +32,17 @@ const PersonalLessonPage = () => {
     const [tickets, setTickets] = useState<UserTicket[]>([]);
     const [reserving, setReserving] = useState(false);
 
+    // TODO: 로그인 연동 시 대체
+    const userId = "00000000-0000-0000-0000-000000000003";
+
     useEffect(() => {
         const loadSlots = async () => {
-            if (selectedCoach) {
-                const slots = await fetchAvailableSlots(selectedCoach.id, date);
-                setAvailableSlots(slots);
+            if (!selectedCoach) {
+                setAvailableSlots([]);
+                return;
             }
+            const slots = await fetchAvailableSlots(selectedCoach.id, date);
+            setAvailableSlots(slots);
         };
         loadSlots();
     }, [selectedCoach, date]);
@@ -34,13 +52,11 @@ const PersonalLessonPage = () => {
             const coachList = await fetchCoaches();
             setCoaches(coachList);
         };
-        loadCoaches();
-
         const loadTickets = async () => {
-            const userId = "00000000-0000-0000-0000-000000000003"; // TODO: 로그인 연동 시 교체
             const ticketList = await fetchUserTickets(userId);
             setTickets(ticketList);
         };
+        loadCoaches();
         loadTickets();
     }, []);
 
@@ -48,19 +64,20 @@ const PersonalLessonPage = () => {
         if (!selectedCoach || !selectedSlot || !selectedTicket) return;
 
         const payload = {
-            user_id: "00000000-0000-0000-0000-000000000003", // TODO: 로그인 연동 시 교체
+            user_id: userId,
             coach_id: selectedCoach.id,
             user_ticket_id: selectedTicket.id,
             date,
             start_time: selectedSlot.start,
-            end_time: selectedSlot.end
+            end_time: selectedSlot.end,
         };
 
         try {
             setReserving(true);
-            const result = await post("/api/reservations", payload);
+            await createReservation(payload);
             alert("예약이 완료되었습니다!");
             setSelectedSlot(null);
+            // 방금 예약한 코치/날짜의 슬롯을 다시 불러와 비활성화 반영
             setAvailableSlots(await fetchAvailableSlots(selectedCoach.id, date));
         } catch (err: any) {
             const msg = err?.response?.data?.error || "예약에 실패했습니다. 다시 시도해주세요.";
@@ -68,7 +85,6 @@ const PersonalLessonPage = () => {
         } finally {
             setReserving(false);
         }
-
     };
 
     return (
