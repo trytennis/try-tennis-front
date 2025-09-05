@@ -59,14 +59,16 @@ const PersonalLessonPage = () => {
         try {
             setReserving(true);
             const result = await post("/api/reservations", payload);
-            console.log("[✅] 예약 성공", result);
             alert("예약이 완료되었습니다!");
-        } catch (err) {
-            console.error("[❌] 예약 실패", err);
-            alert("예약에 실패했습니다. 다시 시도해주세요.");
+            setSelectedSlot(null);
+            setAvailableSlots(await fetchAvailableSlots(selectedCoach.id, date));
+        } catch (err: any) {
+            const msg = err?.response?.data?.error || "예약에 실패했습니다. 다시 시도해주세요.";
+            alert(msg);
         } finally {
             setReserving(false);
         }
+
     };
 
     return (
