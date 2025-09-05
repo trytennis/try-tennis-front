@@ -107,7 +107,7 @@ const ReservationItem = ({ reservation, onCancel, showActions = true }: Props) =
             {/* 취소만 노출: 확정 상태일 때만 버튼 표시(완료/취소 건은 숨김) */}
             {showActions && reservation.status === "confirmed" && (
                 <div className="action-buttons">
-                    <button className="reject-btn" onClick={handleCancel}>✕ 취소</button>
+                    <button className="reject-btn" onClick={handleCancel}>취소</button>
                 </div>
             )}
         </div>
