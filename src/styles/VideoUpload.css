@@ -20,6 +20,8 @@
     text-align: center;
     border-radius: 12px;
     transition: all 0.3s;
+    cursor: pointer;
+    background-color: #fafafa;
 }
 
 .upload-box:hover {
@@ -27,8 +29,33 @@
     background-color: #f0fff7;
 }
 
+.upload-box.is-dragging {
+    border-color: #32c48d;
+    background-color: #e6fff2;
+}
+
+.upload-box.is-uploading {
+    opacity: 0.6;
+    pointer-events: none;
+    background: repeating-linear-gradient(45deg,
+            #f0fff7,
+            #f0fff7 10px,
+            #e6fff2 10px,
+            #e6fff2 20px);
+    animation: progress-stripes 1s linear infinite;
+}
+
+@keyframes progress-stripes {
+    from {
+        background-position: 0 0;
+    }
+
+    to {
+        background-position: 40px 0;
+    }
+}
+
 .upload-label {
-    cursor: pointer;
     display: inline-block;
     font-size: 14px;
     color: #666;
@@ -38,4 +65,10 @@
     margin-top: 8px;
     font-size: 12px;
     color: #999;
+}
+
+.upload-hint {
+    font-size: 12px;
+    color: #aaa;
+    margin-top: 4px;
 }
