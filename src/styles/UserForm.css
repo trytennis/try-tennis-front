@@ -1,0 +1,79 @@
+.user-form-container {
+    max-width: 520px;
+    margin: 0 auto;
+    padding: 40px 16px;
+}
+
+.user-form {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    background: #ffffff;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 8px 20px rgba(0, 128, 128, 0.05);
+    border: 1px solid #f1f1f1;
+}
+
+.user-form h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #111827;
+    margin-bottom: 8px;
+}
+
+.user-form-group {
+    display: flex;
+    flex-direction: column;
+    font-size: 14px;
+    color: #374151;
+    gap: 6px;
+}
+
+.user-form input,
+.user-form select,
+.user-form textarea {
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    font-size: 1rem;
+    transition: border-color 0.2s ease-in-out;
+}
+
+.user-form input:focus,
+.user-form select:focus,
+.user-form textarea:focus {
+    outline: none;
+    border-color: #14b8a6;
+    box-shadow: 0 0 0 3px rgba(20, 184, 166, 0.2);
+}
+
+.user-form-error {
+    font-size: 13px;
+    color: #ef4444;
+    margin-top: -8px;
+}
+
+.user-form-success {
+    font-size: 13px;
+    color: #10b981;
+    margin-top: -8px;
+}
+
+.submit-button {
+    background: linear-gradient(to right, #10b981, #14b8a6);
+    color: white;
+    padding: 12px;
+    font-size: 1rem;
+    border: none;
+    border-radius: 12px;
+    font-weight: 500;
+    margin-top: 8px;
+    cursor: pointer;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.submit-button:hover {
+    transform: scale(1.03);
+    box-shadow: 0 6px 16px rgba(16, 185, 129, 0.4);
+}
