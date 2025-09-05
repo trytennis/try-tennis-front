@@ -1,4 +1,3 @@
-// ReservationManagementPage.tsx
 import React, { useEffect, useState, useMemo } from "react";
 import type { Reservation } from "../types/Reservation";
 import ReservationItem from "../components/ReservationItem";
@@ -7,7 +6,8 @@ import { fetchReservationsByCoach, updateReservationStatus } from "../api/reserv
 
 const ReservationManagePage = () => {
     const [reservations, setReservations] = useState<Reservation[]>([]);
-    const [statusFilter, setStatusFilter] = useState<"all" | "completed" | "cancelled">("all");
+    const [statusFilter, setStatusFilter] =
+        useState<"all" | "confirmed" | "completed" | "cancelled">("all");
     const [dateFilter, setDateFilter] = useState("");
     const [loading, setLoading] = useState(false);
     const [coachName, setCoachName] = useState("코치님");
@@ -18,8 +18,11 @@ const ReservationManagePage = () => {
         try {
             setLoading(true);
             const data = await fetchReservationsByCoach(coachId, statusFilter, dateFilter);
-            // 요구사항: pending/rejected는 화면에서 제외
-            const visible = data.filter(r => ["confirmed", "completed", "cancelled"].includes(r.status));
+
+            // 화면에는 confirmed/completed/cancelled만 노출 (legacy pending/rejected 숨김)
+            const visible = data.filter((r) =>
+                ["confirmed", "completed", "cancelled"].includes(r.status)
+            );
             setReservations(visible);
 
             if (visible.length > 0 && visible[0].coach_name) {
@@ -45,12 +48,13 @@ const ReservationManagePage = () => {
         }
     };
 
-    // 통계 (전체/완료/취소만)
+    // 통계: 전체 / 예약(confirmed) / 완료 / 취소
     const stats = useMemo(() => {
         const total = reservations.length;
-        const completed = reservations.filter(r => r.status === "completed").length;
-        const cancelled = reservations.filter(r => r.status === "cancelled").length;
-        return { total, completed, cancelled };
+        const confirmed = reservations.filter((r) => r.status === "confirmed").length;
+        const completed = reservations.filter((r) => r.status === "completed").length;
+        const cancelled = reservations.filter((r) => r.status === "cancelled").length;
+        return { total, confirmed, completed, cancelled };
     }, [reservations]);
 
     useEffect(() => {
@@ -62,7 +66,9 @@ const ReservationManagePage = () => {
         <div className="reservation-management-main">
             <div className="reservation-management-header">
                 <h1>내 예약 관리</h1>
-                <p><span className="coach-name">{coachName}</span> 코치님의 개인 레슨 예약을 관리하세요</p>
+                <p>
+                    <span className="coach-name">{coachName}</span> 코치님의 개인 레슨 예약을 관리하세요
+                </p>
             </div>
 
             {/* 통계 섹션 */}
@@ -74,6 +80,10 @@ const ReservationManagePage = () => {
                         <span className="stat-value">{stats.total}</span>
                     </div>
                     <div className="stat-item confirmed">
+                        <span className="stat-label">예약</span>
+                        <span className="stat-value">{stats.confirmed}</span>
+                    </div>
+                    <div className="stat-item completed">
                         <span className="stat-label">완료</span>
                         <span className="stat-value">{stats.completed}</span>
                     </div>
@@ -96,6 +106,7 @@ const ReservationManagePage = () => {
                             disabled={loading}
                         >
                             <option value="all">전체</option>
+                            <option value="confirmed">예약</option>
                             <option value="completed">완료</option>
                             <option value="cancelled">취소</option>
                         </select>
@@ -135,8 +146,7 @@ const ReservationManagePage = () => {
                         <ReservationItem
                             key={reservation.id}
                             reservation={reservation}
-                            // 승인/거절 제거, 취소만 전달
-                            onCancel={handleCancel}
+                            onCancel={handleCancel}    // 취소만
                             showActions={true}
                         />
                     ))

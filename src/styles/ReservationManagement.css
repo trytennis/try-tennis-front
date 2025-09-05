@@ -148,7 +148,7 @@
     font-weight: 500;
 }
 
-.status-pending {
+.status-confirmed {
     background: #fef3c7;
     color: #92400e;
 }
@@ -385,12 +385,12 @@
     border: 1px solid #e5e7eb;
 }
 
-.stat-item.pending {
+.stat-item.confirmed {
     background: #fef3c7;
     border-color: #fed7aa;
 }
 
-.stat-item.confirmed {
+.stat-item.completed {
     background: #d1fae5;
     border-color: #a7f3d0;
 }
