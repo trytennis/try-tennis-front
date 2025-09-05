@@ -24,5 +24,12 @@ export const formatDateTime = (input: string | Date): string => {
 export const formatPrice = (value: number | string): string => {
     const num = typeof value === 'string' ? parseInt(value, 10) : value;
     return `${num.toLocaleString('ko-KR')}원`;
-  };
-  
+};
+
+/**
+ * 로컬(브라우저) 기준 YYYY-MM-DD 포맷터
+ * @param d 
+ * @returns 
+ */
+export const formatLocalDate = (d: Date) =>
+    `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, "0")}-${String(d.getDate()).padStart(2, "0")}`;

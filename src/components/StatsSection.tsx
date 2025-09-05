@@ -4,7 +4,7 @@ import type { StatsSectionProps } from '../types/Schedule';
 export const StatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
     return (
         <div className="calendar-stats-section">
-            <h2>이번 달 일정</h2>
+            <h2>월별 일정</h2>
             <div className="calendar-stats-grid">
                 <div className="calendar-stat-item calendar-stat-total">
                     <span className="calendar-stat-label">전체</span>
@@ -12,7 +12,7 @@ export const StatsSection: React.FC<StatsSectionProps> = ({ stats }) => {
                 </div>
 
                 <div className="calendar-stat-item calendar-stat-confirmed">
-                    <span className="calendar-stat-label">확정</span>
+                    <span className="calendar-stat-label">예약</span>
                     <span className="calendar-stat-value">{stats.confirmed}</span>
                 </div>
 

@@ -78,7 +78,7 @@ export const CalendarGrid: React.FC<CalendarGridProps> = ({
         return (
             <div className="calendar-loading">
                 <div className="loading-spinner"></div>
-                <p>일정을 불러오는 중...</p>
+                {/* <p>일정을 불러오는 중...</p> */}
             </div>
         );
     }

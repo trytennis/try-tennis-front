@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+// src/pages/CoachCalendarPage.tsx
+import React, { useState, useEffect, useMemo } from 'react';
 import '../styles/CoachCalenderPage.css';
 import type { FilterOptions, ScheduleEvent } from '../types/Schedule';
 import { EventDetailModal } from '../components/EventDetailModal';
@@ -6,6 +7,8 @@ import { FilterSection } from '../components/FilterSection';
 import { StatsSection } from '../components/StatsSection';
 import { CalendarHeader } from '../components/CalenderHeader';
 import { CalendarGrid } from '../components/CalenderGrid';
+import { fetchCoachSchedule, updateReservationStatus } from '../api/reservation';
+import { formatLocalDate } from '../utils/format';
 
 const CoachCalendar = () => {
     const [currentDate, setCurrentDate] = useState(new Date());
@@ -21,35 +24,25 @@ const CoachCalendar = () => {
 
     const coachId = "00000000-0000-0000-0000-000000000002"; // TODO: 로그인 연동 시 교체
 
-    // 현재 월의 시작일과 종료일 계산
-    const getMonthRange = (date: Date) => {
-        const year = date.getFullYear();
-        const month = date.getMonth();
-        const startDate = new Date(year, month, 1);
-        const endDate = new Date(year, month + 1, 0);
+  // 월 범위 계산: 로컬 기준으로 1일 ~ 말일 반환
+  const getMonthRange = (date: Date) => {
+    const y = date.getFullYear();
+    const m = date.getMonth(); // 0=1월
+    const startDate = new Date(y, m, 1);        // 로컬타임 1일 00:00
+    const endDate   = new Date(y, m + 1, 0);    // 로컬타임 말일 00:00
+    return { start: formatLocalDate(startDate), end: formatLocalDate(endDate) };
+  };
 
-        return {
-            start: startDate.toISOString().split('T')[0],
-            end: endDate.toISOString().split('T')[0],
-        };
-    };
-
-    // API에서 일정 데이터 가져오기
     const fetchSchedule = async () => {
         setLoading(true);
         try {
             const { start, end } = getMonthRange(currentDate);
-            const params = new URLSearchParams({
-                coach_id: coachId,
-                start_date: start,
-                end_date: end,
-                include_cancelled: filters.includeCancelled.toString(),
+            const data = await fetchCoachSchedule({
+                coachId,
+                startDate: start,
+                endDate: end,
+                includeCancelled: filters.includeCancelled,
             });
-
-            const response = await fetch(`/api/schedule/coach?${params}`);
-            if (!response.ok) throw new Error('Failed to fetch schedule');
-
-            const data = await response.json();
             setEvents(data);
         } catch (error) {
             console.error('Error fetching schedule:', error);
@@ -58,64 +51,46 @@ const CoachCalendar = () => {
         }
     };
 
-    // 필터 적용
     const applyFilters = () => {
         let filtered = events;
-
         if (filters.status !== 'all') {
-            filtered = filtered.filter(event => event.status === filters.status);
+            filtered = filtered.filter(e => e.status === filters.status);
         }
-
         setFilteredEvents(filtered);
     };
 
-    // 이벤트 클릭 핸들러
     const handleEventClick = (event: ScheduleEvent) => {
         setSelectedEvent(event);
         setIsModalOpen(true);
     };
 
-    // 월 변경 핸들러
     const handleMonthChange = (direction: 'prev' | 'next') => {
-        const newDate = new Date(currentDate);
-        if (direction === 'prev') {
-            newDate.setMonth(newDate.getMonth() - 1);
-        } else {
-            newDate.setMonth(newDate.getMonth() + 1);
-        }
-        setCurrentDate(newDate);
+        const next = new Date(currentDate);
+        next.setMonth(next.getMonth() + (direction === 'prev' ? -1 : 1));
+        setCurrentDate(next);
     };
 
-    // 오늘로 이동
-    const goToToday = () => {
-        setCurrentDate(new Date());
-    };
-
-    // 필터 변경 핸들러
-    const handleFilterChange = (newFilters: Partial<FilterOptions>) => {
+    const goToToday = () => setCurrentDate(new Date());
+    const handleFilterChange = (newFilters: Partial<FilterOptions>) =>
         setFilters(prev => ({ ...prev, ...newFilters }));
-    };
 
-    // 통계 계산
-    const getStats = () => {
+    const stats = useMemo(() => {
         const total = filteredEvents.length;
         const confirmed = filteredEvents.filter(e => e.status === 'confirmed').length;
         const completed = filteredEvents.filter(e => e.status === 'completed').length;
         const cancelled = filteredEvents.filter(e => e.status === 'cancelled').length;
-
         return { total, confirmed, completed, cancelled };
-    };
+    }, [filteredEvents]);
 
-    // 초기 로드 및 월 변경시 데이터 재조회
     useEffect(() => {
         fetchSchedule();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentDate, filters.includeCancelled]);
 
-    // 필터 변경시 적용
     useEffect(() => {
         applyFilters();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [events, filters]);
-
 
     return (
         <div className="coach-calendar-container">
@@ -130,7 +105,7 @@ const CoachCalendar = () => {
                 loading={loading}
             />
 
-            <StatsSection stats={getStats()} />
+            <StatsSection stats={stats} />
 
             <div className="calendar-main-section">
                 <CalendarHeader
@@ -154,10 +129,14 @@ const CoachCalendar = () => {
                         setIsModalOpen(false);
                         setSelectedEvent(null);
                     }}
-                    onStatusChange={(eventId, newStatus) => {
-                        // 상태 변경 로직 구현 필요
-                        console.log('Status change:', eventId, newStatus);
-                        fetchSchedule(); // 변경 후 데이터 재조회
+                    onStatusChange={async (eventId, newStatus) => {
+                        try {
+                            // 정책상: completed/cancelled/confirmed만 허용 (백엔드가드 있음)
+                            await updateReservationStatus(eventId, newStatus as any, coachId);
+                            await fetchSchedule();
+                        } catch (e: any) {
+                            alert(e?.message || "상태 변경에 실패했습니다.");
+                        }
                     }}
                 />
             )}
