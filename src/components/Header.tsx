@@ -2,6 +2,7 @@ import React from 'react';
 import '../styles/Header.css';
 import { Calendar, Ticket, UserCircle, Users, Video, NotebookPen, ListCheck } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
+import logo from '../assets/thetry_logo.png';
 
 const Header = () => {
   const location = useLocation();
@@ -12,8 +13,7 @@ const Header = () => {
         <div className="header-inner">
           <div className="left-group">
             <div className="logo-group">
-              <div className="logo-header-icon">🎾</div>
-              <span className="logo-text">Try Tennis</span>
+            <img src={logo} className='logo-header-icon' alt="TRY TENNIS Logo" /> 
             </div>
             <nav className="nav">
               <Link to="/reservation" className={`nav-btn ${location.pathname === '/reservation' ? 'active' : ''}`}>
