@@ -1,5 +1,6 @@
 import React from 'react';
 import type { EventDetailModalProps } from '../types/Schedule';
+import '../styles/CalenderEventModal.css';
 
 export const EventDetailModal: React.FC<EventDetailModalProps> = ({
     event,
@@ -23,7 +24,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
 
     const getStatusText = (status: string) => {
         switch (status) {
-            case 'confirmed': return '확정';
+            case 'confirmed': return '예약';
             case 'completed': return '완료';
             case 'cancelled': return '취소';
             default: return status;
@@ -52,39 +53,39 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
 
 
     return (
-        <div className="modal-backdrop" onClick={handleBackdropClick}>
-            <div className="modal-container">
-                <div className="modal-header">
+        <div className="calendar-modal-backdrop" onClick={handleBackdropClick}>
+            <div className="calendar-modal-container">
+                <div className="calendar-modal-header">
                     <h2>레슨 상세 정보</h2>
-                    <button className="modal-close-button" onClick={onClose}>
+                    <button className="calendar-modal-close-button" onClick={onClose}>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
                             <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
                         </svg>
                     </button>
                 </div>
 
-                <div className="modal-content">
+                <div className="calendar-modal-content">
                     {/* 기본 정보 */}
-                    <div className="modal-section">
-                        <div className="section-header">
+                    <div className="calendar-modal-section">
+                        <div className="calendar-section-header">
                             <h3>{event.title}</h3>
                             <span className={`status-badge ${getStatusClass(event.status)}`}>
                                 {getStatusText(event.status)}
                             </span>
                         </div>
 
-                        <div className="lesson-details">
-                            <div className="detail-item">
-                                <span className="detail-label">일시</span>
-                                <span className="detail-value">
+                        <div className="calendar-lesson-details">
+                            <div className="calendar-detail-item">
+                                <span className="calendar-detail-label">일시</span>
+                                <span className="calendar-detail-value">
                                     {formatDateTime(event.start)} - {formatDateTime(event.end).split(' ')[1]}
                                 </span>
                             </div>
 
                             {event.facility_name && (
-                                <div className="detail-item">
-                                    <span className="detail-label">시설</span>
-                                    <span className="detail-value">{event.facility_name}</span>
+                                <div className="calendar-detail-item">
+                                    <span className="calendar-detail-label">시설</span>
+                                    <span className="calendar-detail-value">{event.facility_name}</span>
                                 </div>
                             )}
                         </div>
@@ -92,27 +93,27 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
 
                     {/* 회원 정보 */}
                     {event.user_name && (
-                        <div className="modal-section">
+                        <div className="calendar-modal-section">
                             <h4>회원 정보</h4>
-                            <div className="user-info">
-                                <div className="detail-item">
-                                    <span className="detail-label">이름</span>
-                                    <span className="detail-value">{event.user_name}</span>
+                            <div className="calendar-user-info">
+                                <div className="calendar-detail-item">
+                                    <span className="calendar-detail-label">이름</span>
+                                    <span className="calendar-detail-value">{event.user_name}</span>
                                 </div>
 
                                 {event.user_phone && (
-                                    <div className="detail-item">
-                                        <span className="detail-label">연락처</span>
-                                        <span className="detail-value">
+                                    <div className="calendar-detail-item">
+                                        <span className="calendar-detail-label">연락처</span>
+                                        <span className="calendar-detail-value">
                                             <a href={`tel:${event.user_phone}`}>{event.user_phone}</a>
                                         </span>
                                     </div>
                                 )}
 
                                 {event.user_gender && (
-                                    <div className="detail-item">
-                                        <span className="detail-label">성별</span>
-                                        <span className="detail-value">{event.user_gender}</span>
+                                    <div className="calendar-detail-item">
+                                        <span className="calendar-detail-label">성별</span>
+                                        <span className="calendar-detail-value">{event.user_gender}</span>
                                     </div>
                                 )}
                             </div>
@@ -121,43 +122,43 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
 
                     {/* 수강권 정보 */}
                     {event.ticket_name && (
-                        <div className="modal-section">
+                        <div className="calendar-modal-section">
                             <h4>수강권 정보</h4>
-                            <div className="ticket-info">
-                                <div className="detail-item">
-                                    <span className="detail-label">수강권명</span>
-                                    <span className="detail-value">{event.ticket_name}</span>
+                            <div className="calendar-ticket-info">
+                                <div className="calendar-detail-item">
+                                    <span className="calendar-detail-label">수강권명</span>
+                                    <span className="calendar-detail-value">{event.ticket_name}</span>
                                 </div>
 
                                 {event.ticket_price && (
-                                    <div className="detail-item">
-                                        <span className="detail-label">수강권 금액</span>
-                                        <span className="detail-value ticket-price">
+                                    <div className="calendar-detail-item">
+                                        <span className="calendar-detail-label">수강권 금액</span>
+                                        <span className="calendar-detail-value ticket-price">
                                             {formatCurrency(event.ticket_price)}
                                         </span>
                                     </div>
                                 )}
 
                                 {event.price_per_lesson && (
-                                    <div className="detail-item">
-                                        <span className="detail-label">회당 금액</span>
-                                        <span className="detail-value lesson-price">
+                                    <div className="calendar-detail-item">
+                                        <span className="calendar-detail-label">회당 금액</span>
+                                        <span className="calendar-detail-value lesson-price">
                                             {formatCurrency(event.price_per_lesson)}
                                         </span>
                                     </div>
                                 )}
 
                                 {event.ticket_total_count && (
-                                    <div className="detail-item">
-                                        <span className="detail-label">총 횟수</span>
-                                        <span className="detail-value">{event.ticket_total_count}회</span>
+                                    <div className="calendar-detail-item">
+                                        <span className="calendar-detail-label">총 횟수</span>
+                                        <span className="calendar-detail-value">{event.ticket_total_count}회</span>
                                     </div>
                                 )}
 
                                 {event.remaining_count !== undefined && (
-                                    <div className="detail-item">
-                                        <span className="detail-label">잔여 횟수</span>
-                                        <span className="detail-value">{event.remaining_count}회</span>
+                                    <div className="calendar-detail-item">
+                                        <span className="calendar-detail-label">잔여 횟수</span>
+                                        <span className="calendar-detail-value">{event.remaining_count}회</span>
                                     </div>
                                 )}
                             </div>
@@ -166,45 +167,45 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
 
                     {/* 메모 */}
                     {(event.memo || event.admin_memo) && (
-                        <div className="modal-section">
+                        <div className="calendar-modal-section">
                             <h4>메모</h4>
                             {event.memo && (
-                                <div className="memo-item">
-                                    <span className="memo-label">회원 요청사항</span>
-                                    <p className="memo-content">{event.memo}</p>
+                                <div className="calendar-memo-item">
+                                    <span className="calendar-memo-label">회원 요청사항</span>
+                                    <p className="calendar-memo-content">{event.memo}</p>
                                 </div>
                             )}
                             {event.admin_memo && (
-                                <div className="memo-item">
-                                    <span className="memo-label">관리자 메모</span>
-                                    <p className="memo-content">{event.admin_memo}</p>
+                                <div className="calendar-memo-item">
+                                    <span className="calendar-memo-label">관리자 메모</span>
+                                    <p className="calendar-memo-content">{event.admin_memo}</p>
                                 </div>
                             )}
                         </div>
                     )}
 
                     {/* 예약 정보 */}
-                    <div className="modal-section">
+                    <div className="calendar-modal-section">
                         <h4>예약 정보</h4>
-                        <div className="reservation-info">
+                        <div className="calendar-reservation-info">
                             {event.reservation_date && (
-                                <div className="detail-item">
-                                    <span className="detail-label">예약일</span>
-                                    <span className="detail-value">{formatDate(event.reservation_date)}</span>
+                                <div className="calendar-detail-item">
+                                    <span className="calendar-detail-label">예약일</span>
+                                    <span className="calendar-detail-value">{formatDate(event.reservation_date)}</span>
                                 </div>
                             )}
 
                             {event.cancelled_at && (
-                                <div className="detail-item">
-                                    <span className="detail-label">취소일</span>
-                                    <span className="detail-value">{formatDate(event.cancelled_at)}</span>
+                                <div className="calendar-detail-item">
+                                    <span className="calendar-detail-label">취소일</span>
+                                    <span className="calendar-detail-value">{formatDate(event.cancelled_at)}</span>
                                 </div>
                             )}
 
                             {event.cancel_reason && (
-                                <div className="detail-item">
-                                    <span className="detail-label">취소 사유</span>
-                                    <span className="detail-value">{event.cancel_reason}</span>
+                                <div className="calendar-detail-item">
+                                    <span className="calendar-detail-label">취소 사유</span>
+                                    <span className="calendar-detail-value">{event.cancel_reason}</span>
                                 </div>
                             )}
                         </div>
@@ -213,15 +214,15 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
 
                 {/* 액션 버튼 */}
                 {event.status === 'confirmed' && (
-                    <div className="modal-actions">
+                    <div className="calendar-modal-actions">
                         <button
-                            className="action-button complete-button"
+                            className="calendar-action-button complete-button"
                             onClick={() => onStatusChange(event.id, 'completed')}
                         >
                             완료 처리
                         </button>
                         <button
-                            className="action-button cancel-button"
+                            className="calendar-action-button cancel-button"
                             onClick={() => onStatusChange(event.id, 'cancelled')}
                         >
                             취소 처리
