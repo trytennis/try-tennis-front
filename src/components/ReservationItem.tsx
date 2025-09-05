@@ -14,7 +14,7 @@ const ReservationItem = ({ reservation, onCancel, showActions = true }: Props) =
     const getStatusClass = () => {
         switch (reservation.status) {
             case "confirmed":
-                return "status-badge status-approved";   // 예약됨
+                return "status-badge status-confirmed";   // 예약됨
             case "completed":
                 return "status-badge status-completed";
             case "cancelled":

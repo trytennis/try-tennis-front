@@ -69,7 +69,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
                     <div className="calendar-modal-section">
                         <div className="calendar-section-header">
                             <h3>{event.title}</h3>
-                            <span className={`status-badge ${getStatusClass(event.status)}`}>
+                            <span className={`calendar-status-badge ${getStatusClass(event.status)}`}>
                                 {getStatusText(event.status)}
                             </span>
                         </div>
@@ -78,7 +78,7 @@ export const EventDetailModal: React.FC<EventDetailModalProps> = ({
                             <div className="calendar-detail-item">
                                 <span className="calendar-detail-label">일시</span>
                                 <span className="calendar-detail-value">
-                                    {formatDateTime(event.start)} - {formatDateTime(event.end).split(' ')[1]}
+                                    {formatDateTime(event.start)}
                                 </span>
                             </div>
 
