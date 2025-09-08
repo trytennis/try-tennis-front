@@ -1,35 +1,74 @@
+/* AnalysisResult.css */
+.media-row {
+    display: flex;
+    gap: 24px;
+    margin: 24px 0;
+}
+
+@media (max-width: 768px) {
+    .media-row {
+        flex-direction: column;
+    }
+}
+
+.media-card {
+    flex: 1;
+    background: white;
+    padding: 20px;
+    border-radius: 16px;
+    border: 1px solid #e5e7eb;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.media-img,
+.media-video {
+    width: 100%;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+    max-height: 400px;
+    object-fit: contain;
+}
+
+/* 결과 카드 개선 */
 .result-row {
     display: flex;
     gap: 24px;
+    margin-top: 24px;
 }
 
-.chart-img {
-    width: 100%;
-    max-width: 480px;
-    border-radius: 12px;
-    border: 1px solid #ccc;
+@media (max-width: 768px) {
+    .result-row {
+        flex-direction: column;
+    }
 }
 
 .result-card {
     flex: 1;
     background: white;
-    border: 1px solid #eee;
+    border: 1px solid #e5e7eb;
     border-radius: 16px;
     padding: 24px;
-    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
-    margin-top: 32px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
 }
 
 .result-title {
     font-size: 18px;
-    font-weight: 600;
+    font-weight: 700;
     margin-bottom: 20px;
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #333;
+    color: #1f2937;
 }
 
+.chart-img {
+    width: 100%;
+    max-width: 100%;
+    border-radius: 12px;
+    border: 1px solid #e5e7eb;
+}
+
+/* 결과 아이템 */
 .result-list {
     display: flex;
     flex-direction: column;
@@ -40,52 +79,103 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 16px 24px;
+    padding: 20px 24px;
     border-radius: 12px;
     font-size: 14px;
     font-weight: 500;
     border: 1px solid;
+    transition: all 0.2s ease;
+}
+
+.result-item:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }
 
 .result-item .value {
-    font-size: 18px;
+    font-size: 20px;
     font-weight: bold;
 }
 
 .analysis-label-wrap {
     display: flex;
     align-items: center;
-    gap: 14px;
+    gap: 16px;
 }
 
 .analysis-label {
     font-size: 15px;
+    font-weight: 600;
 }
 
 .analysis-icon {
-    font-size: 22px;
+    font-size: 24px;
 }
 
+/* 색상 테마 개선 */
 .result-item.blue {
-    background: linear-gradient(to right, #e0f0ff, #c8e0ff);
-    border-color: #a0c8ff;
-    color: #1a3a75;
+    background: linear-gradient(135deg, #dbeafe 0%, #bfdbfe 100%);
+    border-color: #93c5fd;
+    color: #1e40af;
 }
 
 .result-item.green {
-    background: linear-gradient(to right, #e6fcef, #d2f9e1);
-    border-color: #94e2bc;
-    color: #145c42;
+    background: linear-gradient(135deg, #d1fae5 0%, #a7f3d0 100%);
+    border-color: #6ee7b7;
+    color: #047857;
 }
 
 .result-item.yellow {
-    background: linear-gradient(to right, #fff6d6, #ffe6bb);
-    border-color: #f9c97a;
-    color: #8a6300;
+    background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+    border-color: #fbbf24;
+    color: #92400e;
 }
 
 .result-item.purple {
-    background: linear-gradient(to right, #f3e8ff, #ecd8f9);
-    border-color: #c89fea;
-    color: #5c2d91;
+    background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 100%);
+    border-color: #c4b5fd;
+    color: #7c3aed;
+}
+
+/* 로딩 오버레이 개선 */
+.loading-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    backdrop-filter: blur(4px);
+}
+
+.loading-content {
+    background: white;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    max-width: 300px;
+}
+
+.loading-spinner {
+    width: 48px;
+    height: 48px;
+    border: 4px solid #e5e7eb;
+    border-top: 4px solid #10b981;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 0 auto 16px;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: #1f2937;
 }
