@@ -7,7 +7,7 @@ const AnalysisResult: React.FC<{ data: AnalysisData }> = ({ data }) => {
     <div className='result-row'>
       <div className="result-card">
         <h3 className="result-title">📈 분석 차트</h3>
-        <img src={data.chartUrl} alt="분석 차트" className="chart-img" />
+        <img src={data.chart_url} alt="분석 차트" className="chart-img" />
       </div>
       <div className="result-card">
         <h3 className="result-title">📊 분석 결과</h3>

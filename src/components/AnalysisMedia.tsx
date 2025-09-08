@@ -1,16 +1,17 @@
 import React from 'react';
-import '../styles/AnalysisMedia.css';
+import '../styles/AnalysisResult.css';
 
 interface Props {
-  gifUrl: string;
+  analyzedUrl: string;
   videoUrl: string;
 }
 
-const AnalysisMedia: React.FC<Props> = ({ gifUrl, videoUrl }) => {
+const AnalysisMedia: React.FC<Props> = ({ analyzedUrl, videoUrl }) => {
   return (
     <div className="media-row">
       <div className="media-card">
-        <img src={gifUrl} alt="분석 GIF" className="media-img" />
+        <img src={analyzedUrl} alt="분석 GIF" className="media-img" />
+        {/* <video src={analyzedUrl} controls className="media-video" /> */}
       </div>
       <div className="media-card">
         <video src={videoUrl} controls className="media-video" />
