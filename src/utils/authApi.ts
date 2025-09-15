@@ -3,14 +3,29 @@ import { supabase } from "./supabaseClient";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
+
+async function getFreshSession() {
+    // 현재 세션
+    const { data: { session } } = await supabase.auth.getSession();
+    const now = Math.floor(Date.now() / 1000);
+    const exp = (session?.user as any)?.exp as number | undefined;
+
+    // 만료까지 15초 이상 남았으면 사용
+    if (session?.access_token && exp && exp - now > 15) return session;
+
+    // 회전/만료 임박 → 갱신 시도
+    const { data, error } = await supabase.auth.refreshSession();
+    if (!error && data.session) return data.session;
+
+    // 갱신 실패 시 기존 세션이라도 반환 (서버에서 401/403시 재시도 처리)
+    return session || null;
+}
+
 async function buildHeaders(contentTypeJson = false): Promise<Record<string, string>> {
     const headers: Record<string, string> = {};
     if (contentTypeJson) headers["Content-Type"] = "application/json";
-
-    const { data: { session } } = await supabase.auth.getSession();
-    if (session?.access_token) {
-        headers["Authorization"] = `Bearer ${session.access_token}`;
-    }
+    const fresh = await getFreshSession();
+    if (fresh?.access_token) headers["Authorization"] = `Bearer ${fresh.access_token}`;
     return headers;
 }
 
