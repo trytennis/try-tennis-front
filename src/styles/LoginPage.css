@@ -1,0 +1,193 @@
+/* 배경/컨테이너 */
+.lg__screen {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 48px 16px;
+    box-sizing: border-box;
+}
+
+.lg__bg {
+    background: linear-gradient(135deg, #f5f7ff, #eef2ff);
+}
+
+.lg__container {
+    width: 100%;
+    max-width: 420px;
+}
+
+/* 카드 */
+.lg__card {
+    background: #fff;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
+    padding: 24px;
+}
+
+/* 헤더 */
+.lg__header {
+    text-align: center;
+    margin-bottom: 18px;
+}
+
+.lg__title {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    margin: 0 0 6px;
+}
+
+.lg__subtitle {
+    color: #6b7280;
+    margin: 0;
+}
+
+/* 폼/필드 */
+.lg__form {
+    display: grid;
+    gap: 14px;
+}
+
+.lg__field {}
+
+.lg__label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: #374151;
+    margin-bottom: 8px;
+}
+
+.lg__icon-inline {
+    vertical-align: middle;
+}
+
+.lg__input,
+.lg__textarea {
+    width: 100%;
+    font-size: 14px;
+    color: #111827;
+    border: 1px solid #d1d5db;
+    border-radius: 10px;
+    padding: 12px 14px;
+    outline: none;
+    transition: box-shadow .15s ease, border-color .15s ease;
+    background: #fff;
+}
+
+.lg__input:focus {
+    border-color: #60a5fa;
+    box-shadow: 0 0 0 3px rgba(59, 130, 246, .2);
+}
+
+.lg__input-error {
+    border-color: #ef4444 !important;
+}
+
+.lg__input-wrap {
+    position: relative;
+}
+
+.lg__input-withbtn {
+    padding-right: 44px;
+}
+
+.lg__input-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+.lg__input-btn:hover {
+    color: #6b7280;
+}
+
+.lg__error {
+    color: #b91c1c;
+    font-size: 13px;
+    margin-top: 6px;
+}
+
+/* 경고 */
+.lg__alert {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* 버튼 */
+.lg__btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .15s;
+}
+
+.lg__btn-primary {
+    background: #2563eb;
+    color: #fff;
+}
+
+.lg__btn-primary:hover {
+    background: #1d4ed8;
+}
+
+.lg__btn-disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* 스피너 */
+.lg__spinner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lg__spinner-dot {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #fff;
+    border-top-color: transparent;
+    border-radius: 999px;
+    display: inline-block;
+    animation: lg-rot 0.8s linear infinite;
+}
+
+@keyframes lg-rot {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 링크들 */
+.lg__links {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+}
+
+.lg__link {
+    color: #2563eb;
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+.lg__link:hover {
+    color: #1d4ed8;
+}
