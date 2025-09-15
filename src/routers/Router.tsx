@@ -13,6 +13,7 @@ import UserProfileCreatePage from '../pages/UserProfileCreatePage';
 import CoachCalendar from '../pages/CoachCalenderPage';
 import AuthCallbackPage from '../pages/AuthCallbackPage';
 import ProtectedRoute from './ProtectedRouter';
+import SignUpPage from '../pages/SignUpPage';
 
 export default function Router() {
   return (
@@ -37,6 +38,7 @@ export default function Router() {
         </Route>
 
         {/* 인증 콜백은 공개 라우트 */}
+        <Route path="/signup" element={<SignUpPage />} />
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
       </Routes>
     </BrowserRouter>
