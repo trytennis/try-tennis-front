@@ -1,7 +1,6 @@
+// routers/Router.tsx
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Layout from '../components/Layout';
-// import SchedulePage from '../pages/SchedulePage';
-// import MembersPage from '../pages/MembersPage';
 import VideoAnalysisPage from '../pages/VideoAnalysisPage';
 import TicketsPage from '../pages/TicketsPage';
 import AddTicketPage from '../pages/AddTicketPage';
@@ -12,15 +11,18 @@ import PersonalLessonPage from '../pages/PersonalLessonPage';
 import ReservationManagePage from '../pages/ReservationManagementPage';
 import UserProfileCreatePage from '../pages/UserProfileCreatePage';
 import CoachCalendar from '../pages/CoachCalenderPage';
-// import LoginPage from '../pages/LoginPage';
-// import RegisterPage from '../pages/RegisterPage';
-// import PrivateRoute from './PrivateRoute';
+import AuthCallbackPage from '../pages/AuthCallbackPage';
+import ProtectedRoute from './ProtectedRouter';
 
 export default function Router() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<Layout />}>
+        <Route path="/" element={
+          <ProtectedRoute redirectTo="/auth/callback" requireActive>
+            <Layout />
+          </ProtectedRoute>
+        }>
           <Route index element={<Navigate to="videos" replace />} />
           <Route path="schedule" element={<CoachCalendar />} />
           <Route path="reservation" element={<PersonalLessonPage />} />
@@ -34,6 +36,8 @@ export default function Router() {
           <Route path="tickets/:ticketId" element={<TicketDetailPage />} />
         </Route>
 
+        {/* 인증 콜백은 공개 라우트 */}
+        <Route path="/auth/callback" element={<AuthCallbackPage />} />
       </Routes>
     </BrowserRouter>
   );
