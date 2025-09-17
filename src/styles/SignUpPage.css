@@ -1,28 +1,15 @@
-/* 화면 배경 */
+/* src/styles/SignUpPage.css */
+
+/* 화면/레이아웃 */
 .su__screen {
     min-height: 100vh;
     padding: 48px 16px;
     box-sizing: border-box;
 }
 
-.su__bg-blue {
-    background: linear-gradient(135deg, #eff6ff, #e0e7ff);
-}
-
-.su__bg-green {
-    background: linear-gradient(135deg, #ecfdf5, #d1fae5);
-}
-
-/* 컨테이너/헤더 */
 .su__container {
     max-width: 880px;
     margin: 0 auto;
-}
-
-.su__logo-medium-icon {
-    height: 80px;    
-    width: auto;
-    margin-bottom: 10px; 
 }
 
 .su__header {
@@ -30,34 +17,19 @@
     margin-bottom: 24px;
 }
 
-.su__heading {
-    font-size: 28px;
-    font-weight: 700;
-    color: #111827;
-    margin: 0 0 6px;
-}
-
-.su__sub {
-    color: #6b7280;
-    margin: 0;
-}
-
-.su__hint {
-    display: inline-block;
-    margin-top: 12px;
-    font-size: 12px;
-    color: #1d4ed8;
-    background: #eff6ff;
-    padding: 6px 10px;
-    border-radius: 8px;
+/* 로고 중앙 정렬 */
+.su__logo-medium-icon {
+    display: block;
+    margin: 0 auto 10px;
+    /* 가운데 + 하단 간격 */
+    height: 80px;
+    width: auto;
+    object-fit: contain;
 }
 
 /* 카드/섹션 */
 .su__card {
-    background: #fff;
-    border-radius: 16px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
-    padding: 24px;
+    /* 색/그림자/테두리는 u-card로 처리됨 */
 }
 
 .su__section {
@@ -74,11 +46,10 @@
     gap: 8px;
     font-size: 16px;
     font-weight: 600;
-    color: #111827;
     margin: 0 0 12px;
 }
 
-/* 필드/라벨/인풋 */
+/* 필드/라벨/오류 */
 .su__field {
     margin-bottom: 16px;
 }
@@ -86,37 +57,11 @@
 .su__label {
     display: block;
     font-size: 14px;
-    color: #374151;
     margin-bottom: 8px;
 }
 
 .su__req {
     color: #ef4444;
-}
-
-.su__input,
-.su__select,
-.su__textarea {
-    width: 100%;
-    font-size: 14px;
-    color: #111827;
-    border: 1px solid #d1d5db;
-    border-radius: 10px;
-    padding: 12px 14px;
-    outline: none;
-    transition: box-shadow .15s ease, border-color .15s ease;
-    background: #fff;
-}
-
-.su__input:focus,
-.su__select:focus,
-.su__textarea:focus {
-    border-color: #60a5fa;
-    box-shadow: 0 0 0 3px rgba(59, 130, 246, .2);
-}
-
-.su__input-error {
-    border-color: #ef4444 !important;
 }
 
 .su__error {
@@ -129,44 +74,26 @@
     font-size: 12px;
 }
 
-/* 인풋+아이콘 버튼 */
+/* 인풋 래퍼(아이콘 버튼 공간) */
 .su__input-wrap {
     position: relative;
 }
 
 .su__input-withbtn {
-    padding-right: 44px;
+    padding-right: 48px;
 }
 
-.su__input-btn {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    border: none;
-    background: transparent;
-    color: #9ca3af;
-    cursor: pointer;
-}
-
-.su__input-btn:hover {
-    color: #6b7280;
-}
+/* 여유 확대 */
 
 /* 그리드 */
-.su__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 16px;
-}
-
+.su__grid,
 .su__grid-3 {
     display: grid;
     grid-template-columns: 1fr;
     gap: 16px;
 }
 
-@media (min-width: 768px) {
+@media (min-width:768px) {
     .su__grid {
         grid-template-columns: 1fr 1fr;
     }
@@ -200,110 +127,7 @@
     margin-top: 3px;
 }
 
-/* 버튼/액션 */
-.su__actions {
-    margin-top: 24px;
-    text-align: center;
-}
-
-.su__btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    border: none;
-    border-radius: 10px;
-    padding: 12px 16px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: .15s;
-}
-
-.su__btn-block {
-    width: 100%;
-}
-
-.su__btn-primary {
-    background: #2563eb;
-    color: #fff;
-}
-
-.su__btn-primary:hover {
-    background: #1d4ed8;
-}
-
-.su__btn-success {
-    background: #059669;
-    color: #fff;
-}
-
-.su__btn-success:hover {
-    background: #047857;
-}
-
-.su__btn-ghost {
-    background: transparent;
-    color: #6b7280;
-}
-
-.su__btn-ghost:hover {
-    color: #374151;
-}
-
-.su__btn-disabled {
-    opacity: .6;
-    cursor: not-allowed;
-}
-
-.su__link {
-    color: #2563eb;
-    text-decoration: underline;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-}
-
-/* 스피너 */
-.su__spinner {
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.su__spinner-dot {
-    width: 18px;
-    height: 18px;
-    border: 2px solid #fff;
-    border-top-color: transparent;
-    border-radius: 999px;
-    display: inline-block;
-    animation: su-rot 0.8s linear infinite;
-}
-
-@keyframes su-rot {
-    to {
-        transform: rotate(360deg);
-    }
-}
-
-/* 아이콘 색/인라인 */
-.su__icon-inline {
-    vertical-align: middle;
-}
-
-.su__text-blue {
-    color: #2563eb;
-}
-
-.su__text-green {
-    color: #059669;
-}
-
-.su__text-purple {
-    color: #7c3aed;
-}
-
-/* 안내 화면 공용 */
+/* 공용 박스/문구 */
 .su__center {
     max-width: 480px;
     margin: 0 auto;
@@ -314,12 +138,10 @@
 .su__title {
     font-size: 22px;
     font-weight: 700;
-    color: #111827;
     margin: 12px 0;
 }
 
 .su__desc {
-    color: #6b7280;
     margin-bottom: 16px;
 }
 
@@ -333,16 +155,6 @@
     margin: 0 auto;
 }
 
-.su__icon-blue {
-    background: #dbeafe;
-    color: #1d4ed8;
-}
-
-.su__icon-green {
-    background: #d1fae5;
-    color: #047857;
-}
-
 .su__box {
     background: #f9fafb;
     border-radius: 10px;
@@ -354,25 +166,30 @@
 .su__box-title {
     margin: 0 0 8px;
     font-weight: 600;
-    color: #111827;
 }
 
 .su__info {
     font-size: 14px;
-    color: #4b5563;
     display: grid;
     gap: 4px;
 }
 
-/* 버튼 스택 */
-.su__stack {
-    display: grid;
-    gap: 12px;
+/* 액션 영역 */
+.su__actions {
+    margin-top: 24px;
+    text-align: center;
 }
 
-/* 페이지 하단 */
+.su__btn-block {
+    width: 100%;
+}
+
+/* 링크/아이콘 */
+.su__icon-inline {
+    vertical-align: middle;
+}
+
 .su__footnote {
     margin-top: 12px;
-    color: #6b7280;
     font-size: 14px;
 }
