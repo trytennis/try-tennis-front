@@ -13,7 +13,7 @@ const Header = () => {
         <div className="header-inner">
           <div className="left-group">
             <div className="logo-group">
-            <img src={logo} className='logo-header-icon' alt="TRY TENNIS Logo" /> 
+              <img src={logo} className='logo-header-icon' alt="TRY TENNIS Logo" />
             </div>
             <nav className="nav">
               <Link to="/reservation" className={`nav-btn ${location.pathname === '/reservation' ? 'active' : ''}`}>
@@ -43,10 +43,10 @@ const Header = () => {
             </nav>
           </div>
           <div className="right-group">
-            <button className="user-btn">
+            <Link to="/my" className={`nav-btn ${location.pathname === '/my' ? 'active' : ''}`}>
               <UserCircle className="header-icon" />
-              김관리자
-            </button>
+              내 정보
+            </Link>
           </div>
         </div>
       </div>
