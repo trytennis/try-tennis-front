@@ -1,0 +1,207 @@
+/* src/styles/colors.css */
+/* ===== Brand Tokens ===== */
+:root {
+    /* Brand Greens */
+    --green-900: #0f2316;
+    --green-800: #16331f;
+    --green-700: #1C3C24;
+    /* Primary (로고 딥그린) */
+    --green-600: #25532f;
+    --green-500: #2f6b3b;
+    --green-400: #3e8a4b;
+    --green-300: #5fae63;
+
+    /* Accent Lime (로고 하이라이트) */
+    --lime-600: #7fb02d;
+    --lime-500: #9BCB3C;
+    /* Accent */
+    --lime-400: #b9de6d;
+
+    /* Neutral */
+    --bg-soft: #F8F9F6;
+    /* 기본 배경 */
+    --bg-card: #ffffff;
+    /* 카드 */
+    --bd-soft: #E6EAE7;
+    /* 테두리 */
+    --txt-strong: #111827;
+    /* 본문 텍스트 */
+    --txt-muted: #6E7A6F;
+    /* 보조 텍스트 */
+    --txt-inverse: #ffffff;
+    /* 어두운 배경 위 글자 */
+
+    /* States (의미색) */
+    --info-500: #3C91E6;
+    --warn-500: #FFD447;
+    --error-500: #E5484D;
+    --success-500: #38a169;
+
+    /* Focus ring */
+    --ring: rgba(31, 107, 59, .25);
+    /* green-500 기반 */
+}
+
+/* ===== Utilities (배경/텍스트/테두리) ===== */
+.u-bg {
+    background: var(--bg-soft);
+}
+
+.u-surface {
+    background: var(--bg-card);
+}
+
+.u-border {
+    border: 1px solid var(--bd-soft);
+}
+
+.u-text {
+    color: var(--txt-strong);
+}
+
+.u-text-muted {
+    color: var(--txt-muted);
+}
+
+.u-text-inv {
+    color: var(--txt-inverse);
+}
+
+.u-text-brand {
+    color: var(--green-700);
+}
+
+/* ===== Form ===== */
+.u-input {
+    width: 100%;
+    font-size: 14px;
+    color: var(--txt-strong);
+    border: 1px solid var(--bd-soft);
+    border-radius: 10px;
+    padding: 12px 14px;
+    outline: none;
+    background: var(--bg-card);
+    transition: box-shadow .15s ease, border-color .15s ease;
+}
+
+.u-input:focus {
+    border-color: var(--green-500);
+    box-shadow: 0 0 0 3px var(--ring);
+}
+
+.u-input--error {
+    border-color: var(--error-500) !important;
+}
+
+/* input 안 아이콘 버튼 */
+.u-input-btn {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    color: #9ca3af;
+    cursor: pointer;
+}
+
+.u-input-btn:hover {
+    color: #6b7280;
+}
+
+/* ===== Buttons ===== */
+.btn {
+    width: 100%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    border-radius: 10px;
+    padding: 12px 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: .15s;
+}
+
+.btn--primary {
+    background: var(--green-700);
+    color: var(--txt-inverse);
+}
+
+.btn--primary:hover {
+    background: var(--green-600);
+}
+
+.btn--accent {
+    background: var(--lime-500);
+    color: #0f2316;
+    /* 라임은 어두운 글자와 대비 */
+}
+
+.btn--accent:hover {
+    background: var(--lime-600);
+}
+
+.btn--disabled {
+    opacity: .6;
+    cursor: not-allowed;
+}
+
+/* ===== Links ===== */
+.u-link {
+    color: var(--green-700);
+    text-decoration: underline;
+    font-size: 14px;
+}
+
+.u-link:hover {
+    color: var(--green-600);
+}
+
+/* ===== Alerts ===== */
+.alert--error {
+    background: #fef2f2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+    padding: 10px 12px;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+/* ===== Page background (brand 그라데이션) ===== */
+.u-hero-bg {
+    background: radial-gradient(1200px 600px at 10% -10%, rgba(155, 203, 60, .25), transparent 60%),
+        linear-gradient(135deg, #f6faf4, #eef5ef);
+}
+
+/* ===== Card ===== */
+.u-card {
+    background: var(--bg-card);
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, .06);
+    padding: 24px;
+    border: 1px solid var(--bd-soft);
+}
+
+/* ===== Spinner (버튼 내부) ===== */
+.u-spinner {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.u-spinner-dot {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--txt-inverse);
+    border-top-color: transparent;
+    border-radius: 999px;
+    display: inline-block;
+    animation: u-rot .8s linear infinite;
+}
+
+@keyframes u-rot {
+    to {
+        transform: rotate(360deg);
+    }
+}
