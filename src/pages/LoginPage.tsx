@@ -3,6 +3,7 @@ import { Eye, EyeOff, Lock, Mail } from "lucide-react";
 import { useNavigate, Link } from "react-router-dom";
 import "../styles/LoginPage.css";
 import { signIn } from "../utils/auth";
+import logo from '../assets/thetry_logo.png';
 
 type Errors = Record<string, string>;
 
@@ -50,22 +51,25 @@ export default function LoginPage() {
         }
     }
 
+
     return (
-        <div className="lg__screen lg__bg">
+        <div className="lg__screen u-hero-bg">
             <div className="lg__container">
-                <div className="lg__card">
+                <img src={logo} className="lg__logo-medium-icon" alt="TheTry Logo" />
+
+                <div className="lg__card u-card">
                     <div className="lg__header">
-                        <h1 className="lg__title">로그인</h1>
-                        <p className="lg__subtitle">이메일과 비밀번호로 로그인해 주세요</p>
+                        <h1 className="lg__title u-text">로그인</h1>
+                        <p className="lg__subtitle u-text-muted">이메일과 비밀번호로 로그인해 주세요</p>
                     </div>
 
                     <form className="lg__form" onSubmit={onSubmit}>
                         <div className="lg__field">
-                            <label className="lg__label">
+                            <label className="lg__label u-text-muted">
                                 <Mail size={16} className="lg__icon-inline" /> 이메일
                             </label>
                             <input
-                                className={`lg__input ${err.email ? "lg__input-error" : ""}`}
+                                className={`u-input ${err.email ? "u-input--error" : ""}`}
                                 type="email"
                                 name="email"
                                 placeholder="you@example.com"
@@ -77,12 +81,12 @@ export default function LoginPage() {
                         </div>
 
                         <div className="lg__field">
-                            <label className="lg__label">
+                            <label className="lg__label u-text-muted">
                                 <Lock size={16} className="lg__icon-inline" /> 비밀번호
                             </label>
                             <div className="lg__input-wrap">
                                 <input
-                                    className={`lg__input lg__input-withbtn ${err.password ? "lg__input-error" : ""}`}
+                                    className={`u-input lg__input-withbtn ${err.password ? "u-input--error" : ""}`}
                                     type={showPw ? "text" : "password"}
                                     name="password"
                                     placeholder="비밀번호를 입력하세요"
@@ -92,7 +96,7 @@ export default function LoginPage() {
                                 />
                                 <button
                                     type="button"
-                                    className="lg__input-btn"
+                                    className="u-input-btn"
                                     onClick={() => setShowPw((s) => !s)}
                                     aria-label="비밀번호 표시 전환"
                                 >
@@ -102,12 +106,15 @@ export default function LoginPage() {
                             {err.password && <p className="lg__error">{err.password}</p>}
                         </div>
 
-                        {err.submit && <div className="lg__alert">{err.submit}</div>}
+                        {err.submit && <div className="alert--error">{err.submit}</div>}
 
-                        <button className={`lg__btn lg__btn-primary ${pending ? "lg__btn-disabled" : ""}`} disabled={pending}>
+                        <button
+                            className={`btn btn--primary ${pending ? "btn--disabled" : ""}`}
+                            disabled={pending}
+                        >
                             {pending ? (
-                                <span className="lg__spinner">
-                                    <span className="lg__spinner-dot" />
+                                <span className="u-spinner">
+                                    <span className="u-spinner-dot" />
                                     로그인 중...
                                 </span>
                             ) : (
@@ -116,12 +123,13 @@ export default function LoginPage() {
                         </button>
 
                         <div className="lg__links">
-                            <Link to="/signup" className="lg__link">회원가입</Link>
-                            <a href="/auth/reset" className="lg__link">비밀번호 재설정</a>
+                            <Link to="/signup" className="u-link">회원가입</Link>
+                            <a href="/auth/reset" className="u-link">비밀번호 재설정</a>
                         </div>
                     </form>
                 </div>
             </div>
         </div>
     );
+
 }
