@@ -21,15 +21,9 @@
 .su__logo-medium-icon {
     display: block;
     margin: 0 auto 10px;
-    /* 가운데 + 하단 간격 */
     height: 80px;
     width: auto;
     object-fit: contain;
-}
-
-/* 카드/섹션 */
-.su__card {
-    /* 색/그림자/테두리는 u-card로 처리됨 */
 }
 
 .su__section {
@@ -82,8 +76,6 @@
 .su__input-withbtn {
     padding-right: 48px;
 }
-
-/* 여유 확대 */
 
 /* 그리드 */
 .su__grid,

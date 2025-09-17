@@ -1,7 +1,7 @@
 .header {
-    background-color: white;
-    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-    border-bottom: 1px solid #f1f1f1;
+    background-color: var(--bg-card);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, .05);
+    border-bottom: 1px solid var(--bd-soft);
     position: sticky;
     top: 0;
     z-index: 50;
@@ -34,8 +34,9 @@
 }
 
 .logo-header-icon {
-    height: 40px;    
-    width: auto;     
+    height: 40px;
+    width: auto;
+    object-fit: contain;
 }
 
 .nav {
@@ -49,27 +50,40 @@
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     font-size: 0.875rem;
-    font-weight: 500;
-    color: #4b5563;
+    font-weight: 600;
+    color: var(--txt-strong);
     border-radius: 0.75rem;
-    background: none;
-    border: none;
+    background: transparent;
+    border: 1px solid transparent;
     cursor: pointer;
-    transition: 0.2s all ease-in-out;
+    transition: 0.18s ease-in-out;
     text-decoration: none;
 }
 
 .nav-btn:hover {
-    color: #10b981;
-    background-color: #f9fafb;
+    color: var(--green-700);
+    background-color: rgba(155, 203, 60, .08);
+    /* 라임 하이라이트 살짝 */
+    border-color: var(--bd-soft);
+}
+
+.nav-btn:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--ring);
 }
 
 .nav-btn.active {
-    background: linear-gradient(to right, #10b981, #14b8a6);
-    color: white;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.25);
+    background-color: var(--green-700);
+    color: var(--txt-inverse);
+    border-color: transparent;
+    box-shadow: none;
 }
 
+.nav-btn.active:hover {
+    background-color: var(--green-600);
+}
+
+/* 아이콘 크기 */
 .header-icon {
     width: 1rem;
     height: 1rem;
@@ -79,24 +93,4 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-}
-
-.user-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    font-weight: 500;
-    color: #4b5563;
-    border-radius: 0.75rem;
-    background: none;
-    border: none;
-    cursor: pointer;
-    transition: 0.2s all ease-in-out;
-}
-
-.user-btn:hover {
-    color: #10b981;
-    background-color: #f9fafb;
 }
