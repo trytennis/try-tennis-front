@@ -94,16 +94,16 @@ const CoachCalendar = () => {
 
     return (
         <div className="coach-calendar-container">
-            <div className="coach-calendar-header">
+            {/* <div className="coach-calendar-header">
                 <h1>일정 관리</h1>
-            </div>
+            </div> */}
 
-            <FilterSection
+            {/* <FilterSection
                 filters={filters}
                 onFilterChange={handleFilterChange}
                 onRefresh={fetchSchedule}
                 loading={loading}
-            />
+            /> */}
 
             <StatsSection stats={stats} />
 
