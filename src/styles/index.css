@@ -1,5 +1,7 @@
 /* 전체 페이지 설정 */
-html, body, #root {
+html,
+body,
+#root {
   width: 100%;
   margin: 0;
   padding: 0;
@@ -19,4 +21,10 @@ html, body, #root {
   max-width: 1400px;
   margin: 0 auto;
   padding: 40px 20px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
 }
