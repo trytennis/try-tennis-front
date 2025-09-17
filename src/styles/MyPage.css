@@ -1,0 +1,50 @@
+.mp__screen { min-height: 100vh; background: #f7f8fc; padding: 32px 16px; box-sizing: border-box; }
+.mp__container { max-width: 920px; margin: 0 auto; display: grid; gap: 16px; }
+
+.mp__header { display: flex; justify-content: space-between; align-items: center; }
+.mp__title { font-size: 24px; font-weight: 800; color: #111827; margin: 0; }
+
+.mp__btn { display: inline-flex; gap: 8px; align-items: center; border: none; border-radius: 10px; padding: 10px 14px; font-weight: 700; cursor: pointer; transition: .15s; }
+.mp__btn-ghost { background: transparent; color: #6b7280; }
+.mp__btn-ghost:hover { color: #374151; }
+.mp__btn-primary { background: #2563eb; color: #fff; }
+.mp__btn-primary:hover { background: #1d4ed8; }
+.mp__btn-disabled { opacity: .6; cursor: not-allowed; }
+
+.mp__card { background: #fff; border-radius: 14px; box-shadow: 0 10px 30px rgba(0,0,0,.06); padding: 20px; }
+.mp__center { text-align: center; }
+
+.mp__section-title { display: flex; align-items: center; gap: 8px; font-size: 16px; font-weight: 700; color: #111827; margin: 0 0 12px; }
+.mp__icon { color: #6b7280; }
+
+.mp__rows { display: grid; gap: 8px; }
+.mp__row { display: grid; grid-template-columns: 140px 1fr; gap: 8px; }
+.mp__label { color: #6b7280; font-size: 14px; }
+.mp__value { color: #111827; font-size: 14px; }
+
+.mp__chip { display: inline-flex; align-items: center; gap: 6px; padding: 4px 8px; border-radius: 999px; font-size: 12px; font-weight: 700; }
+.mp__chip.ok { background: #ecfdf5; color: #065f46; }
+.mp__chip.warn { background: #fff7ed; color: #9a3412; }
+
+.mp__grid { display: grid; grid-template-columns: 1fr; gap: 12px; }
+@media (min-width: 768px) { .mp__grid { grid-template-columns: 1fr 1fr; } }
+
+.mp__field { display: grid; gap: 8px; }
+.mp__input, .mp__select, .mp__textarea {
+  width: 100%; font-size: 14px; color: #111827;
+  border: 1px solid #d1d5db; border-radius: 10px; padding: 12px 14px; outline: none; background: #fff;
+  transition: box-shadow .15s ease, border-color .15s ease;
+}
+.mp__input:focus, .mp__select:focus, .mp__textarea:focus { border-color: #60a5fa; box-shadow: 0 0 0 3px rgba(59,130,246,.2); }
+
+.mp__divider { height: 1px; background: #eef2f7; margin: 16px 0; }
+
+.mp__toggles { display: grid; gap: 10px; }
+.mp__toggle { display: inline-flex; gap: 10px; align-items: center; background: #f9fafb; padding: 10px 12px; border-radius: 10px; }
+.mp__toggle input { width: 16px; height: 16px; }
+
+.mp__actions { display: flex; justify-content: flex-end; margin-top: 12px; }
+
+.mp__alert { border-radius: 10px; padding: 10px 12px; font-size: 14px; margin-top: 10px; }
+.mp__alert-ok { background: #ecfdf5; color: #065f46; border: 1px solid #a7f3d0; }
+.mp__alert-error { background: #fef2f2; color: #991b1b; border: 1px solid #fecaca; }

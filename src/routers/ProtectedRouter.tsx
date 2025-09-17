@@ -2,7 +2,7 @@
 import { useEffect, useState, type JSX } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { Navigate } from "react-router-dom";
-import { authGet as apiGet } from "../utils/authApi"; 
+import { authGet } from "../utils/authApi"; 
 
 type Props = {
     children: JSX.Element;
@@ -31,7 +31,7 @@ export default function ProtectedRoute({ children, redirectTo = "/auth/callback"
 
             try {
                 // 백엔드에서 토큰 검증 + 프로필 조회 (/api/me)
-                const me = await apiGet<{ user: any; profile: any }>("/api/me");
+                const me = await authGet<{ user: any; profile: any }>("/api/me");
                 // 이메일 인증 완료 트리거가 돌면 is_active=true
                 setAllowed(!!me?.profile?.is_active);
             } catch {
