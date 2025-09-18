@@ -86,3 +86,14 @@ export async function authPatch<T = any>(path: string, body: object): Promise<T>
         credentials: "include",
     });
 }
+
+/** DELETE */
+export async function authDelete<T = any>(path: string): Promise<T> {
+    const headers = await buildHeaders(false);
+    return request<T>(path, {
+        method: "DELETE",
+        headers,
+        credentials: "include",
+    });
+}
+
