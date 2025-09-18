@@ -11,6 +11,5 @@ export interface AnalysisData {
 
 export interface AnalysisHistory extends AnalysisData {
     id: string;        
-    user_id: string | null;
     created_at: string;
 }
