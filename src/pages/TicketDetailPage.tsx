@@ -1,17 +1,9 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import '../styles/TicketDetailPage.css';
-import { get } from '../utils/api';
 import type { Ticket } from '../types/Ticket';
-
-type AssignedUser = {
-  user_id: string;
-  name: string;
-  user_type: string;
-  remaining_count: number;
-  assigned_at: string;
-  expires_at: string;
-};
+import { TicketsApi } from '../api/ticket';
+import type { AssignedUser } from '../types/AssignedUser';
 
 const TicketDetailPage: React.FC = () => {
   const { ticketId } = useParams();
@@ -20,25 +12,28 @@ const TicketDetailPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const fetchDetails = async () => {
+    if (!ticketId) return;
+    (async () => {
       try {
-        const ticketData = await get<Ticket>(`/api/tickets/${ticketId}`);
+        const [ticketData, userList] = await Promise.all([
+          TicketsApi.getById(ticketId),
+          TicketsApi.listUsers(ticketId),
+        ]);
         setTicket(ticketData);
-
-        const userList = await get<AssignedUser[]>(`/api/tickets/${ticketId}/users`);
         setUsers(userList);
       } catch (err) {
         console.error('수강권 상세 정보 조회 실패:', err);
       } finally {
         setLoading(false);
       }
-    };
-
-    if (ticketId) fetchDetails();
+    })();
   }, [ticketId]);
 
   if (loading) return <div className="ticket-detail-page">불러오는 중...</div>;
   if (!ticket) return <div className="ticket-detail-page">수강권 정보를 찾을 수 없습니다.</div>;
+
+  const fmtDate = (iso?: string | null) =>
+    iso ? new Date(iso).toLocaleDateString() : '-';
 
   return (
     <div className="ticket-detail-page">
@@ -61,7 +56,7 @@ const TicketDetailPage: React.FC = () => {
             <thead>
               <tr>
                 <th>이름</th>
-                <th>유형</th>
+                {/* <th>유형</th> */}
                 <th>남은 횟수</th>
                 <th>배정일</th>
                 <th>만료일</th>
@@ -71,10 +66,10 @@ const TicketDetailPage: React.FC = () => {
               {users.map((u) => (
                 <tr key={u.user_id}>
                   <td>{u.name}</td>
-                  <td>{u.user_type}</td>
+                  {/* <td>{u.user_type}</td> */}
                   <td>{u.remaining_count}</td>
-                  <td>{new Date(u.assigned_at).toLocaleDateString()}</td>
-                  <td>{new Date(u.expires_at).toLocaleDateString()}</td>
+                  <td>{fmtDate(u.assigned_at)}</td>
+                  <td>{fmtDate(u.expires_at)}</td>
                 </tr>
               ))}
             </tbody>

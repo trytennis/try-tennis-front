@@ -2,29 +2,27 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import TicketCard from '../components/TicketCard';
 import '../styles/TicketsPage.css';
-import { get } from '../utils/api';
 import type { Ticket } from '../types/Ticket';
 import TicketCardSkeleton from '../components/TIcketCardSkeleton';
+import { TicketsApi } from '../api/ticket';
 
 const TicketsPage: React.FC = () => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
+    const [isLoading, setIsLoading] = useState(true);
     const navigate = useNavigate();
 
-    const [isLoading, setIsLoading] = useState(true);
-
     useEffect(() => {
-        const fetchTickets = async () => {
+        (async () => {
             try {
-                const data = await get<Ticket[]>('/api/tickets');
+                const data = await TicketsApi.list({ limit: 100, offset: 0 }); // ✅ 토큰 자동첨부
                 setTickets(data);
             } catch (error) {
                 console.error('수강권 불러오기 실패:', error);
+                // 401/403은 utils/api.ts에서 에러 throw됨 → 필요하면 여기서 안내 토스트/리다이렉트 처리
             } finally {
-                setIsLoading(false); // ← 로딩 끝났을 때만 false
+                setIsLoading(false);
             }
-        };
-
-        fetchTickets();
+        })();
     }, []);
 
     return (
@@ -36,6 +34,7 @@ const TicketsPage: React.FC = () => {
                         수강권 추가
                     </button>
                 </div>
+
                 <div className="ticket-grid">
                     {isLoading
                         ? Array.from({ length: 3 }).map((_, i) => <TicketCardSkeleton key={i} />)
@@ -52,7 +51,6 @@ const TicketsPage: React.FC = () => {
                         ))
                     }
                 </div>
-
             </div>
         </div>
     );
