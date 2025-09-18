@@ -43,6 +43,11 @@
     margin: 0 0 12px;
 }
 
+.su__stack {
+    display: grid;
+    gap: 8px
+}
+
 /* 필드/라벨/오류 */
 .su__field {
     margin-bottom: 16px;

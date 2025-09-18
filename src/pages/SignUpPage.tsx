@@ -96,7 +96,7 @@ export default function SignUpPage() {
 
                     <div className="su__stack">
                         <button className="btn btn--primary" onClick={() => setSignupStep("complete")}>
-                            인증 완료됨 (데모용)
+                            인증 완료
                         </button>
                         <button className="btn btn--accent" onClick={() => setSignupStep("form")}>
                             이메일 수정하기
@@ -376,7 +376,7 @@ export default function SignUpPage() {
                             {isSubmitting ? (
                                 <span className="u-spinner">
                                     <span className="u-spinner-dot" />
-                                    Supabase 회원가입 처리중...
+                                        회원가입 처리중...
                                 </span>
                             ) : ("회원가입")}
                         </button>
