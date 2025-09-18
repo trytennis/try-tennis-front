@@ -1,44 +1,52 @@
 /* AnalysisHistoryItem.css */
 
-/* 개선된 히스토리 아이템 스타일 */
+/* 카드 */
 .vh-item {
     display: flex;
     align-items: center;
     gap: 16px;
     padding: 16px;
-    border: 2px solid #e5e7eb;
+    border: 2px solid var(--bd-soft);
     border-radius: 12px;
-    background: white;
+    background: var(--bg-card);
     cursor: pointer;
-    transition: all 0.2s ease;
+    transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
     margin-bottom: 12px;
     position: relative;
 }
 
 .vh-item:hover {
-    border-color: #d1d5db;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-color: var(--green-600);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, .06);
     transform: translateY(-1px);
 }
 
-.vh-item--active {
-    border-color: #10b981;
-    background: #ecfdf5;
-    box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+.vh-item:focus-visible {
+    outline: none;
+    box-shadow: 0 0 0 3px var(--ring);
 }
 
+/* 활성(선택) 상태: 단색 딥그린 라인 + 연한 라임 배경 살짝만 */
+.vh-item--active {
+    border-color: var(--green-700);
+    background: rgba(155, 203, 60, .08);
+    /* 라임 느낌의 소프트 배경 */
+    box-shadow: 0 4px 12px rgba(28, 60, 36, .12);
+}
+
+/* 좌측 인디케이터 라인 */
 .vh-item--active::before {
-    content: '';
+    content: "";
     position: absolute;
     left: 0;
     top: 0;
     bottom: 0;
     width: 4px;
-    background: #10b981;
+    background: var(--green-700);
     border-radius: 0 2px 2px 0;
 }
 
-/* 썸네일 개선 */
+/* 썸네일 */
 .vh-thumb {
     width: 72px;
     height: 72px;
@@ -49,7 +57,7 @@
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
-    border: 1px solid #e5e7eb;
+    border: 1px solid var(--bd-soft);
 }
 
 .vh-thumb img {
@@ -64,7 +72,7 @@
     color: #9ca3af;
 }
 
-/* 메인 콘텐츠 */
+/* 본문 */
 .vh-main {
     flex: 1;
     min-width: 0;
@@ -73,7 +81,7 @@
 .vh-title {
     font-size: 14px;
     font-weight: 700;
-    color: #1f2937;
+    color: var(--txt-strong);
     margin: 0 0 8px 0;
 }
 
@@ -88,7 +96,7 @@
     align-items: center;
     gap: 6px;
     font-size: 12px;
-    color: #6b7280;
+    color: var(--txt-muted);
 }
 
 .vh-meta-icon {
@@ -97,17 +105,17 @@
     color: #9ca3af;
 }
 
-/* 선택 표시 */
+/* 선택 점 표시 */
 .vh-status {
     width: 12px;
     height: 12px;
     border-radius: 50%;
     background: #d1d5db;
     flex-shrink: 0;
-    transition: all 0.2s;
+    transition: all .18s;
 }
 
 .vh-status--active {
-    background: #10b981;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
+    background: var(--green-700);
+    box-shadow: 0 0 0 3px rgba(28, 60, 36, .18);
 }
