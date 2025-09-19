@@ -10,24 +10,17 @@ const ReservationManagePage = () => {
         useState<"all" | "confirmed" | "completed" | "cancelled">("all");
     const [dateFilter, setDateFilter] = useState("");
     const [loading, setLoading] = useState(false);
-    const [coachName, setCoachName] = useState("코치님");
-
-    const coachId = "00000000-0000-0000-0000-000000000002"; // TODO: 로그인 연동 시 교체
 
     const loadReservations = async () => {
         try {
             setLoading(true);
-            const data = await fetchReservationsByCoach(coachId, statusFilter, dateFilter);
+            const data = await fetchReservationsByCoach(statusFilter, dateFilter);
 
             // 화면에는 confirmed/completed/cancelled만 노출 (legacy pending/rejected 숨김)
             const visible = data.filter((r) =>
                 ["confirmed", "completed", "cancelled"].includes(r.status)
             );
             setReservations(visible);
-
-            if (visible.length > 0 && visible[0].coach_name) {
-                setCoachName(visible[0].coach_name);
-            }
         } catch (err) {
             console.error("예약 목록 조회 실패", err);
             alert("예약 목록을 불러오는데 실패했습니다.");
@@ -39,7 +32,7 @@ const ReservationManagePage = () => {
     const handleCancel = async (id: string) => {
         if (!confirm("정말로 이 예약을 취소하시겠습니까?")) return;
         try {
-            await updateReservationStatus(id, "cancelled", coachId, "코치 측 취소");
+            await updateReservationStatus(id, "cancelled", "코치 측 취소");
             alert("예약이 취소되었습니다.");
             await loadReservations();
         } catch (err) {
@@ -67,7 +60,7 @@ const ReservationManagePage = () => {
             <div className="reservation-management-header">
                 <h1>내 예약 관리</h1>
                 <p>
-                    <span className="coach-name">{coachName}</span> 코치님의 개인 레슨 예약을 관리하세요
+                    <span className="coach-name"></span> 코치님의 개인 레슨 예약을 관리하세요
                 </p>
             </div>
 

@@ -32,9 +32,6 @@ const PersonalLessonPage = () => {
     const [tickets, setTickets] = useState<UserTicket[]>([]);
     const [reserving, setReserving] = useState(false);
 
-    // TODO: 로그인 연동 시 대체
-    const userId = "00000000-0000-0000-0000-000000000003";
-
     useEffect(() => {
         const loadSlots = async () => {
             if (!selectedCoach) {
@@ -53,7 +50,7 @@ const PersonalLessonPage = () => {
             setCoaches(coachList);
         };
         const loadTickets = async () => {
-            const ticketList = await fetchUserTickets(userId);
+            const ticketList = await fetchUserTickets();
             setTickets(ticketList);
         };
         loadCoaches();
@@ -64,7 +61,6 @@ const PersonalLessonPage = () => {
         if (!selectedCoach || !selectedSlot || !selectedTicket) return;
 
         const payload = {
-            user_id: userId,
             coach_id: selectedCoach.id,
             user_ticket_id: selectedTicket.id,
             date,

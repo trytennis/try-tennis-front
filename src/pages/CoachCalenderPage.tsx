@@ -22,8 +22,6 @@ const CoachCalendar = () => {
         includeCancelled: false,
     });
 
-    const coachId = "00000000-0000-0000-0000-000000000002"; // TODO: 로그인 연동 시 교체
-
   // 월 범위 계산: 로컬 기준으로 1일 ~ 말일 반환
   const getMonthRange = (date: Date) => {
     const y = date.getFullYear();
@@ -38,7 +36,6 @@ const CoachCalendar = () => {
         try {
             const { start, end } = getMonthRange(currentDate);
             const data = await fetchCoachSchedule({
-                coachId,
                 startDate: start,
                 endDate: end,
                 includeCancelled: filters.includeCancelled,
@@ -84,20 +81,14 @@ const CoachCalendar = () => {
 
     useEffect(() => {
         fetchSchedule();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [currentDate, filters.includeCancelled]);
 
     useEffect(() => {
         applyFilters();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [events, filters]);
 
     return (
         <div className="coach-calendar-container">
-            {/* <div className="coach-calendar-header">
-                <h1>일정 관리</h1>
-            </div> */}
-
             {/* <FilterSection
                 filters={filters}
                 onFilterChange={handleFilterChange}
@@ -132,7 +123,7 @@ const CoachCalendar = () => {
                     onStatusChange={async (eventId, newStatus) => {
                         try {
                             // 정책상: completed/cancelled/confirmed만 허용 (백엔드가드 있음)
-                            await updateReservationStatus(eventId, newStatus as any, coachId);
+                            await updateReservationStatus(eventId, newStatus as any);
                             await fetchSchedule();
                         } catch (e: any) {
                             alert(e?.message || "상태 변경에 실패했습니다.");
