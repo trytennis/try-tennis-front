@@ -7,7 +7,7 @@ const UserCreatePage = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({
         name: '',
-        user_type: 'student',
+        user_type: '',
         gender: '',
         phone: '',
         memo: ''

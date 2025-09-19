@@ -1,53 +1,83 @@
+// utils/auth.ts
 import { supabase } from './supabaseClient';
 
-// 회원가입 (메타데이터 포함: 트리거가 profiles 생성)
-export async function signUp(email: string, password: string, name: string, phone?: string) {
+export type SignUpForm = {
+  email: string;
+  password: string;
+  name: string;
+  phone?: string;
+  user_type?: 'student' | 'coach' | 'facility_admin';
+  gender?: string;
+  birthdate?: string;
+  facility_id?: string;
+  memo?: string;
+  // 동의/버전
+  agree_terms: boolean;
+  agree_privacy: boolean;
+  consent_service_notice?: boolean;
+  consent_marketing?: boolean;
+  terms_version: string;
+  privacy_version: string;
+};
+
+export async function signUp(form: SignUpForm) {
+  const email = form.email.trim().toLowerCase();
+
   const { data, error } = await supabase.auth.signUp({
     email,
-    password,
+    password: form.password,
     options: {
       data: {
-        name,
-        phone,
-        agree_terms: true,
-        agree_privacy: true,
-        consent_marketing: false,
-        terms_version: "2025-09-10",
-        privacy_version: "2025-09-10",
+        name: form.name,
+        phone: form.phone || null,
+        user_type: form.user_type ?? 'student',   // 서버/트리거에서 기본값/검증 병행
+        gender: form.gender || null,
+        birthdate: form.birthdate || null,
+        facility_id: form.facility_id || null,
+        memo: form.memo || null,
+
+        // 동의/버전
+        agree_terms: !!form.agree_terms,
+        agree_privacy: !!form.agree_privacy,
+        consent_service_notice: !!form.consent_service_notice,
+        consent_marketing: !!form.consent_marketing,
+        terms_version: form.terms_version,
+        privacy_version: form.privacy_version,
       },
-      // 이메일 인증 ON: redirect URL 등록 필요
       emailRedirectTo: `${window.location.origin}/auth/callback`,
     },
   });
+
   if (error) throw error;
-  // 이메일 인증 ON이면 여기서 바로 세션 없음 → 사용자에게 “메일 확인” 안내
-  return data;
+  return data; // 이메일 인증 ON이면 session은 보통 null → UI에서 “메일 확인” 안내
 }
 
-// 로그인
 export async function signIn(email: string, password: string) {
-  const { data, error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) throw error; // 이메일 미인증이면 여기서 에러 발생
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email: email.trim().toLowerCase(),
+    password
+  });
+  if (error) throw error;
   return data;
 }
 
-// 로그아웃
 export async function signOut() {
   const { error } = await supabase.auth.signOut();
   if (error) throw error;
 }
 
-// 이메일 재전송
 export async function resendEmail(email: string) {
-  // supabase-js v2
-  const { error } = await supabase.auth.resend({ type: "signup", email });
+  const { error } = await supabase.auth.resend({
+    type: "signup",
+    email: email.trim().toLowerCase(),
+  });
   if (error) throw error;
 }
 
-// 비밀번호 재설정
 export async function resetPassword(email: string) {
-  const { error } = await supabase.auth.resetPasswordForEmail(email, {
-    redirectTo: `${window.location.origin}/auth/reset`,
-  });
+  const { error } = await supabase.auth.resetPasswordForEmail(
+    email.trim().toLowerCase(),
+    { redirectTo: `${window.location.origin}/auth/reset` }
+  );
   if (error) throw error;
 }

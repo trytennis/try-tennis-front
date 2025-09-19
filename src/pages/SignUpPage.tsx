@@ -22,7 +22,7 @@ export default function SignUpPage() {
         phone: "",
         gender: "",
         birthdate: "",
-        user_type: "student",
+        user_type: "",
         facility_id: "",
         memo: "",
         terms_agreed: false,
@@ -70,7 +70,24 @@ export default function SignUpPage() {
         setIsSubmitting(true);
         try {
             // 실제 supabase 회원가입 호출 (메타데이터 → DB 트리거가 profiles 생성)
-            await signUp(formData.email, formData.password, formData.name, formData.phone);
+            await signUp({
+                email: formData.email,
+                password: formData.password,
+                name: formData.name,
+                phone: formData.phone,
+                user_type: (formData.user_type as any) || 'student',
+                gender: formData.gender || undefined,
+                birthdate: formData.birthdate || undefined,
+                facility_id: formData.facility_id || undefined,
+                memo: formData.memo || undefined,
+                agree_terms: formData.terms_agreed,
+                agree_privacy: formData.privacy_agreed,
+                consent_service_notice: formData.consent_service_notice,
+                consent_marketing: formData.consent_marketing,
+                terms_version: "2025-09-10",
+                privacy_version: "2025-09-10",
+            });
+
             setSignupStep("verify"); // 이메일 인증 안내 화면으로
         } catch (e: any) {
             const msg = e?.message || "회원가입 중 오류가 발생했습니다.";
@@ -376,7 +393,7 @@ export default function SignUpPage() {
                             {isSubmitting ? (
                                 <span className="u-spinner">
                                     <span className="u-spinner-dot" />
-                                        회원가입 처리중...
+                                    회원가입 처리중...
                                 </span>
                             ) : ("회원가입")}
                         </button>
