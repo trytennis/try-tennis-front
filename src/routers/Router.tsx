@@ -14,6 +14,8 @@ import CoachCalendar from '../pages/CoachCalenderPage';
 import AuthCallbackPage from '../pages/AuthCallbackPage';
 import ProtectedRoute from './ProtectedRouter';
 import SignUpPage from '../pages/SignUpPage';
+import LoginPage from '../pages/LoginPage';
+import MyPage from '../pages/MyPage';
 
 export default function Router() {
   return (
@@ -35,10 +37,12 @@ export default function Router() {
           <Route path="tickets" element={<TicketsPage />} />
           <Route path="tickets/add" element={<AddTicketPage />} />
           <Route path="tickets/:ticketId" element={<TicketDetailPage />} />
+          <Route path="my" element={<MyPage />} />
         </Route>
 
         {/* 인증 콜백은 공개 라우트 */}
         <Route path="/signup" element={<SignUpPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
       </Routes>
     </BrowserRouter>
