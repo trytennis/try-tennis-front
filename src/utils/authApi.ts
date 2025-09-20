@@ -1,23 +1,23 @@
-// utils/api.ts
+// utils/authApi.ts
 import { supabase } from "./supabaseClient";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
-
 async function getFreshSession() {
-    // 현재 세션
     const { data: { session } } = await supabase.auth.getSession();
     const now = Math.floor(Date.now() / 1000);
-    const exp = (session?.user as any)?.exp as number | undefined;
 
-    // 만료까지 15초 이상 남았으면 사용
-    if (session?.access_token && exp && exp - now > 15) return session;
+    // Supabase v2: session.expires_at (epoch seconds)
+    const exp = session?.expires_at; // number | undefined
 
-    // 회전/만료 임박 → 갱신 시도
+    // 만료까지 60초 이상 남았으면 그대로 사용 (여유 버퍼 확장)
+    if (session?.access_token && exp && exp - now > 60) return session;
+
+    // 임박/만료 시에만 갱신 시도 (빈번한 호출 방지)
     const { data, error } = await supabase.auth.refreshSession();
     if (!error && data.session) return data.session;
 
-    // 갱신 실패 시 기존 세션이라도 반환 (서버에서 401/403시 재시도 처리)
+    // 갱신 실패 시 기존 세션 반환 (서버에서 401 처리)
     return session || null;
 }
 
@@ -44,56 +44,23 @@ async function request<T>(path: string, init: RequestInit): Promise<T> {
     return res.json();
 }
 
-/** POST */
 export async function authPost<T = any>(path: string, body: object): Promise<T> {
     const headers = await buildHeaders(true);
-    return request<T>(path, {
-        method: "POST",
-        headers,
-        body: JSON.stringify(body),
-        credentials: "include",
-    });
+    return request<T>(path, { method: "POST", headers, body: JSON.stringify(body), credentials: "include" });
 }
-
-/** PUT */
 export async function authPut<T = any>(path: string, body: object): Promise<T> {
     const headers = await buildHeaders(true);
-    return request<T>(path, {
-        method: "PUT",
-        headers,
-        body: JSON.stringify(body),
-        credentials: "include",
-    });
+    return request<T>(path, { method: "PUT", headers, body: JSON.stringify(body), credentials: "include" });
 }
-
-/** GET */
 export async function authGet<T = any>(path: string): Promise<T> {
     const headers = await buildHeaders(false);
-    return request<T>(path, {
-        method: "GET",
-        headers,
-        credentials: "include",
-    });
+    return request<T>(path, { method: "GET", headers, credentials: "include" });
 }
-
-/** PATCH */
 export async function authPatch<T = any>(path: string, body: object): Promise<T> {
     const headers = await buildHeaders(true);
-    return request<T>(path, {
-        method: "PATCH",
-        headers,
-        body: JSON.stringify(body),
-        credentials: "include",
-    });
+    return request<T>(path, { method: "PATCH", headers, body: JSON.stringify(body), credentials: "include" });
 }
-
-/** DELETE */
 export async function authDelete<T = any>(path: string): Promise<T> {
     const headers = await buildHeaders(false);
-    return request<T>(path, {
-        method: "DELETE",
-        headers,
-        credentials: "include",
-    });
+    return request<T>(path, { method: "DELETE", headers, credentials: "include" });
 }
-
