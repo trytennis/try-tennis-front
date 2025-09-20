@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
-import { get, post } from '../utils/api';
 import type { Ticket } from '../types/Ticket';
 import '../styles/AssignTicketModal.css';
+import { authGet, authPost } from '../utils/authApi';
 
 interface Props {
     userId: string;
@@ -18,7 +18,7 @@ const AssignTicketModal = ({ userId, onClose, onAssigned }: Props) => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
-        get<Ticket[]>('/api/tickets').then(setTickets).catch(console.error);
+        authGet<Ticket[]>('/api/tickets').then(setTickets).catch(console.error);
     }, []);
 
     useEffect(() => {
@@ -35,7 +35,7 @@ const AssignTicketModal = ({ userId, onClose, onAssigned }: Props) => {
         if (!selectedTicket || !startDate || !endDate) return;
         setLoading(true);
         try {
-            await post(`/api/users/${userId}/tickets`, {
+            await authPost(`/api/users/${userId}/tickets`, {
                 ticket_id: selectedTicket.id,
                 assigned_at: startDate,
                 expires_at: endDate,

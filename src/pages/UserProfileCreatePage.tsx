@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { post } from '../utils/api';
 import '../styles/UserForm.css';
+import { authPost } from '../utils/authApi';
 
 const UserCreatePage = () => {
     const navigate = useNavigate();
@@ -35,7 +35,7 @@ const UserCreatePage = () => {
         }
 
         try {
-            await post('/api/users', { ...form, is_active: true });
+            await authPost('/api/users', { ...form, is_active: true });
             setSuccess('회원이 성공적으로 등록되었습니다.');
             setTimeout(() => navigate('/users'), 1000);
         } catch (err) {

@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react';
-import { get } from '../utils/api';
 import type { User } from '../types/User';
 import UserListTable from '../components/UserListTable';
 import '../styles/UsersPage.css';
 import { useNavigate } from 'react-router-dom';
+import { authGet } from '../utils/authApi';
 
 const UsersPage: React.FC = () => {
     const navigate = useNavigate();
@@ -12,7 +12,7 @@ const UsersPage: React.FC = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const data = await get<User[]>('/api/users');
+                const data = await authGet<User[]>('/api/users');
                 setUsers(data);
             } catch (err) {
                 console.error('회원 목록 불러오기 실패', err);

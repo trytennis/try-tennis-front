@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
-import { get, put } from '../utils/api';
 import type { User, EditableUserFields } from '../types/User';
 import type { UserTicket } from '../types/UserTicket';
 import '../styles/UserDetailPage.css';
 import AssignTicketModal from '../components/AssignTicketModal';
 import { formatDate, formatPrice } from '../utils/format';
 import UserInfoCard from '../components/UserInfoCard';
+import { authGet, authPut } from '../utils/authApi';
 
 const UserDetailPage = () => {
     const { userId } = useParams();
@@ -26,8 +26,8 @@ const UserDetailPage = () => {
     const fetchData = async () => {
         if (!userId) return;
         try {
-            const user = await get<User>(`/api/users/${userId}`);
-            const userTickets = await get<UserTicket[]>(`/api/users/${userId}/tickets`);
+            const user = await authGet<User>(`/api/users/${userId}`);
+            const userTickets = await authGet<UserTicket[]>(`/api/users/${userId}/tickets`);
             setUser(user);
             setTickets(userTickets);
             // 사용자 정보를 form에도 설정
@@ -47,7 +47,7 @@ const UserDetailPage = () => {
         
         setSaving(true);
         try {
-            const updatedUser = await put<User>(`/api/users/${userId}`, form);
+            const updatedUser = await authPut<User>(`/api/users/${userId}`, form);
             setUser(updatedUser);
             setEditing(false);
             console.log('회원 정보 수정 성공');
