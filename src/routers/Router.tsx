@@ -16,6 +16,7 @@ import ProtectedRoute from './ProtectedRouter';
 import SignUpPage from '../pages/SignUpPage';
 import LoginPage from '../pages/LoginPage';
 import MyPage from '../pages/MyPage';
+import FacilityManagementPage from '../pages/FacilityManagementPage';
 
 export default function Router() {
   return (
@@ -33,6 +34,7 @@ export default function Router() {
           <Route path="users" element={<UsersPage />} />
           <Route path="users/new" element={<UserProfileCreatePage />} />
           <Route path="users/:userId" element={<UserDetailPage />} />
+          <Route path="facility" element={<FacilityManagementPage />} />
           <Route path="videos" element={<VideoAnalysisPage />} />
           <Route path="tickets" element={<TicketsPage />} />
           <Route path="tickets/add" element={<AddTicketPage />} />
