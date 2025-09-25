@@ -186,7 +186,7 @@ const FacilityManagementPage: React.FC = () => {
                 >
                     + 새 시설 추가
                 </button>
-                <button
+                {/* <button
                     onClick={loadFacilities}
                     className="facility-btn-secondary"
                     disabled={loading}
@@ -197,7 +197,7 @@ const FacilityManagementPage: React.FC = () => {
                             로딩 중...
                         </span>
                     ) : '새로고침'}
-                </button>
+                </button> */}
             </div>
 
             {/* 시설 목록 */}
@@ -211,9 +211,9 @@ const FacilityManagementPage: React.FC = () => {
                             <p className="facility-card-address">
                                 {facility.address || '주소 미등록'}
                             </p>
-                            <span className={`facility-status-badge ${facility.is_active ? 'facility-status-active' : 'facility-status-inactive'}`}>
+                            {/* <span className={`facility-status-badge ${facility.is_active ? 'facility-status-active' : 'facility-status-inactive'}`}>
                                 {facility.is_active ? '활성' : '비활성'}
-                            </span>
+                            </span> */}
                         </div>
 
                         <div className="facility-card-actions">
