@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import TicketCard from '../components/TicketCard';
 import '../styles/TicketsPage.css';
 import type { Ticket } from '../types/Ticket';
-import TicketCardSkeleton from '../components/TIcketCardSkeleton';
+import TicketCardSkeleton from '../components/TicketCardSkeleton';
 import { TicketsApi } from '../api/ticket';
 
 const TicketsPage: React.FC = () => {
@@ -14,7 +14,7 @@ const TicketsPage: React.FC = () => {
     useEffect(() => {
         (async () => {
             try {
-                const data = await TicketsApi.list({ limit: 100, offset: 0 }); // ✅ 토큰 자동첨부
+                const data = await TicketsApi.list({ limit: 100, offset: 0 }); // 토큰 자동첨부
                 setTickets(data);
             } catch (error) {
                 console.error('수강권 불러오기 실패:', error);
