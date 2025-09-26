@@ -3,7 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import TicketCard from '../components/TicketCard';
 import '../styles/TicketsPage.css';
 import type { Ticket } from '../types/Ticket';
-import TicketCardSkeleton from '../components/TicketCardSkeleton';
+import TicketSkeletonCard from '../components/TicketSkeletonCard';
 import { TicketsApi } from '../api/ticket';
 
 const TicketsPage: React.FC = () => {

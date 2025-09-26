@@ -1,6 +1,6 @@
 import '../styles/TicketCard.css';
 
-const TicketCardSkeleton = () => {
+const TicketSkeletonCard = () => {
   return (
     <div className="ticket-card skeleton">
       <div className="skeleton-title shimmer" />
@@ -26,4 +26,4 @@ const TicketCardSkeleton = () => {
   );
 };
 
-export default TicketCardSkeleton;
+export default TicketSkeletonCard;
