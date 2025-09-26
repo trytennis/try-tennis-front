@@ -37,7 +37,7 @@ const TicketsPage: React.FC = () => {
 
                 <div className="ticket-grid">
                     {isLoading
-                        ? Array.from({ length: 3 }).map((_, i) => <TicketCardSkeleton key={i} />)
+                        ? Array.from({ length: 3 }).map((_, i) => <TicketSkeletonCard key={i} />)
                         : tickets.map((ticket) => (
                             <TicketCard
                                 key={ticket.id}
