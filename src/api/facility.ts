@@ -1,7 +1,7 @@
 // src/api/facilities.ts
-import { authGet, authPost, authPut, authDelete } from "../utils/authApi";
+import type { Facility, FacilityCreatePayload, FacilityUpdatePayload } from "../types/FacilityData";
 import type { FacilityMember } from "../types/FacilityMember";
-import type { Facility, FacilityCreatePayload, FacilityUpdatePayload } from "../types/facility";
+import { authGet, authPost, authPut, authDelete } from "../utils/authApi";
 
 /**
  * Facilities API (백엔드: @require_auth + @require_roles 보호)

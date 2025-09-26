@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import type { Facility, FacilityCreatePayload, FacilityUpdatePayload } from '../types/facility';
 import type { FacilityMember } from '../types/FacilityMember';
 import '../styles/FacilityPage.css'; 
 import { FacilitiesApi } from '../api/facility';
+import type { Facility, FacilityCreatePayload, FacilityUpdatePayload } from '../types/FacilityData';
 
 const FacilityManagementPage: React.FC = () => {
     const [facilities, setFacilities] = useState<Facility[]>([]);

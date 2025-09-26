@@ -1,4 +1,4 @@
-// src/types/Facility.ts
+// src/types/FacilityData.ts
 export type Facility = {
     id: string;
     name: string;
