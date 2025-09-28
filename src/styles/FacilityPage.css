@@ -4,7 +4,6 @@
     margin: 0 auto;
     padding: 20px;
     font-family: system-ui, -apple-system, sans-serif;
-    background: var(--bg-soft);
     min-height: 100vh;
 }
 
@@ -96,7 +95,6 @@
 .facility-btn-primary:hover {
     background: var(--green-600);
     transform: translateY(-1px);
-    box-shadow: 0 8px 25px rgba(28, 60, 36, 0.25);
 }
 
 .facility-btn-primary:disabled {
