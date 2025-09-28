@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from "react";
 import { Clock } from "lucide-react";
 import { getMyWeeklyHours, saveMyWeeklyHours, type WeeklySlot } from "../api/coach";
 import "../styles/CoachWeeklyHoursEditor.css";
+import { useAuthReady } from "../utils/useAuthReady";
 
 type UiSlot = { start: string; end: string };
 
@@ -27,6 +28,7 @@ function normalizeWeekly(rows: any[]): Record<number, UiSlot[]> {
 }
 
 const CoachWeeklyHoursEditor: React.FC = () => {
+    const authReady = useAuthReady();
     const [weekly, setWeekly] = useState<Record<number, UiSlot[]>>({
         0: [], 1: [], 2: [], 3: [], 4: [], 5: [], 6: [],
     });
@@ -34,6 +36,7 @@ const CoachWeeklyHoursEditor: React.FC = () => {
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
+        if (!authReady) return;           // 준비되면 호출
         (async () => {
             try {
                 setLoading(true);
@@ -46,7 +49,8 @@ const CoachWeeklyHoursEditor: React.FC = () => {
                 setLoading(false);
             }
         })();
-    }, []);
+    }, [authReady]);
+
 
     const addSlot = (dow: number) => {
         const existingSlots = weekly[dow] || [];
@@ -133,6 +137,15 @@ const CoachWeeklyHoursEditor: React.FC = () => {
             setSaving(false);
         }
     };
+
+    if (!authReady) {
+        return (
+            <div className="mp__card cwh__card">
+                <div className="cwh__header"><h2 className="mp__section-title">주간 근무시간 설정</h2></div>
+                <div className="mp__center">로그인 정보 확인 중…</div>
+            </div>
+        );
+    }
 
     if (loading) {
         return (

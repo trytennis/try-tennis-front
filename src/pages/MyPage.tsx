@@ -3,6 +3,8 @@ import { Mail, User, Phone, Shield, LogOut } from "lucide-react";
 import "../styles/MyPage.css";
 import { authGet, authPut } from "../utils/authApi";
 import { supabase } from "../utils/supabaseClient";
+import CoachWeeklyHoursEditor from "../components/CoachWeeklyHoursEditor";
+import { useMyRole } from "../utils/useMyRole";
 
 type Profile = {
     id: string;
@@ -33,6 +35,12 @@ export default function MyPage() {
     const [err, setErr] = useState<string | null>(null);
     const [ok, setOk] = useState<string | null>(null);
     const [me, setMe] = useState<MeResponse | null>(null);
+    const { role, loading: roleLoading } = useMyRole();
+
+    const canEditWeeklyHours =
+        !roleLoading &&
+        (role === "coach" || role === "facility_admin" || role === "super_admin");
+
 
     // 편집용 폼 상태
     const [form, setForm] = useState<Partial<Profile>>({
@@ -275,7 +283,16 @@ export default function MyPage() {
                         </form>
                     </>
                 )}
+
+
+                {!roleLoading && canEditWeeklyHours && <CoachWeeklyHoursEditor />}
+
+                {/* 로딩 중일 땐 스켈레톤/문구 */}
+                {roleLoading && (
+                    <div className="mp__card mp__center">권한 확인 중...</div>
+                )}
             </div>
+
         </div>
     );
 }
