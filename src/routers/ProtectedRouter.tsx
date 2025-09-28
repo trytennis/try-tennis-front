@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, type JSX } from "react";
 import { supabase } from "../utils/supabaseClient";
 import { Navigate, useLocation } from "react-router-dom";
 import { authGet } from "../utils/authApi";
+import { clearProfileCache, getCachedProfile, setCachedProfile } from "../utils/authState";
 
 type Props = {
     children: JSX.Element;
@@ -21,30 +22,39 @@ export default function ProtectedRoute({
     const unsub = useRef<(() => void) | null>(null);
     const location = useLocation();
 
+
     async function check() {
-        if (inFlight.current) return; // 같은 마운트 내 중복 방지
+        if (inFlight.current) return;
         inFlight.current = true;
 
         try {
             const { data: { session } } = await supabase.auth.getSession();
 
-            // 세션 없으면 차단
             if (!session) {
                 setAllowed(false);
+                clearProfileCache(); // 세션 없으면 프로필 캐시도 클리어
                 return;
             }
 
-            // 활성화 체크 비활성화 옵션이면 통과
             if (!requireActive) {
                 setAllowed(true);
                 return;
             }
 
-            // 백엔드 토큰 검증 + 프로필 is_active
+            // 캐시된 프로필이 있고 세션이 유효하면 재사용
+            const cachedProfile = getCachedProfile();
+            if (cachedProfile && session.access_token) {
+                setAllowed(!!cachedProfile.is_active);
+                return;
+            }
+
+            // 캐시가 없거나 만료된 경우만 API 호출
             const me = await authGet<{ user: any; profile: any }>("/api/me");
+            setCachedProfile(me?.profile);
             setAllowed(!!me?.profile?.is_active);
         } catch {
             setAllowed(false);
+            clearProfileCache();
         } finally {
             setReady(true);
             inFlight.current = false;
