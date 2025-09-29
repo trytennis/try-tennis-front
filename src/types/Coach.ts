@@ -6,3 +6,12 @@ export type Coach = {
     avatarUrl?: string;
   };
   
+
+export type CoachLite = {
+  id: string;
+  name: string | null;
+  phone?: string | null;
+  user_type: "coach";
+  facility_id?: string | null;
+  is_active?: boolean;
+};
