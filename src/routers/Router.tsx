@@ -23,7 +23,7 @@ export default function Router() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={
-          <ProtectedRoute redirectTo="/auth/callback" requireActive>
+          <ProtectedRoute redirectTo="/login" requireActive>
             <Layout />
           </ProtectedRoute>
         }>

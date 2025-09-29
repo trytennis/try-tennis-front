@@ -13,7 +13,7 @@ type Props = {
 
 export default function ProtectedRoute({
     children,
-    redirectTo = "/auth/callback",
+    redirectTo = "/login",
     requireActive = true,
 }: Props) {
     const [ready, setReady] = useState(false);
@@ -83,10 +83,8 @@ export default function ProtectedRoute({
     // redirect 루프 방지: 이미 redirectTo 경로라면 Navigate 하지 않음
     if (!ready) return <div />;
     if (!allowed) {
-        if (location.pathname === redirectTo) {
-            // 콜백 페이지 스스로가 보호되어 있을 때 루프 방지용
-            return <div />;
-        }
+        // 이미 redirect 목적지면 다시 보내지 않음 (루프 방지)
+        if (location.pathname === redirectTo) return <div />;
         return <Navigate to={redirectTo} replace />;
     }
 
