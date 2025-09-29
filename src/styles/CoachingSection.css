@@ -1,0 +1,336 @@
+/* src/styles/CoachingSection.css */
+
+/* ===== Modal ===== */
+.vc-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+}
+
+.vc-modal-card {
+    background: #fff;
+    border-radius: 12px;
+    max-width: 480px;
+    width: 100%;
+    padding: 1.5rem;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.vc-modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.vc-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.vc-modal-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+/* ===== Fields ===== */
+.vc-field label {
+    font-size: 0.875rem;
+    color: #374151;
+    margin-bottom: 0.25rem;
+    display: block;
+}
+
+.vc-input,
+.vc-textarea,
+.vc-static {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.9rem;
+}
+
+.vc-textarea {
+    resize: vertical;
+    min-height: 60px;
+}
+
+.vc-static {
+    background: #f9fafb;
+    color: #4b5563;
+}
+
+/* ===== Buttons ===== */
+.vc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.9rem;
+    font-weight: 500;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+.vc-btn.primary {
+    background: #16a34a;
+    color: #fff;
+}
+
+.vc-btn.primary:hover {
+    background: #15803d;
+}
+
+.vc-btn.ghost {
+    background: #f9fafb;
+    border: 1px solid #d1d5db;
+    color: #374151;
+}
+
+.vc-btn.ghost:hover {
+    background: #f3f4f6;
+}
+
+.vc-btn.danger {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.vc-btn.danger:hover {
+    background: #fecaca;
+}
+
+.vc-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.vc-btn-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.vc-icon-btn {
+    background: none;
+    border: none;
+    padding: 0.25rem;
+    cursor: pointer;
+    color: #6b7280;
+}
+
+.vc-icon-btn:hover {
+    color: #111827;
+}
+
+/* ===== Coaching Section ===== */
+.coaching-section {
+    margin-top: 2rem;
+    border-top: 1px solid #e5e7eb;
+    padding-top: 1.5rem;
+}
+
+.coaching-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.coaching-req-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+    background: #eff6ff;
+    color: #2563eb;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+}
+
+.coaching-req-btn:hover {
+    background: #dbeafe;
+}
+
+.coaching-count {
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+/* ===== Requests List ===== */
+.req-list {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.req-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 0.75rem;
+    text-align: left;
+    cursor: pointer;
+    transition: box-shadow 0.2s;
+}
+
+.req-card:hover {
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+}
+
+.req-card-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.25rem;
+}
+
+.req-card-top h4 {
+    font-weight: 600;
+    font-size: 0.95rem;
+}
+
+.req-card-sub {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.req-card-msg {
+    font-size: 0.85rem;
+    color: #374151;
+    margin-top: 0.25rem;
+}
+
+/* ===== Request Detail ===== */
+.vc-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.vc-detail-head {
+    display: flex;
+    gap: 0.75rem;
+    align-items: center;
+}
+
+.vc-detail-title h2 {
+    font-size: 1.25rem;
+    font-weight: 700;
+}
+
+.vc-sub {
+    display: flex;
+    gap: 0.75rem;
+    font-size: 0.8rem;
+    color: #6b7280;
+}
+
+.vc-badge {
+    display: inline-block;
+    padding: 0.15rem 0.5rem;
+    border-radius: 9999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.vc-badge.s-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.vc-badge.s-accepted {
+    background: #dbeafe;
+    color: #1e40af;
+}
+
+.vc-badge.s-in_review {
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.vc-badge.s-completed {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.vc-badge.s-rejected {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+.vc-badge.s-cancelled {
+    background: #f3f4f6;
+    color: #374151;
+}
+
+/* ===== Comments ===== */
+.vc-comments {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.vc-comment {
+    background: #f9fafb;
+    border-radius: 6px;
+    padding: 0.5rem 0.75rem;
+}
+
+.vc-comment-head {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.vc-comment-head .author {
+    font-weight: 600;
+}
+
+.vc-comment-form {
+    margin-top: 0.75rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.vc-pre {
+    white-space: pre-wrap;
+}
+
+/* ===== Helpers ===== */
+.empty-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.empty-card .emoji {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.empty-card .dim {
+    color: #6b7280;
+    font-size: 0.9rem;
+}
+
+.vc-dim {
+    text-align: center;
+    color: #9ca3af;
+    font-size: 0.85rem;
+}
