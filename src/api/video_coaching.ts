@@ -1,19 +1,11 @@
 // src/api/video_coaching.ts
 import type { CoachLite } from "../types/Coach";
+import type { CoachingComment } from "../types/CoachingConmment";
 import type { CoachingRequest, CoachingRequestStatus } from "../types/CoachingRequest";
 import { authGet, authPost, authPatch } from "../utils/authApi";
 
 /** 요청 단건 상세 (목록과 동일 구조 사용) */
 export type CoachingRequestDetail = CoachingRequest;
-
-/** 코멘트 */
-export type CoachingComment = {
-    id: string;
-    request_id: string;
-    author: { id: string; name: string | null };
-    body: string;
-    created_at: string;
-};
 
 /** 요청 생성 페이로드 */
 export type CreateCoachingRequestPayload = {

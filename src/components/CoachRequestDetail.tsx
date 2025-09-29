@@ -1,11 +1,10 @@
+// src/components/coaching/CoachingRequestDetail.tsx
 import React, { useState } from "react";
 import { ChevronLeft } from "lucide-react";
-import type { AnalysisData, AnalysisHistory } from "../types/AnalysisData";
 import { formatDateTime } from "../utils/format";
-import AnalysisMedia from "./AnalysisMedia";
-import AnalysisResult from "./AnalysisResult";
+import type { AnalysisHistory, AnalysisData } from "../types/AnalysisData";
 import type { CoachingRequest, CoachingRequestStatus } from "../types/CoachingRequest";
-import type { CoachingComment } from "../api/video_coaching";
+import type { CoachingComment } from "../types/CoachingConmment";
 
 const statusText: Record<CoachingRequestStatus, string> = {
     pending: "대기중",
@@ -23,10 +22,11 @@ type Props = {
     onBack: () => void;
     onAddComment: (text: string) => void;
     onUpdateStatus: (status: Exclude<CoachingRequestStatus, "pending">) => void;
+    myRole: string | null; // 'student' | 'coach' | 'facility_admin' | 'super_admin' | 'admin' | 'unknown' | null
 };
 
 const CoachingRequestDetail: React.FC<Props> = ({
-    request, video, comments, onBack, onAddComment, onUpdateStatus
+    request, video, comments, onBack, onAddComment, onUpdateStatus, myRole
 }) => {
     const [text, setText] = useState("");
 
@@ -49,6 +49,9 @@ const CoachingRequestDetail: React.FC<Props> = ({
         video_url: video.video_url,
     };
 
+    const isStudent = myRole === "student";
+    const isCoachOrAbove = myRole === "coach" || myRole === "facility_admin" || myRole === "super_admin" || myRole === "admin";
+
     return (
         <div className="vc-detail">
             <div className="vc-detail-head">
@@ -63,9 +66,6 @@ const CoachingRequestDetail: React.FC<Props> = ({
                 </div>
             </div>
 
-            <AnalysisMedia analyzedUrl={data.gif_url} videoUrl={data.video_url} />
-            <AnalysisResult data={data} />
-
             {request.message && (
                 <div className="vc-card">
                     <h4>요청 메시지</h4>
@@ -76,13 +76,20 @@ const CoachingRequestDetail: React.FC<Props> = ({
             <div className="vc-card">
                 <div className="vc-row between">
                     <h4>코멘트</h4>
+
+                    {/* 역할별 상태 버튼 렌더링 */}
                     <div className="vc-btn-group">
-                        {/* 서버가 최종 권한 체크 */}
-                        <button className="vc-btn ghost" onClick={() => onUpdateStatus("accepted")}>수락</button>
-                        <button className="vc-btn ghost" onClick={() => onUpdateStatus("in_review")}>리뷰중</button>
-                        <button className="vc-btn ghost" onClick={() => onUpdateStatus("completed")}>완료</button>
-                        <button className="vc-btn ghost" onClick={() => onUpdateStatus("rejected")}>거절</button>
-                        <button className="vc-btn danger" onClick={() => onUpdateStatus("cancelled")}>요청자 취소</button>
+                        {isCoachOrAbove && (
+                            <>
+                                <button className="vc-btn ghost" onClick={() => onUpdateStatus("accepted")}>수락</button>
+                                <button className="vc-btn ghost" onClick={() => onUpdateStatus("in_review")}>리뷰중</button>
+                                <button className="vc-btn ghost" onClick={() => onUpdateStatus("completed")}>완료</button>
+                                <button className="vc-btn ghost" onClick={() => onUpdateStatus("rejected")}>거절</button>
+                            </>
+                        )}
+                        {isStudent && (
+                            <button className="vc-btn danger" onClick={() => onUpdateStatus("cancelled")}>요청자 취소</button>
+                        )}
                     </div>
                 </div>
 

@@ -1,3 +1,4 @@
+// src/components/coaching/CoachingSection.tsx
 import React, { useEffect, useMemo, useState } from "react";
 import { MessageSquare } from "lucide-react";
 import type { AnalysisHistory } from "../types/AnalysisData";
@@ -5,21 +6,22 @@ import CoachSelectionModal from "./CoachSelectionModal";
 import CoachingRequestList from "./CoachingRequestList";
 import type { CoachLite } from "../types/Coach";
 import type { CoachingRequest, CoachingRequestStatus } from "../types/CoachingRequest";
-import { CoachingApi, fetchMyFacilityCoaches, type CoachingComment } from "../api/video_coaching";
-import CoachingRequestDetail from "./CoachRequestDetail";
+import { useMyRole } from "../utils/useMyRole";
 import "../styles/CoachingSection.css";
+import CoachingRequestDetail from "./CoachRequestDetail";
+import type { CoachingComment } from "../types/CoachingConmment";
+import { CoachingApi, fetchMyFacilityCoaches } from "../api/video_coaching";
 
 type Props = {
-    /** 현재 상세 패널의 분석 영상 ID */
     analyzedVideoId: string;
-    /** 선택된 영상(미리보기/모달 표시용) — 없어도 동작하지만 있으면 UX 향상 */
     selectedVideo: AnalysisHistory | null;
-    /** 기본 뷰: list | detail (선택) */
     defaultView?: "list" | "detail";
 };
 
 const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defaultView = "list" }) => {
+    const { role, loading: roleLoading } = useMyRole();
     const [view, setView] = useState<"list" | "detail">(defaultView);
+
     const [coaches, setCoaches] = useState<CoachLite[]>([]);
     const [modalOpen, setModalOpen] = useState(false);
 
@@ -27,10 +29,15 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
     const [selectedReq, setSelectedReq] = useState<CoachingRequest | null>(null);
     const [comments, setComments] = useState<CoachingComment[]>([]);
 
-    // 내 요청 목록(학생 시나리오 기본) — 서버가 권한 체크하므로 role은 힌트용
+    const isStudent = role === "student";
+    const isCoachOrAbove = role === "coach" || role === "facility_admin" || role === "super_admin";
+
+    // 역할별 목록 로드
     const loadRequests = async () => {
-        const rows = await CoachingApi.list({ role: "student", limit: 100, offset: 0 });
-        // 서버가 video_id 필터 미지원 시 클라에서 후처리
+        // 서버가 권한/가시성 최종 판단. 여기선 role 파라미터로 UX 필터만 전달
+        const roleParam = isCoachOrAbove ? "coach" : "student";
+        const rows = await CoachingApi.list({ role: roleParam, limit: 100, offset: 0 });
+        // 분석 영상별 필터(서버에 video_id 필터가 있다면 거기서 처리해도 됨)
         const filtered = rows.filter((r) => r.analyzed_video_id === analyzedVideoId);
         setRequests(filtered);
     };
@@ -40,17 +47,19 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
         setComments(rows);
     };
 
-    // 영상이 바뀌면 목록 갱신
+    // 영상/역할 바뀌면 목록 초기화
     useEffect(() => {
-        if (!analyzedVideoId) return;
+        if (!analyzedVideoId || roleLoading || !role) return;
         loadRequests().catch(console.error);
         setSelectedReq(null);
         setView("list");
         setComments([]);
-    }, [analyzedVideoId]);
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [analyzedVideoId, roleLoading, role]);
 
-    // 코치 목록 불러오고 모달 오픈
+    // 코치 선택 모달 (학생만 사용)
     const openCreateModal = async () => {
+        if (!isStudent) return; // 가드
         try {
             const list = await fetchMyFacilityCoaches({ is_active: true, limit: 200 });
             setCoaches(list);
@@ -61,7 +70,7 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
         }
     };
 
-    // 요청 생성
+    // 요청 생성 (학생)
     const handleCreate = async (coachId: string, title: string, message: string) => {
         try {
             const res = await CoachingApi.create({
@@ -113,20 +122,36 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
         }
     };
 
-    // 현재 영상에 대한 내 요청 수
     const countForThisVideo = useMemo(
         () => requests.filter((r) => r.analyzed_video_id === analyzedVideoId).length,
         [requests, analyzedVideoId]
     );
+
+    if (roleLoading) {
+        return (
+            <section className="coaching-section">
+                <div className="coaching-head">
+                    <h3>🧑‍🏫 코칭</h3>
+                    <div className="coaching-actions">
+                        <div className="skeleton w-24 h-8" />
+                    </div>
+                </div>
+                <div className="skeleton w-full h-28" />
+                <div className="skeleton w-full h-28 mt-2" />
+            </section>
+        );
+    }
 
     return (
         <section className="coaching-section">
             <header className="coaching-head">
                 <h3>🧑‍🏫 코칭</h3>
                 <div className="coaching-actions">
-                    <button className="coaching-req-btn" onClick={openCreateModal}>
-                        <MessageSquare size={16} /> 코칭 요청
-                    </button>
+                    {isStudent && (
+                        <button className="coaching-req-btn" onClick={openCreateModal}>
+                            <MessageSquare size={16} /> 코칭 요청
+                        </button>
+                    )}
                     <span className="coaching-count">요청 {countForThisVideo}개</span>
                 </div>
             </header>
@@ -142,10 +167,12 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
                         onBack={handleBackToList}
                         onAddComment={handleAddComment}
                         onUpdateStatus={handleUpdateStatus}
+                        myRole={role}            
                     />
                 )
             )}
 
+            {/* 학생만 모달 사용 */}
             <CoachSelectionModal
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}
