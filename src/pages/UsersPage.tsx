@@ -12,7 +12,7 @@ const UsersPage: React.FC = () => {
     useEffect(() => {
         const fetchUsers = async () => {
             try {
-                const data = await authGet<User[]>('/api/users');
+                const data = await authGet<User[]>('/api/facilities/members-dashboard');
                 setUsers(data);
             } catch (err) {
                 console.error('회원 목록 불러오기 실패', err);
