@@ -19,21 +19,34 @@ export default function AuthCallbackPage() {
             try {
                 setMsg("인증 상태 확인 중...");
 
-                // 1) URL 파싱 (query + hash를 모두 파라미터로)
-                const merged = new URLSearchParams(location.search);
+                const fullUrl = window.location.href;
+                const qs = new URLSearchParams(location.search);
+
+                // 해시 파라미터도 병합
                 if (location.hash) {
                     const hashQs = new URLSearchParams(location.hash.slice(1));
-                    hashQs.forEach((v, k) => merged.set(k, v));
+                    hashQs.forEach((v, k) => qs.set(k, v));
                 }
 
-                // 2) code가 있으면 반드시 교환 (OAuth/매직링크)
-                //    supabase-js v2: exchangeCodeForSession
-                if (merged.get("code")) {
-                    setMsg("토큰 교환 중...");
-                    const { error } = await supabase.auth.exchangeCodeForSession(window.location.search);
+                const hasAccess = qs.get("access_token");
+                const hasRefresh = qs.get("refresh_token");
+                const hasCode = qs.get("code");
+
+                // 1) 이메일 인증/매직링크: #access_token, #refresh_token
+                if (hasAccess && hasRefresh) {
+                    setMsg("세션 설정 중...");
+                    const { error } = await supabase.auth.setSession({
+                        access_token: hasAccess,
+                        refresh_token: hasRefresh,
+                    });
                     if (error) throw error;
                 }
-
+                // 2) OAuth PKCE: ?code=...
+                else if (hasCode) {
+                    setMsg("토큰 교환 중...");
+                    const { error } = await supabase.auth.exchangeCodeForSession(fullUrl); // 전체 URL
+                    if (error) throw error;
+                }
 
                 // 3) 세션 확인
                 const { data: { session }, error: sErr } = await supabase.auth.getSession();
@@ -43,7 +56,6 @@ export default function AuthCallbackPage() {
                 window.history.replaceState({}, "", "/auth/callback");
 
                 if (!session) {
-                    // 세션이 없으면 로그인으로
                     setMsg("세션이 없어 로그인 페이지로 이동합니다.");
                     return navigate("/login", { replace: true });
                 }
@@ -54,16 +66,15 @@ export default function AuthCallbackPage() {
                 const isActive = !!me?.profile?.is_active;
 
                 if (!isActive) {
-                    setMsg("이메일 인증은 완료되었습니다. 관리자 승인 대기 중입니다.");
-                    // 로그인 화면으로 안내 (메시지는 state로 전달)
+                    setMsg("이메일 인증 완료. 관리자 승인 대기 중입니다.");
                     return navigate("/login", {
                         replace: true,
                         state: { notice: "이메일 인증 완료. 관리자 승인 후 이용 가능해요." }
                     });
                 }
 
-                // 5) 최종 목적지로 이동 (원래 가려던 곳이 있다면 next 사용)
-                const next = merged.get("next") || "/";
+                // 5) 최종 이동
+                const next = qs.get("next") || "/";
                 setMsg("확인 완료. 이동합니다...");
                 navigate(next, { replace: true });
             } catch (e: any) {
@@ -74,16 +85,10 @@ export default function AuthCallbackPage() {
         };
 
         run();
-    }, [location.search, location.hash, navigate]);
+    }, [location.hash, location.search, navigate]);
 
     return (
-        <div style={{
-            minHeight: "100vh",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column"
-        }}>
+        <div style={{ minHeight: "100vh", display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column" }}>
             {err ? (
                 <>
                     <p style={{ color: "red", marginBottom: 12 }}>{err}</p>
@@ -92,9 +97,7 @@ export default function AuthCallbackPage() {
             ) : (
                 <>
                     <div>{msg}</div>
-                    <div style={{ marginTop: 8, fontSize: 12, opacity: 0.7 }}>
-                        창을 닫지 말고 잠시만 기다려 주세요.
-                    </div>
+                    <div style={{ marginTop: 8, fontSize: 12, opacity: 0.7 }}>창을 닫지 말고 잠시만 기다려 주세요.</div>
                 </>
             )}
         </div>
