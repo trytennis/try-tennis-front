@@ -1,17 +1,14 @@
 // src/api/facilities.ts
 import type { Facility, FacilityCreatePayload, FacilityUpdatePayload } from "../types/FacilityData";
 import type { FacilityMember } from "../types/FacilityMember";
-import { authGet, authPost, authPut, authDelete } from "../utils/authApi";
+import { authGet, authPost, authPut, authDelete, authPatch } from "../utils/authApi";
 
 /**
  * Facilities API (백엔드: @require_auth + @require_roles 보호)
  * 권한: facility_admin / super_admin (읽기/수정 범위는 백엔드 권한 체크)
  */
 export class FacilitiesApi {
-    /** 시설 목록
-     *  - super_admin: 전체
-     *  - facility_admin: 본인 시설 1건만 배열로 반환
-     */
+    /** 시설 목록 */
     static async list(): Promise<Facility[]> {
         return authGet<Facility[]>(`/api/facilities`);
     }
@@ -28,7 +25,7 @@ export class FacilitiesApi {
 
     /** 시설 수정 (super_admin: 아무 시설, facility_admin: 본인 시설만) */
     static async update(facilityId: string, payload: FacilityUpdatePayload): Promise<Facility> {
-        return authPut<Facility>(`/api/facilities/${facilityId}`, payload);
+        return authPatch<Facility>(`/api/facilities/${facilityId}`, payload);
     }
 
     /** 시설 삭제 (super_admin 전용) */
