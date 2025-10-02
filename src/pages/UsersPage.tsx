@@ -25,9 +25,9 @@ const UsersPage: React.FC = () => {
         <div className="page-container">
             <div className="user-header">
                 <h2>회원 관리</h2>
-                <button className="add-button" onClick={() => navigate('/users/new')}>
+                {/* <button className="add-button" onClick={() => navigate('/users/new')}>
                     관리자용 회원 수동 등록
-                </button>
+                </button> */}
             </div>
             <UserListTable users={users} />
         </div>
