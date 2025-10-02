@@ -1,17 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Mail, Eye, EyeOff, User, Shield, Lock, CheckCircle } from "lucide-react";
 import "../styles/SignUpPage.css";
 import { signUp } from "../utils/auth";
 import logo from '../assets/thetry_logo.png';
+import type { Facility } from "../types/FacilityData";
+import { FacilitiesApi } from "../api/facility";
 
 type Errors = Record<string, string>;
-
-const facilities = [
-    { id: "550e8400-e29b-41d4-a716-446655440001", name: "서울 골프 아카데미" },
-    { id: "550e8400-e29b-41d4-a716-446655440002", name: "강남 스포츠센터" },
-    { id: "550e8400-e29b-41d4-a716-446655440003", name: "부산 골프클럽" },
-    { id: "550e8400-e29b-41d4-a716-446655440004", name: "대전 실내 골프장" },
-];
 
 export default function SignUpPage() {
     const [formData, setFormData] = useState({
@@ -22,7 +17,7 @@ export default function SignUpPage() {
         phone: "",
         gender: "",
         birthdate: "",
-        user_type: "",
+        user_type: "",              
         facility_id: "",
         memo: "",
         terms_agreed: false,
@@ -31,11 +26,32 @@ export default function SignUpPage() {
         consent_marketing: false,
     });
 
+    const [facilities, setFacilities] = useState<Facility[]>([]);
+    const [facLoading, setFacLoading] = useState(true);
+    const [facError, setFacError] = useState<string | null>(null);
+
     const [errors, setErrors] = useState<Errors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [signupStep, setSignupStep] = useState<"form" | "verify" | "complete">("form");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    useEffect(() => {
+        let mounted = true;
+        (async () => {
+            try {
+                setFacLoading(true);
+                setFacError(null);
+                const list = await FacilitiesApi.list();
+                if (mounted) setFacilities(list ?? []);
+            } catch (e: any) {
+                if (mounted) setFacError(e?.message || "시설 목록을 불러오지 못했어요.");
+            } finally {
+                if (mounted) setFacLoading(false);
+            }
+        })();
+        return () => { mounted = false; };
+    }, []);
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
         const { name, value, type } = e.target as HTMLInputElement;
@@ -87,8 +103,7 @@ export default function SignUpPage() {
                 terms_version: "2025-09-10",
                 privacy_version: "2025-09-10",
             });
-
-            setSignupStep("verify"); // 이메일 인증 안내 화면으로
+            setSignupStep("verify");
         } catch (e: any) {
             const msg = e?.message || "회원가입 중 오류가 발생했습니다.";
             setErrors({ submit: msg });
@@ -307,23 +322,53 @@ export default function SignUpPage() {
 
                         <div className="su__field">
                             <label className="su__label u-text-muted">소속 시설</label>
-                            <select name="facility_id" value={formData.facility_id}
-                                onChange={handleInputChange} className="u-input">
-                                <option value="">선택하세요</option>
-                                {facilities.map(f => (
-                                    <option key={f.id} value={f.id}>{f.name}</option>
-                                ))}
+
+                            <select
+                                name="facility_id"
+                                value={formData.facility_id}
+                                onChange={handleInputChange}
+                                className="u-input"
+                                disabled={facLoading || !!facError}
+                            >
+                                {/* 상태에 따라 안내 옵션 출력 */}
+                                {facLoading && <option value="">불러오는 중...</option>}
+                                {(!facLoading && facError) && <option value="">{facError}</option>}
+                                {(!facLoading && !facError && facilities.length === 0) && (
+                                    <option value="">등록된 시설이 없습니다</option>
+                                )}
+                                {(!facLoading && !facError && facilities.length > 0) && (
+                                    <>
+                                        <option value="">선택하세요</option>
+                                        {facilities.map((f) => (
+                                            <option key={f.id} value={f.id}>{f.name}</option>
+                                        ))}
+                                    </>
+                                )}
                             </select>
+
+                            {/* 재시도 링크 (선택) */}
+                            {facError && (
+                                <button
+                                    type="button"
+                                    className="u-link"
+                                    onClick={async () => {
+                                        try {
+                                            setFacLoading(true);
+                                            setFacError(null);
+                                            const list = await FacilitiesApi.list();
+                                            setFacilities(list ?? []);
+                                        } catch (e: any) {
+                                            setFacError(e?.message || "다시 불러오기에 실패했어요.");
+                                        } finally {
+                                            setFacLoading(false);
+                                        }
+                                    }}
+                                >
+                                    다시 불러오기
+                                </button>
+                            )}
                         </div>
 
-                        <div className="su__field">
-                            <label className="su__label u-text-muted">메모</label>
-                            <textarea
-                                name="memo" rows={3}
-                                value={formData.memo} onChange={handleInputChange}
-                                className="u-input" placeholder="추가 정보가 있으시면 적어주세요."
-                            />
-                        </div>
                     </div>
 
                     {/* 약관 동의 */}
