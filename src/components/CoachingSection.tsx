@@ -34,10 +34,8 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
 
     // 역할별 목록 로드
     const loadRequests = async () => {
-        // 서버가 권한/가시성 최종 판단. 여기선 role 파라미터로 UX 필터만 전달
         const roleParam = isCoachOrAbove ? "coach" : "student";
         const rows = await CoachingApi.list({ role: roleParam, limit: 100, offset: 0 });
-        // 분석 영상별 필터(서버에 video_id 필터가 있다면 거기서 처리해도 됨)
         const filtered = rows.filter((r) => r.analyzed_video_id === analyzedVideoId);
         setRequests(filtered);
     };
@@ -59,7 +57,7 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
 
     // 코치 선택 모달 (학생만 사용)
     const openCreateModal = async () => {
-        if (!isStudent) return; // 가드
+        if (!isStudent) return;
         try {
             const list = await fetchMyFacilityCoaches({ is_active: true, limit: 200 });
             setCoaches(list);
@@ -133,11 +131,11 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
                 <div className="coaching-head">
                     <h3>🧑‍🏫 코칭</h3>
                     <div className="coaching-actions">
-                        <div className="skeleton w-24 h-8" />
+                        <div className="skeleton" style={{ width: '96px', height: '32px' }} />
                     </div>
                 </div>
-                <div className="skeleton w-full h-28" />
-                <div className="skeleton w-full h-28 mt-2" />
+                <div className="skeleton" style={{ width: '100%', height: '112px' }} />
+                <div className="skeleton" style={{ width: '100%', height: '112px', marginTop: '8px' }} />
             </section>
         );
     }
@@ -167,12 +165,11 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
                         onBack={handleBackToList}
                         onAddComment={handleAddComment}
                         onUpdateStatus={handleUpdateStatus}
-                        myRole={role}            
+                        myRole={role}
                     />
                 )
             )}
 
-            {/* 학생만 모달 사용 */}
             <CoachSelectionModal
                 isOpen={modalOpen}
                 onClose={() => setModalOpen(false)}

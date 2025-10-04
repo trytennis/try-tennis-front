@@ -1,172 +1,70 @@
 /* src/styles/CoachingSection.css */
 
-/* ===== Modal ===== */
-.vc-modal-backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.55);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    z-index: 50;
-}
-
-.vc-modal-card {
-    background: #fff;
-    border-radius: 12px;
-    max-width: 480px;
-    width: 100%;
-    padding: 1.5rem;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
-}
-
-.vc-modal-head {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.vc-modal-body {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.vc-modal-foot {
-    display: flex;
-    justify-content: flex-end;
-    gap: 0.5rem;
-    margin-top: 1rem;
-}
-
-/* ===== Fields ===== */
-.vc-field label {
-    font-size: 0.875rem;
-    color: #374151;
-    margin-bottom: 0.25rem;
-    display: block;
-}
-
-.vc-input,
-.vc-textarea,
-.vc-static {
-    width: 100%;
-    border: 1px solid #d1d5db;
-    border-radius: 6px;
-    padding: 0.5rem 0.75rem;
-    font-size: 0.9rem;
-}
-
-.vc-textarea {
-    resize: vertical;
-    min-height: 60px;
-}
-
-.vc-static {
-    background: #f9fafb;
-    color: #4b5563;
-}
-
-/* ===== Buttons ===== */
-.vc-btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.25rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    padding: 0.5rem 0.9rem;
-    font-weight: 500;
-    transition: background 0.2s;
-    cursor: pointer;
-}
-
-.vc-btn.primary {
-    background: #16a34a;
-    color: #fff;
-}
-
-.vc-btn.primary:hover {
-    background: #15803d;
-}
-
-.vc-btn.ghost {
-    background: #f9fafb;
-    border: 1px solid #d1d5db;
-    color: #374151;
-}
-
-.vc-btn.ghost:hover {
-    background: #f3f4f6;
-}
-
-.vc-btn.danger {
-    background: #fee2e2;
-    color: #b91c1c;
-}
-
-.vc-btn.danger:hover {
-    background: #fecaca;
-}
-
-.vc-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.vc-btn-group {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.vc-icon-btn {
-    background: none;
-    border: none;
-    padding: 0.25rem;
-    cursor: pointer;
-    color: #6b7280;
-}
-
-.vc-icon-btn:hover {
-    color: #111827;
-}
-
-/* ===== Coaching Section ===== */
+/* ===== 섹션 컨테이너 ===== */
 .coaching-section {
+    background: white;
+    border-radius: 1rem;
+    border: 1px solid #e5e7eb;
+    padding: 1.5rem;
     margin-top: 2rem;
-    border-top: 1px solid #e5e7eb;
-    padding-top: 1.5rem;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
 }
 
+/* ===== 헤더 ===== */
 .coaching-head {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.coaching-head h3 {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.coaching-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
 }
 
 .coaching-req-btn {
-    display: flex;
+    display: inline-flex;
     align-items: center;
-    gap: 0.25rem;
-    background: #eff6ff;
-    color: #2563eb;
-    padding: 0.4rem 0.8rem;
-    border-radius: 6px;
-    font-size: 0.85rem;
+    gap: 0.5rem;
+    background: #16a34a;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 1px 2px rgba(22, 163, 74, 0.15);
 }
 
 .coaching-req-btn:hover {
-    background: #dbeafe;
+    background: #15803d;
+    box-shadow: 0 2px 4px rgba(22, 163, 74, 0.25);
+    transform: translateY(-1px);
 }
 
 .coaching-count {
-    font-size: 0.8rem;
+    padding: 0.375rem 0.75rem;
+    background: #f3f4f6;
     color: #6b7280;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 500;
 }
 
-/* ===== Requests List ===== */
+/* ===== 요청 목록 ===== */
 .req-list {
     display: flex;
     flex-direction: column;
@@ -174,75 +72,109 @@
 }
 
 .req-card {
-    background: #fff;
+    width: 100%;
+    background: white;
     border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 0.75rem;
+    border-radius: 0.75rem;
+    padding: 1rem;
     text-align: left;
     cursor: pointer;
-    transition: box-shadow 0.2s;
+    transition: all 0.2s;
 }
 
 .req-card:hover {
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+    border-color: #86efac;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
 }
 
 .req-card-top {
     display: flex;
+    align-items: start;
     justify-content: space-between;
-    align-items: center;
-    margin-bottom: 0.25rem;
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
 }
 
 .req-card-top h4 {
     font-weight: 600;
-    font-size: 0.95rem;
+    font-size: 0.9375rem;
+    color: #111827;
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transition: color 0.2s;
+}
+
+.req-card:hover .req-card-top h4 {
+    color: #16a34a;
+}
+
+.req-card-msg {
+    font-size: 0.875rem;
+    color: #6b7280;
+    margin: 0.5rem 0 0.75rem;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
 }
 
 .req-card-sub {
     display: flex;
     justify-content: space-between;
-    font-size: 0.8rem;
-    color: #6b7280;
+    align-items: center;
+    font-size: 0.75rem;
+    color: #9ca3af;
 }
 
-.req-card-msg {
-    font-size: 0.85rem;
-    color: #374151;
-    margin-top: 0.25rem;
-}
-
-/* ===== Request Detail ===== */
-.vc-detail {
+.req-card-sub>div {
     display: flex;
-    flex-direction: column;
+    align-items: center;
     gap: 1rem;
 }
 
-.vc-detail-head {
+.req-card-sub span {
     display: flex;
-    gap: 0.75rem;
     align-items: center;
+    gap: 0.25rem;
 }
 
-.vc-detail-title h2 {
-    font-size: 1.25rem;
-    font-weight: 700;
+/* ===== 빈 상태 ===== */
+.empty-card {
+    background: #f9fafb;
+    border: 2px dashed #d1d5db;
+    border-radius: 0.75rem;
+    padding: 3rem 2rem;
+    text-align: center;
 }
 
-.vc-sub {
-    display: flex;
-    gap: 0.75rem;
-    font-size: 0.8rem;
+.empty-card .emoji {
+    font-size: 3rem;
+    margin-bottom: 0.75rem;
+}
+
+.empty-card .dim {
     color: #6b7280;
+    font-size: 0.9375rem;
+    margin-bottom: 0.25rem;
 }
 
+.empty-card p:last-child {
+    font-size: 0.8125rem;
+    color: #9ca3af;
+}
+
+/* ===== 상태 배지 ===== */
 .vc-badge {
-    display: inline-block;
-    padding: 0.15rem 0.5rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.25rem;
+    padding: 0.25rem 0.625rem;
     border-radius: 9999px;
     font-size: 0.75rem;
     font-weight: 600;
+    white-space: nowrap;
 }
 
 .vc-badge.s-pending {
@@ -256,13 +188,13 @@
 }
 
 .vc-badge.s-in_review {
-    background: #ede9fe;
-    color: #5b21b6;
+    background: #e9d5ff;
+    color: #6b21a8;
 }
 
 .vc-badge.s-completed {
-    background: #dcfce7;
-    color: #166534;
+    background: #d1fae5;
+    color: #065f46;
 }
 
 .vc-badge.s-rejected {
@@ -272,65 +204,315 @@
 
 .vc-badge.s-cancelled {
     background: #f3f4f6;
-    color: #374151;
+    color: #4b5563;
 }
 
-/* ===== Comments ===== */
+/* ===== 상세 뷰 ===== */
+.vc-detail {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.vc-detail-head {
+    display: flex;
+    align-items: start;
+    gap: 0.75rem;
+}
+
+.vc-icon-btn {
+    padding: 0.5rem;
+    background: transparent;
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    color: #6b7280;
+    transition: all 0.2s;
+}
+
+.vc-icon-btn:hover {
+    background: #f3f4f6;
+    color: #111827;
+}
+
+.vc-detail-title {
+    flex: 1;
+}
+
+.vc-detail-title h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.vc-sub {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.875rem;
+    color: #6b7280;
+}
+
+.vc-sub span {
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+/* ===== 카드 ===== */
+.vc-card {
+    background: white;
+    border: 1px solid #e5e7eb;
+    border-radius: 0.75rem;
+    padding: 1.5rem;
+}
+
+.vc-card h4 {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #111827;
+    margin-bottom: 0.5rem;
+}
+
+.vc-card.highlight {
+    background: #f0fdf4;
+    border-color: #bbf7d0;
+}
+
+/* ===== 코멘트 ===== */
 .vc-comments {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    margin-bottom: 1rem;
 }
 
 .vc-comment {
     background: #f9fafb;
-    border-radius: 6px;
-    padding: 0.5rem 0.75rem;
+    border-radius: 0.5rem;
+    padding: 0.75rem 1rem;
 }
 
 .vc-comment-head {
     display: flex;
     justify-content: space-between;
-    font-size: 0.8rem;
-    margin-bottom: 0.25rem;
+    align-items: center;
+    margin-bottom: 0.5rem;
 }
 
 .vc-comment-head .author {
     font-weight: 600;
+    font-size: 0.875rem;
+    color: #111827;
+}
+
+.vc-comment-head .time {
+    font-size: 0.75rem;
+    color: #9ca3af;
 }
 
 .vc-comment-form {
-    margin-top: 0.75rem;
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
 }
 
+.vc-textarea {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    font-size: 0.875rem;
+    resize: none;
+    transition: all 0.2s;
+}
+
+.vc-textarea:focus {
+    outline: none;
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
 .vc-pre {
     white-space: pre-wrap;
+    word-break: break-word;
+    font-size: 0.875rem;
+    color: #374151;
+    line-height: 1.5;
 }
 
-/* ===== Helpers ===== */
-.empty-card {
-    background: #fff;
-    border: 1px solid #e5e7eb;
-    border-radius: 8px;
-    padding: 2rem;
-    text-align: center;
+/* ===== 버튼 그룹 ===== */
+.vc-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
 }
 
-.empty-card .emoji {
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
+.vc-row.between {
+    justify-content: space-between;
 }
 
-.empty-card .dim {
+.vc-btn-group {
+    display: flex;
+    gap: 0.5rem;
+}
+
+/* ===== 버튼 스타일 ===== */
+.vc-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.25rem;
+    border-radius: 0.5rem;
+    font-size: 0.75rem;
+    padding: 0.375rem 0.75rem;
+    font-weight: 500;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.vc-btn.primary {
+    background: #16a34a;
+    color: white;
+}
+
+.vc-btn.primary:hover {
+    background: #15803d;
+}
+
+.vc-btn.primary:disabled {
+    background: #9ca3af;
+    cursor: not-allowed;
+}
+
+.vc-btn.ghost {
+    background: #f0fdf4;
+    color: #16a34a;
+    border: 1px solid #bbf7d0;
+}
+
+.vc-btn.ghost:hover {
+    background: #dcfce7;
+    border-color: #86efac;
+}
+
+.vc-btn.danger {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+}
+
+.vc-btn.danger:hover {
+    background: #fee2e2;
+    border-color: #fca5a5;
+}
+
+/* ===== 모달 ===== */
+.vc-modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    backdrop-filter: blur(2px);
+}
+
+.vc-modal-card {
+    background: white;
+    border-radius: 1rem;
+    max-width: 500px;
+    width: 90%;
+    padding: 1.5rem;
+    box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+}
+
+.vc-modal-head {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.25rem;
+}
+
+.vc-modal-head h3 {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: #111827;
+}
+
+.vc-modal-body {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.vc-modal-foot {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-top: 1.5rem;
+}
+
+/* ===== 폼 필드 ===== */
+.vc-field {
+    display: flex;
+    flex-direction: column;
+}
+
+.vc-field label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #374151;
+    margin-bottom: 0.375rem;
+}
+
+.vc-input,
+.vc-static {
+    width: 100%;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.875rem;
+    transition: all 0.2s;
+}
+
+.vc-input:focus {
+    outline: none;
+    border-color: #16a34a;
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.1);
+}
+
+.vc-static {
+    background: #f9fafb;
     color: #6b7280;
-    font-size: 0.9rem;
 }
 
+/* ===== 유틸리티 ===== */
 .vc-dim {
     text-align: center;
     color: #9ca3af;
-    font-size: 0.85rem;
+    font-size: 0.875rem;
+    padding: 2rem 1rem;
+}
+
+/* ===== 스켈레톤 로더 ===== */
+.skeleton {
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 100%;
+    animation: loading 1.5s infinite;
+    border-radius: 0.5rem;
+}
+
+@keyframes loading {
+    0% {
+        background-position: 200% 0;
+    }
+
+    100% {
+        background-position: -200% 0;
+    }
 }

@@ -1,4 +1,6 @@
+// src/components/coaching/CoachingRequestList.tsx
 import React from "react";
+import { User, MessageSquare, Clock } from "lucide-react";
 import { formatDateTime } from "../utils/format";
 import type { CoachingRequest, CoachingRequestStatus } from "../types/CoachingRequest";
 
@@ -21,7 +23,8 @@ const CoachingRequestList: React.FC<Props> = ({ requests, onSelect }) => {
         return (
             <div className="empty-card">
                 <div className="emoji">💬</div>
-                <p className="dim">아직 코칭 요청이 없습니다.</p>
+                <p className="dim">아직 코칭 요청이 없습니다</p>
+                <p>코칭이 필요할 때 요청해보세요</p>
             </div>
         );
     }
@@ -34,11 +37,27 @@ const CoachingRequestList: React.FC<Props> = ({ requests, onSelect }) => {
                         <h4>{r.title || "제목 없음"}</h4>
                         <span className={`vc-badge s-${r.status}`}>{statusText[r.status]}</span>
                     </div>
-                    <div className="req-card-sub">
-                        <span>코치: {r.coach?.name ?? "-"}</span>
-                        <span>{formatDateTime(r.created_at)}</span>
-                    </div>
+
                     {r.message && <p className="req-card-msg">{r.message}</p>}
+
+                    <div className="req-card-sub">
+                        <div>
+                            <span>
+                                <User size={12} />
+                                {r.coach?.name ?? "-"}
+                            </span>
+                            {/* {r.comments_count > 0 && (
+                                <span style={{ color: '#16a34a' }}>
+                                    <MessageSquare size={12} />
+                                    {r.comments_count}
+                                </span>
+                            )} */}
+                        </div>
+                        <span>
+                            <Clock size={12} />
+                            {formatDateTime(r.created_at)}
+                        </span>
+                    </div>
                 </button>
             ))}
         </div>

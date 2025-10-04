@@ -87,9 +87,9 @@ const CoachingRequestDetail: React.FC<Props> = ({
                                 <button className="vc-btn ghost" onClick={() => onUpdateStatus("rejected")}>거절</button>
                             </>
                         )}
-                        {isStudent && (
+                        {/* {isStudent && (
                             <button className="vc-btn danger" onClick={() => onUpdateStatus("cancelled")}>요청자 취소</button>
-                        )}
+                        )} */}
                     </div>
                 </div>
 
@@ -109,7 +109,7 @@ const CoachingRequestDetail: React.FC<Props> = ({
                     )}
                 </div>
 
-                <div className="vc-comment-form">
+                {/* <div className="vc-comment-form">
                     <textarea
                         className="vc-textarea"
                         rows={3}
@@ -126,7 +126,7 @@ const CoachingRequestDetail: React.FC<Props> = ({
                     <button className="vc-btn primary" disabled={!text.trim()} onClick={() => { onAddComment(text.trim()); setText(""); }}>
                         전송
                     </button>
-                </div>
+                </div> */}
             </div>
         </div>
     );
