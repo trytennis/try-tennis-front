@@ -12,15 +12,27 @@ export type CoachingRequest = {
     // 조인 필드(서버 select 별칭)
     requester?: { id: string; name: string | null };
     coach?: { id: string; name: string | null };
-    video?: { id: string; video_url: string | null; created_at: string };
+    video?: AnalyzedVideoLite;
 };
 
+export type AnalyzedVideoLite = {
+    id: string;
+    video_url: string;
+    analyzed_mp4_url?: string;
+    gif_url?: string;
+    chart_url?: string;
+    average_angle?: number;
+    average_speed?: number;
+    max_speed?: number;
+    frame_count?: number;
+    created_at: string;
+};
 
 /** 요청 상태 타입 (백엔드 CHECK와 일치) */
 export type CoachingRequestStatus =
     | "pending"
-    | "accepted"
-    | "in_review"
+    // | "accepted"
+    // | "in_review"
     | "completed"
-    | "rejected"
+    // | "rejected"
     | "cancelled";
