@@ -95,5 +95,5 @@ export async function fetchMyFacilityCoaches(params?: {
     qs.set("limit", String(params?.limit ?? 100));
     qs.set("offset", String(params?.offset ?? 0));
     const query = qs.toString() ? `?${qs.toString()}` : "";
-    return authGet<CoachLite[]>(`/api/my-facility/coaches${query}`);
+    return authGet<CoachLite[]>(`/api/my-facility/staff${query}`);
 }
