@@ -1,7 +1,7 @@
 // src/components/Header.tsx
 import React from 'react';
 import '../styles/Header.css';
-import { Calendar, Ticket, UserCircle, Users, Video, NotebookPen, ListCheck, Store } from 'lucide-react';
+import { Calendar, Ticket, UserCircle, Users, Video, NotebookPen, ListCheck, Store, MessageSquareMoreIcon } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/thetry_logo.png';
 import { useMyRole } from '../utils/useMyRole';
@@ -23,6 +23,7 @@ const Header = () => {
     tickets: role === "super_admin" || role === "facility_admin" || role === "coach",
     my: true,
     facility: role === "super_admin" || role === "facility_admin",
+    coaching: role === "super_admin" || role === "facility_admin" || role === "coach",
   };
 
   // 로딩 중엔 깜빡임 방지
@@ -89,6 +90,13 @@ const Header = () => {
                 <Link to="/videos" className={`nav-btn ${isActive('/videos') ? 'active' : ''}`} aria-current={isActive('/videos') ? 'page' : undefined}>
                   <Video className="header-icon" />
                   영상 분석
+                </Link>
+              )}
+
+              {canSee.coaching && (
+                <Link to="/coaching" className={`nav-btn ${isActive('/coaching') ? 'active' : ''}`} aria-current={isActive('/coaching') ? 'page' : undefined}>
+                  <MessageSquareMoreIcon className="header-icon" />
+                  영상 코칭
                 </Link>
               )}
 

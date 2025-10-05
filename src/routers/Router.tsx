@@ -17,6 +17,7 @@ import SignUpPage from '../pages/SignUpPage';
 import LoginPage from '../pages/LoginPage';
 import MyPage from '../pages/MyPage';
 import FacilityManagementPage from '../pages/FacilityManagementPage';
+import CoachingPage from '../pages/CoachingPage';
 
 export default function Router() {
   return (
@@ -36,6 +37,7 @@ export default function Router() {
           <Route path="users/:userId" element={<UserDetailPage />} />
           <Route path="facility" element={<FacilityManagementPage />} />
           <Route path="videos" element={<VideoAnalysisPage />} />
+          <Route path="coaching" element={<CoachingPage />} />
           <Route path="tickets" element={<TicketsPage />} />
           <Route path="tickets/add" element={<AddTicketPage />} />
           <Route path="tickets/:ticketId" element={<TicketDetailPage />} />

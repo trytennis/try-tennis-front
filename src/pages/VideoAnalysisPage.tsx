@@ -9,6 +9,7 @@ import { analyzeVideo, fetchAnalysisHistory } from "../api/analysis";
 import AnalysisHistoryItem from "../components/AnalysisHistoryItem";
 import { formatDateTime } from "../utils/format";
 import "../styles/VideoAnalysisPage.css";
+import CoachingSection from "../components/CoachingSection";
 
 const VideoAnalysisPage: React.FC = () => {
   const [view, setView] = useState<"upload" | "history">("upload");
@@ -166,6 +167,9 @@ const VideoAnalysisPage: React.FC = () => {
                     video_url: selectedVideo.video_url,
                   }}
                 />
+
+                <CoachingSection analyzedVideoId={selectedVideo.id} selectedVideo={selectedVideo} />
+
               </>
             )}
           </div>
