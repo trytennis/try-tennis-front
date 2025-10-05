@@ -1,6 +1,6 @@
 // src/api/video_coaching.ts
 import type { CoachLite } from "../types/Coach";
-import type { CoachingComment } from "../types/CoachingConmment";
+import type { CoachingComment } from "../types/CoachingComment";
 import type { CoachingRequest, CoachingRequestStatus } from "../types/CoachingRequest";
 import { authGet, authPost, authPatch } from "../utils/authApi";
 

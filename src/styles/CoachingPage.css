@@ -1,0 +1,481 @@
+/* ===== 컨테이너 & 그리드 ===== */
+.coachcp {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px 16px;
+}
+
+.coachcp-grid {
+    display: grid;
+    grid-template-columns: 420px 1fr;
+    gap: 16px;
+}
+
+/* ===== 카드 ===== */
+.coachcp-card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 12px;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.04);
+}
+
+.coachcp-card--sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.coachcp-card--main {
+    padding: 20px 24px;
+    min-height: 620px;
+}
+
+/* ===== 사이드바 ===== */
+.coachcp-sidebar-head {
+    padding: 16px 16px 12px;
+    border-bottom: 1px solid #f3f4f6;
+    background: #fafafa;
+    border-radius: 12px 12px 0px 0px;
+}
+
+.coachcp-search {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.coachcp-search__icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #9ca3af;
+}
+
+.coachcp-search__input {
+    width: 100%;
+    padding: 10px 12px 10px 36px;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    font-size: 14px;
+    background: #fff;
+    transition: box-shadow .15s, border-color .15s;
+}
+
+.coachcp-search__input:focus {
+    outline: none;
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, .05);
+}
+
+.coachcp-result-count {
+    font-size: 13px;
+    color: #6b7280;
+    font-weight: 500;
+}
+
+.coachcp-sidebar-body {
+    padding: 12px;
+    overflow-y: auto;
+    flex: 1;
+}
+
+.coachcp-sidebar-body::-webkit-scrollbar {
+    width: 6px;
+}
+
+.coachcp-sidebar-body::-webkit-scrollbar-thumb {
+    background: #d1d5db;
+    border-radius: 3px;
+}
+
+.coachcp-sidebar-body::-webkit-scrollbar-thumb:hover {
+    background: #9ca3af;
+}
+
+.coachcp-sidebar-foot {
+    padding: 12px 16px;
+    border-top: 1px solid #f3f4f6;
+    background: #fafafa;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border-radius: 0px 0px 12px 12px;
+}
+
+.coachcp-pager-btn {
+    padding: 8px 12px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #374151;
+    cursor: pointer;
+    transition: background .15s, border-color .15s;
+}
+
+.coachcp-pager-btn:hover:not(:disabled) {
+    background: #f9fafb;
+    border-color: #d1d5db;
+}
+
+.coachcp-pager-btn:disabled {
+    opacity: .4;
+    cursor: not-allowed;
+}
+
+.coachcp-page-num {
+    font-size: 14px;
+    font-weight: 600;
+    color: #111827;
+    min-width: 2rem;
+    text-align: center;
+}
+
+/* ===== 빈 상세 ===== */
+.coachcp-empty-detail {
+    height: 100%;
+    min-height: 520px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: #9ca3af;
+    gap: 8px;
+}
+
+.coachcp-emoji {
+    font-size: 40px;
+    opacity: .35;
+}
+
+/* ===== 접근 거부 카드 ===== */
+.coachcp-denied {
+    padding: 48px 16px;
+    text-align: center;
+    color: #6b7280;
+}
+
+.coachcp-denied .coachcp-emoji {
+    font-size: 64px;
+    margin-bottom: 12px;
+    opacity: .5;
+}
+
+/* ===== 디테일 ===== */
+.coachcp-detail {
+    display: grid;
+    gap: 16px;
+}
+
+.coachcp-detail-head {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 12px;
+    align-items: start;
+    padding-bottom: 12px;
+    border-bottom: 1px solid #f3f4f6;
+}
+
+.coachcp-icon-btn {
+    padding: 8px;
+    border: 1px solid #e5e7eb;
+    background: #fff;
+    border-radius: 8px;
+    color: #6b7280;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+}
+
+.coachcp-icon-btn:hover {
+    background: #f9fafb;
+    color: #111827;
+}
+
+.coachcp-detail-title h2 {
+    margin: 0 0 6px;
+    font-size: 22px;
+    font-weight: 700;
+    color: #111827;
+    letter-spacing: -0.02em;
+}
+
+.coachcp-sub {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
+    font-size: 13px;
+    color: #6b7280;
+}
+
+.coachcp-sub-item {
+    display: inline-flex;
+    gap: 6px;
+    align-items: center;
+}
+
+.coachcp-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 4px 10px;
+    border-radius: 9999px;
+    font-size: 12px;
+    font-weight: 600;
+    border: 1px solid;
+}
+
+.coachcp-badge.s-pending {
+    background: #fef3c7;
+    color: #92400e;
+    border-color: #fde68a;
+}
+
+.coachcp-badge.s-completed {
+    background: #dcfce7;
+    color: #166534;
+    border-color: #bbf7d0;
+}
+
+.coachcp-badge.s-cancelled {
+    background: #f3f4f6;
+    color: #4b5563;
+    border-color: #d1d5db;
+}
+
+/* ===== 섹션 카드 (디테일 내부) ===== */
+.coachcp-section-card {
+    background: #fafafa;
+    border: 1px solid #f3f4f6;
+    border-radius: 12px;
+    padding: 16px;
+}
+
+.coachcp-section-card h4 {
+    margin: 0 0 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: #111827;
+}
+
+.coachcp-pre {
+    white-space: pre-wrap;
+    line-height: 1.65;
+    font-size: 15px;
+    color: #374151;
+    margin: 0;
+}
+
+.coachcp-dim {
+    color: #9ca3af;
+    font-size: 14px;
+    text-align: center;
+    padding: 20px 8px;
+}
+
+/* ===== 분석 패널 ===== */
+.coachcp-media-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin-bottom: 10px;
+}
+
+.coachcp-media-box {
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    background: #fff;
+}
+
+.coachcp-media-box img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.coachcp-cap {
+    padding: 8px;
+    text-align: center;
+    font-size: 12px;
+    color: #6b7280;
+    background: #fafafa;
+    border-top: 1px solid #f3f4f6;
+}
+
+.coachcp-stat-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.coachcp-stat {
+    border-radius: 10px;
+    padding: 12px;
+    border: 1px solid;
+}
+
+.coachcp-stat-label {
+    font-size: 12px;
+    opacity: .85;
+    margin-bottom: 4px;
+}
+
+.coachcp-stat-value {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+}
+
+.coachcp-stat.blue {
+    border-color: #bfdbfe;
+    background: #eff6ff;
+    color: #1e40af;
+}
+
+.coachcp-stat.green {
+    border-color: #bbf7d0;
+    background: #dcfce7;
+    color: #065f46;
+}
+
+.coachcp-stat.purple {
+    border-color: #ddd6fe;
+    background: #ede9fe;
+    color: #5b21b6;
+}
+
+.coachcp-stat.amber {
+    border-color: #fde68a;
+    background: #fef3c7;
+    color: #92400e;
+}
+
+/* ===== 버튼 ===== */
+.coachcp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 10px 14px;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    border: 1px solid;
+    cursor: pointer;
+    transition: background .15s, color .15s;
+}
+
+.coachcp-btn.primary {
+    background: #111827;
+    color: #fff;
+    border-color: #111827;
+}
+
+.coachcp-btn.primary:hover:not(:disabled) {
+    background: #000;
+}
+
+.coachcp-btn.primary:disabled {
+    opacity: .5;
+    cursor: not-allowed;
+}
+
+.coachcp-btn.wide {
+    width: 100%;
+}
+
+/* ===== 코멘트 ===== */
+.coachcp-comments {
+    display: grid;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.coachcp-comment {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.coachcp-comment-head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 6px;
+}
+
+.coachcp-author {
+    font-weight: 600;
+    color: #111827;
+    font-size: 14px;
+}
+
+.coachcp-time {
+    font-size: 12px;
+    color: #9ca3af;
+}
+
+.coachcp-comment-form {
+    display: grid;
+    gap: 10px;
+}
+
+.coachcp-textarea {
+    width: 100%;
+    border: 1px solid #e5e7eb;
+    border-radius: 10px;
+    padding: 12px;
+    font-size: 15px;
+    line-height: 1.5;
+    resize: vertical;
+    transition: box-shadow .15s, border-color .15s;
+}
+
+.coachcp-textarea:focus {
+    outline: none;
+    border-color: #111827;
+    box-shadow: 0 0 0 3px rgba(17, 24, 39, .05);
+}
+
+.coachcp-right {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* ===== 스켈레톤 ===== */
+.coachcp-skeleton {
+    border-radius: 12px;
+    background: linear-gradient(90deg, #f3f4f6 25%, #e5e7eb 50%, #f3f4f6 75%);
+    background-size: 200% 100%;
+    animation: coachcp-loading 1.5s ease-in-out infinite;
+}
+
+@keyframes coachcp-loading {
+    0% {
+        background-position: 200% 0
+    }
+
+    100% {
+        background-position: -200% 0
+    }
+}
+
+/* ===== 반응형 ===== */
+@media (max-width: 1280px) {
+    .coachcp-grid {
+        grid-template-columns: 360px 1fr;
+    }
+}
+
+@media (max-width: 1024px) {
+    .coachcp-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .coachcp-card--main {
+        min-height: 560px;
+    }
+}

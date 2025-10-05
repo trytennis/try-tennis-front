@@ -29,10 +29,9 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
     const [selectedReq, setSelectedReq] = useState<CoachingRequest | null>(null);
     const [comments, setComments] = useState<CoachingComment[]>([]);
 
-    const isStudent = role === "student";
     const isCoachOrAbove = role === "coach" || role === "facility_admin" || role === "super_admin";
 
-    // 역할별 목록 로드
+    // 역할별 목록 로드 (기존 로직 유지)
     const loadRequests = async () => {
         const roleParam = isCoachOrAbove ? "coach" : "student";
         const rows = await CoachingApi.list({ role: roleParam, limit: 100, offset: 0 });
@@ -55,9 +54,8 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [analyzedVideoId, roleLoading, role]);
 
-    // 코치 선택 모달 (학생만 사용)
+    // ✅ 누구나 요청 가능: 가드 제거
     const openCreateModal = async () => {
-        if (!isStudent) return;
         try {
             const list = await fetchMyFacilityCoaches({ is_active: true, limit: 200 });
             setCoaches(list);
@@ -68,7 +66,7 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
         }
     };
 
-    // 요청 생성 (학생)
+    // 요청 생성
     const handleCreate = async (coachId: string, title: string, message: string) => {
         try {
             const res = await CoachingApi.create({
@@ -84,7 +82,13 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
             setView("detail");
         } catch (e: any) {
             console.error(e);
-            alert(e?.message || "코칭 요청 실패");
+            // 서버는 본인 소유 영상이 아니면 video_not_owned 에러를 던짐
+            const msg = String(e?.message ?? e);
+            if (msg.includes("video_not_owned")) {
+                alert("본인 소유 영상만 코칭을 요청할 수 있어요.");
+            } else {
+                alert(e?.message || "코칭 요청 실패");
+            }
         }
     };
 
@@ -104,6 +108,12 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
         try {
             const c = await CoachingApi.addComment(selectedReq.id, text);
             setComments((prev) => [...prev, c]);
+
+            // (선택) 댓글 달리면 자동 완료 정책인 경우 UI 낙관 갱신
+            setSelectedReq((prev) => (prev ? { ...prev, status: "completed", last_comment_at: c.created_at } : prev));
+            setRequests((prev) =>
+                prev.map((r) => (r.id === selectedReq.id ? { ...r, status: "completed", last_comment_at: c.created_at } : r))
+            );
         } catch {
             alert("코멘트 추가 실패");
         }
@@ -131,11 +141,11 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
                 <div className="coaching-head">
                     <h3>🧑‍🏫 코칭</h3>
                     <div className="coaching-actions">
-                        <div className="skeleton" style={{ width: '96px', height: '32px' }} />
+                        <div className="skeleton" style={{ width: "96px", height: "32px" }} />
                     </div>
                 </div>
-                <div className="skeleton" style={{ width: '100%', height: '112px' }} />
-                <div className="skeleton" style={{ width: '100%', height: '112px', marginTop: '8px' }} />
+                <div className="skeleton" style={{ width: "100%", height: "112px" }} />
+                <div className="skeleton" style={{ width: "100%", height: "112px", marginTop: "8px" }} />
             </section>
         );
     }
@@ -145,11 +155,9 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
             <header className="coaching-head">
                 <h3>🧑‍🏫 코칭</h3>
                 <div className="coaching-actions">
-                    {isStudent && (
-                        <button className="coaching-req-btn" onClick={openCreateModal}>
-                            <MessageSquare size={16} /> 코칭 요청
-                        </button>
-                    )}
+                    <button className="coaching-req-btn" onClick={openCreateModal}>
+                        <MessageSquare size={16} /> 코칭 요청
+                    </button>
                     <span className="coaching-count">요청 {countForThisVideo}개</span>
                 </div>
             </header>
