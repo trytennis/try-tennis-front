@@ -9,7 +9,7 @@ import type { CoachingRequest, CoachingRequestStatus } from "../types/CoachingRe
 import { useMyRole } from "../utils/useMyRole";
 import "../styles/CoachingSection.css";
 import CoachingRequestDetail from "./CoachRequestDetail";
-import type { CoachingComment } from "../types/CoachingConmment";
+import type { CoachingComment } from "../types/CoachingComment";
 import { CoachingApi, fetchMyFacilityCoaches } from "../api/video_coaching";
 
 type Props = {
@@ -155,7 +155,7 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
             </header>
 
             {view === "list" ? (
-                <CoachingRequestList requests={requests} onSelect={handleSelectRequest} />
+                <CoachingRequestList requests={requests} onSelect={handleSelectRequest} myRole={role} />
             ) : (
                 selectedReq && (
                     <CoachingRequestDetail

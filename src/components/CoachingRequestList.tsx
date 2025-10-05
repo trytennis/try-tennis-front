@@ -6,19 +6,17 @@ import type { CoachingRequest, CoachingRequestStatus } from "../types/CoachingRe
 
 const statusText: Record<CoachingRequestStatus, string> = {
     pending: "대기중",
-    accepted: "수락됨",
-    in_review: "검토중",
     completed: "완료",
-    rejected: "거부됨",
     cancelled: "취소됨",
 };
 
 type Props = {
     requests: CoachingRequest[];
     onSelect: (request: CoachingRequest) => void;
+    myRole?: string | null;
 };
 
-const CoachingRequestList: React.FC<Props> = ({ requests, onSelect }) => {
+const CoachingRequestList: React.FC<Props> = ({ requests, onSelect, myRole }) => {
     if (requests.length === 0) {
         return (
             <div className="empty-card">
@@ -31,37 +29,28 @@ const CoachingRequestList: React.FC<Props> = ({ requests, onSelect }) => {
 
     return (
         <div className="req-list">
-            {requests.map((r) => (
-                <button key={r.id} className="req-card" onClick={() => onSelect(r)}>
-                    <div className="req-card-top">
-                        <h4>{r.title || "제목 없음"}</h4>
-                        <span className={`vc-badge s-${r.status}`}>{statusText[r.status]}</span>
-                    </div>
-
-                    {r.message && <p className="req-card-msg">{r.message}</p>}
-
-                    <div className="req-card-sub">
-                        <div>
-                            <span>
-                                <User size={12} />
-                                {r.coach?.name ?? "-"}
-                            </span>
-                            {/* {r.comments_count > 0 && (
-                                <span style={{ color: '#16a34a' }}>
-                                    <MessageSquare size={12} />
-                                    {r.comments_count}
-                                </span>
-                            )} */}
+            {requests.map((r) => {
+                const showName =
+                    myRole === "coach" || myRole === "facility_admin" || myRole === "super_admin" || myRole === "admin"
+                        ? r.requester?.name // 코치에게는 요청자 이름
+                        : r.coach?.name;     // 학생에게는 코치 이름
+                return (
+                    <button key={r.id} className="req-card" onClick={() => onSelect(r)}>
+                        <div className="req-card-top">
+                            <h4>{r.title || "제목 없음"}</h4>
+                            <span className={`vc-badge s-${r.status}`}>{statusText[r.status]}</span>
                         </div>
-                        <span>
-                            <Clock size={12} />
-                            {formatDateTime(r.created_at)}
-                        </span>
-                    </div>
-                </button>
-            ))}
+                        {r.message && <p className="req-card-msg">{r.message}</p>}
+                        <div className="req-card-sub">
+                            <div><User size={12} />{showName ?? "-"}</div>
+                            <span><Clock size={12} />{formatDateTime(r.created_at)}</span>
+                        </div>
+                    </button>
+                );
+            })}
         </div>
     );
+
 };
 
 export default CoachingRequestList;
