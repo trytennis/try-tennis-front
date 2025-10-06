@@ -6,11 +6,14 @@ import TicketSkeletonCard from '../components/TicketSkeletonCard';
 import { TicketsApi } from '../api/ticket';
 import type { NewTicketPayload } from '../components/AddTicketModal';
 import AddTicketModal from '../components/AddTicketModal';
+import TicketDetailModal from '../components/TicketDetailModal';
 
 const TicketsPage: React.FC = () => {
     const [tickets, setTickets] = useState<Ticket[]>([]);
     const [isLoading, setIsLoading] = useState(true);
     const [isAddModalOpen, setIsAddModalOpen] = useState(false);
+    const [isDetailModalOpen, setIsDetailModalOpen] = useState(false);
+    const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
 
     const fetchTickets = async () => {
         try {
@@ -39,6 +42,16 @@ const TicketsPage: React.FC = () => {
         alert('수강권이 추가되었습니다!');
         // 혹시 서버 정렬/계산 필드 차이가 있으면 아래 재조회로 동기화
         await fetchTickets();
+    };
+
+    const handleTicketClick = (ticketId: string) => {
+        setSelectedTicketId(ticketId);
+        setIsDetailModalOpen(true);
+    };
+
+    const handleCloseDetailModal = () => {
+        setIsDetailModalOpen(false);
+        setSelectedTicketId(null);
     };
 
     return (
@@ -71,7 +84,7 @@ const TicketsPage: React.FC = () => {
                                     duration={`${ticket.valid_days}일`}
                                     price={`${ticket.price.toLocaleString()}원`}
                                     pricePer={`${ppl.toLocaleString()}원`}
-                                    onClick={() => (window.location.href = `/tickets/${ticket.id}`)}
+                                    onClick={() => handleTicketClick(ticket.id)}
                                 />
                             );
                         })}
@@ -83,6 +96,13 @@ const TicketsPage: React.FC = () => {
                 isOpen={isAddModalOpen}
                 onClose={() => setIsAddModalOpen(false)}
                 onSubmit={handleAddSubmit}
+            />
+
+            {/* 상세 모달 */}
+            <TicketDetailModal
+                isOpen={isDetailModalOpen}
+                onClose={handleCloseDetailModal}
+                ticketId={selectedTicketId}
             />
         </div>
     );
