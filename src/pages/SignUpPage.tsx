@@ -17,7 +17,7 @@ export default function SignUpPage() {
         phone: "",
         gender: "",
         birthdate: "",
-        user_type: "",              
+        user_type: "",
         facility_id: "",
         memo: "",
         terms_agreed: false,
@@ -35,6 +35,17 @@ export default function SignUpPage() {
     const [signupStep, setSignupStep] = useState<"form" | "verify" | "complete">("form");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    // 숫자만 남기기
+    const digitsOnly = (v: string) => v.replace(/\D/g, "");
+
+    // 화면 표시용 포맷 (010-1234-5678)
+    const formatPhone = (v: string) => {
+        const d = digitsOnly(v).slice(0, 11); // 최대 11자리
+        if (d.length < 4) return d;
+        if (d.length < 8) return `${d.slice(0, 3)}-${d.slice(3)}`;
+        return `${d.slice(0, 3)}-${d.slice(3, 7)}-${d.slice(7)}`;
+    };
 
     useEffect(() => {
         let mounted = true;
@@ -56,10 +67,15 @@ export default function SignUpPage() {
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
         const { name, value, type } = e.target as HTMLInputElement;
         const checked = (e.target as HTMLInputElement).checked;
+
         setFormData((prev) => ({
             ...prev,
-            [name]: type === "checkbox" ? checked : value,
+            [name]:
+                name === "phone"
+                    ? digitsOnly(value).slice(0, 11) // 상태에는 '숫자만' 보관
+                    : (type === "checkbox" ? checked : value),
         }));
+
         if (errors[name]) setErrors((p) => ({ ...p, [name]: "" }));
     }
 
@@ -73,10 +89,12 @@ export default function SignUpPage() {
 
         if (formData.password !== formData.confirmPassword) newErrors.confirmPassword = "비밀번호가 일치하지 않습니다.";
         if (!formData.name.trim()) newErrors.name = "이름을 입력해주세요.";
-        if (!formData.phone.trim()) newErrors.phone = "전화번호를 입력해주세요.";
         if (!formData.terms_agreed) newErrors.terms_agreed = "이용약관에 동의해주세요.";
         if (!formData.privacy_agreed) newErrors.privacy_agreed = "개인정보처리방침에 동의해주세요.";
 
+        if (!formData.phone.trim()) newErrors.phone = "전화번호를 입력해주세요.";
+        else if (!/^\d{10,11}$/.test(formData.phone)) newErrors.phone = "전화번호는 숫자 10~11자리여야 합니다.";
+        
         setErrors(newErrors);
         return Object.keys(newErrors).length === 0;
     }
@@ -281,13 +299,28 @@ export default function SignUpPage() {
                                 <input
                                     type="tel"
                                     name="phone"
-                                    value={formData.phone}
-                                    onChange={handleInputChange}
-                                    className={`u-input ${errors.phone ? "u-input--error" : ""}`}
+                                    value={formatPhone(formData.phone)}        // 화면엔 하이픈 표시
+                                    onChange={handleInputChange}               // 상태엔 숫자만 저장
+                                    onPaste={(e) => {
+                                        const t = e.clipboardData.getData("text");
+                                        if (!/\d/.test(t)) e.preventDefault();
+                                    }}
+                                    onKeyDown={(e) => {
+                                        // 숫자/편집키만 허용
+                                        const allow = [
+                                            "Backspace", "Delete", "Tab", "ArrowLeft", "ArrowRight", "Home", "End", "Enter",
+                                        ];
+                                        if (allow.includes(e.key)) return;
+                                        if (/^\d$/.test(e.key)) return;
+                                        e.preventDefault();
+                                    }}
+                                    inputMode="numeric"                         // 모바일 숫자 키패드
                                     placeholder="010-1234-5678"
+                                    className={`u-input ${errors.phone ? "u-input--error" : ""}`}
                                 />
                                 {errors.phone && <p className="su__error">{errors.phone}</p>}
                             </div>
+
                         </div>
 
                         <div className="su__grid-3">
