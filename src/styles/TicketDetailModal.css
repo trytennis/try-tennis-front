@@ -1,4 +1,6 @@
-/* Backdrop */
+/* TicketDetailModal.css */
+
+/* ========== Backdrop & Container ========== */
 .tdm-backdrop {
     position: fixed;
     inset: 0;
@@ -11,7 +13,6 @@
     animation: tdmFadeIn 0.2s ease-out;
 }
 
-/* Modal Container */
 .tdm-container {
     position: relative;
     width: 100%;
@@ -25,7 +26,7 @@
     animation: tdmSlideUp 0.3s ease-out;
 }
 
-/* Modal Header */
+/* ========== Modal Header ========== */
 .tdm-header {
     position: sticky;
     top: 0;
@@ -35,7 +36,7 @@
     justify-content: space-between;
     padding: 20px 24px;
     background: linear-gradient(135deg, #f6faf4, #eef5ef);
-    color: 25532f;
+    color: #25532f;
     border-bottom: 1px solid #25532f;
 }
 
@@ -51,7 +52,7 @@
     height: 32px;
     padding: 0;
     background: transparent;
-    border: 1px solid rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(37, 83, 47, 0.2);
     border-radius: 8px;
     cursor: pointer;
     display: inline-flex;
@@ -62,8 +63,8 @@
 
 .tdm-back-btn:hover,
 .tdm-close-btn:hover {
-    background: rgba(255, 255, 255, 0.1);
-    border-color: rgba(255, 255, 255, 0.3);
+    background: rgba(37, 83, 47, 0.1);
+    border-color: rgba(37, 83, 47, 0.3);
 }
 
 .tdm-icon {
@@ -77,14 +78,14 @@
     margin: 0;
 }
 
-/* Modal Content */
+/* ========== Modal Content ========== */
 .tdm-content {
     overflow-y: auto;
     max-height: calc(90vh - 73px);
     padding: 24px;
 }
 
-/* Loading State */
+/* ========== Loading & Empty State ========== */
 .tdm-loading {
     display: flex;
     align-items: center;
@@ -101,7 +102,6 @@
     animation: tdmSpin 0.8s linear infinite;
 }
 
-/* Empty State */
 .tdm-empty {
     padding: 80px 0;
     text-align: center;
@@ -109,7 +109,7 @@
     font-size: 14px;
 }
 
-/* Ticket Info Card */
+/* ========== Ticket Info Card ========== */
 .tdm-info-card {
     margin-bottom: 24px;
     padding: 24px;
@@ -118,13 +118,118 @@
     border-radius: 16px;
 }
 
+/* Card Header with Actions */
+.tdm-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+    gap: 16px;
+}
+
 .tdm-ticket-name {
     font-size: 24px;
     font-weight: 700;
     color: #111827;
-    margin: 0 0 24px 0;
+    margin: 0;
 }
 
+.tdm-name-input {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    border: 2px solid #25532f;
+    border-radius: 8px;
+    padding: 8px 12px;
+    background: #ffffff;
+    flex: 1;
+    min-width: 200px;
+    outline: none;
+}
+
+.tdm-name-input:focus {
+    border-color: #1a3d23;
+    box-shadow: 0 0 0 3px rgba(37, 83, 47, 0.1);
+}
+
+/* Action Buttons */
+.tdm-action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.tdm-edit-btn,
+.tdm-save-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #25532f;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tdm-edit-btn:hover,
+.tdm-save-btn:hover {
+    background: #1a3d23;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(37, 83, 47, 0.3);
+}
+
+.tdm-delete-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #ffffff;
+    color: #dc2626;
+    border: 1px solid #dc2626;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tdm-delete-btn:hover {
+    background: #dc2626;
+    color: #ffffff;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.3);
+}
+
+.tdm-cancel-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    background: #ffffff;
+    color: #6E7A6F;
+    border: 1px solid #E6EAE7;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tdm-cancel-btn:hover {
+    background: #F8F9F6;
+    border-color: #6E7A6F;
+}
+
+.tdm-btn-icon {
+    width: 16px;
+    height: 16px;
+}
+
+/* ========== Stats Grid ========== */
 .tdm-stats-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -151,6 +256,15 @@
     box-shadow: 0 4px 12px rgba(28, 60, 36, 0.08);
 }
 
+.tdm-stat-card.editable {
+    border: 2px solid #25532f;
+    background: #fffef8;
+}
+
+.tdm-stat-card.readonly {
+    opacity: 0.6;
+}
+
 .tdm-stat-label {
     display: flex;
     align-items: center;
@@ -167,6 +281,8 @@
 .tdm-stat-label span {
     font-size: 12px;
     font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
 }
 
 .tdm-stat-value {
@@ -183,7 +299,44 @@
     margin: 0;
 }
 
-/* Users Section */
+/* Stat Input Fields */
+.tdm-stat-input,
+.tdm-stat-input-price {
+    font-size: 24px;
+    font-weight: 700;
+    color: #111827;
+    border: none;
+    background: transparent;
+    width: 100%;
+    padding: 0;
+    outline: none;
+}
+
+.tdm-stat-input-price {
+    font-size: 20px;
+    color: #25532f;
+}
+
+.tdm-stat-input::-webkit-inner-spin-button,
+.tdm-stat-input::-webkit-outer-spin-button,
+.tdm-stat-input-price::-webkit-inner-spin-button,
+.tdm-stat-input-price::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Edit Notice */
+.tdm-edit-notice {
+    margin-top: 16px;
+    padding: 12px;
+    background: #fff7e6;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    font-size: 13px;
+    color: #795548;
+}
+
+/* ========== Users Section ========== */
 .tdm-users-section {
     background: #ffffff;
     border: 1px solid #E6EAE7;
@@ -232,7 +385,7 @@
     font-size: 14px;
 }
 
-/* Users Table */
+/* ========== Users Table ========== */
 .tdm-table-wrapper {
     overflow-x: auto;
 }
@@ -297,7 +450,123 @@
     color: #6E7A6F;
 }
 
-/* Animations */
+/* ========== Delete Confirmation Modal ========== */
+.tdm-delete-backdrop {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    animation: tdmFadeIn 0.2s ease-out;
+}
+
+.tdm-delete-modal {
+    background: #ffffff;
+    border-radius: 16px;
+    padding: 32px;
+    max-width: 440px;
+    width: 100%;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: tdmSlideUp 0.3s ease-out;
+}
+
+.tdm-delete-icon-wrapper {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: #fee2e2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+}
+
+.tdm-delete-icon {
+    width: 28px;
+    height: 28px;
+    color: #dc2626;
+}
+
+.tdm-delete-title {
+    font-size: 20px;
+    font-weight: 700;
+    color: #111827;
+    text-align: center;
+    margin: 0 0 12px 0;
+}
+
+.tdm-delete-description {
+    font-size: 14px;
+    color: #6E7A6F;
+    text-align: center;
+    margin: 0 0 16px 0;
+}
+
+.tdm-delete-description strong {
+    color: #111827;
+}
+
+.tdm-delete-warning {
+    padding: 16px;
+    background: #fff3cd;
+    border: 1px solid #ffc107;
+    border-radius: 8px;
+    margin-bottom: 24px;
+}
+
+.tdm-delete-warning p {
+    font-size: 13px;
+    color: #795548;
+    margin: 0;
+    line-height: 1.6;
+}
+
+.tdm-delete-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.tdm-delete-cancel {
+    flex: 1;
+    padding: 12px 24px;
+    background: #F8F9F6;
+    color: #111827;
+    border: 1px solid #E6EAE7;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tdm-delete-cancel:hover {
+    background: #E6EAE7;
+    border-color: #6E7A6F;
+}
+
+.tdm-delete-confirm {
+    flex: 1;
+    padding: 12px 24px;
+    background: #dc2626;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.tdm-delete-confirm:hover {
+    background: #b91c1c;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(220, 38, 38, 0.4);
+}
+
+/* ========== Animations ========== */
 @keyframes tdmFadeIn {
     from {
         opacity: 0;
@@ -326,10 +595,11 @@
     }
 }
 
-/* Responsive */
+/* ========== Responsive ========== */
 @media (max-width: 768px) {
     .tdm-container {
         max-height: 95vh;
+        border-radius: 12px;
     }
 
     .tdm-content {
@@ -340,8 +610,64 @@
         padding: 16px;
     }
 
+    .tdm-card-header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .tdm-action-buttons {
+        width: 100%;
+    }
+
+    .tdm-edit-btn,
+    .tdm-save-btn,
+    .tdm-delete-btn,
+    .tdm-cancel-btn {
+        flex: 1;
+        justify-content: center;
+    }
+
+    .tdm-stats-grid {
+        grid-template-columns: 1fr;
+    }
+
     .tdm-table th,
     .tdm-table td {
         padding: 12px 16px;
+    }
+
+    .tdm-delete-modal {
+        padding: 24px;
+    }
+}
+
+@media (max-width: 480px) {
+    .tdm-backdrop {
+        padding: 0;
+    }
+
+    .tdm-container {
+        max-height: 100vh;
+        border-radius: 0;
+    }
+
+    .tdm-header {
+        padding: 16px;
+    }
+
+    .tdm-title {
+        font-size: 18px;
+    }
+
+    .tdm-content {
+        padding: 12px;
+    }
+
+    .tdm-ticket-name {
+        font-size: 20px;
+    }
+
+    .tdm-name-input {
+        font-size: 20px;
     }
 }
