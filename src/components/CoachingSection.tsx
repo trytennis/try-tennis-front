@@ -54,7 +54,6 @@ const CoachingSection: React.FC<Props> = ({ analyzedVideoId, selectedVideo, defa
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [analyzedVideoId, roleLoading, role]);
 
-    // ✅ 누구나 요청 가능: 가드 제거
     const openCreateModal = async () => {
         try {
             const list = await fetchMyFacilityCoaches({ is_active: true, limit: 200 });

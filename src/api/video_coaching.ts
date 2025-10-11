@@ -1,4 +1,5 @@
 // src/api/video_coaching.ts
+import type { AIVideoComment } from "../types/AIComment";
 import type { CoachLite } from "../types/Coach";
 import type { CoachingComment } from "../types/CoachingComment";
 import type { CoachingRequest, CoachingRequestStatus } from "../types/CoachingRequest";
@@ -96,4 +97,33 @@ export async function fetchMyFacilityCoaches(params?: {
     qs.set("offset", String(params?.offset ?? 0));
     const query = qs.toString() ? `?${qs.toString()}` : "";
     return authGet<CoachLite[]>(`/api/my-facility/staff${query}`);
+}
+
+// =====================
+// AI Coaching (두 줄 평)
+// =====================
+
+export class AiCoachingApi {
+    /** 단일 조회 (없으면 204) */
+    static async get(videoId: string): Promise<AIVideoComment | null> {
+        try {
+            const res = await authGet<AIVideoComment>(`/api/coaching/${videoId}/ai/comment`);
+            return res;
+        } catch (e: any) {
+            // authGet가 204를 예외로 처리한다면 여기에서 null 반환
+            if (e?.status === 204) return null;
+            throw e;
+        }
+    }
+
+    /** 생성(기본) 또는 교체(replace=true) */
+    static async createOrReplace(
+        videoId: string,
+        opts?: { model?: string; replace?: boolean }
+    ): Promise<AIVideoComment> {
+        const payload: Record<string, any> = {};
+        if (opts?.model) payload.model = opts.model;
+        if (opts?.replace !== undefined) payload.replace = opts.replace;
+        return authPost<AIVideoComment>(`/api/coaching/${videoId}/ai/comment`, payload);
+    }
 }
