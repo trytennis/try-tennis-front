@@ -10,6 +10,7 @@ import AnalysisHistoryItem from "../components/AnalysisHistoryItem";
 import { formatDateTime } from "../utils/format";
 import "../styles/VideoAnalysisPage.css";
 import CoachingSection from "../components/CoachingSection";
+import AICoachingSection from "../components/AICoachingSection";
 
 const VideoAnalysisPage: React.FC = () => {
   const [view, setView] = useState<"upload" | "history">("upload");
@@ -170,6 +171,7 @@ const VideoAnalysisPage: React.FC = () => {
 
                 <CoachingSection analyzedVideoId={selectedVideo.id} selectedVideo={selectedVideo} />
 
+                <AICoachingSection videoId={selectedVideo.id} />
               </>
             )}
           </div>
