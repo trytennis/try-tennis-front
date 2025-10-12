@@ -1,6 +1,6 @@
 // AICoachingSection.tsx
 import React, { useState, useEffect, useCallback } from "react";
-import { Sparkles, Copy, Check } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { AiCoachingApi } from "../api/video_coaching";
 import "../styles/AICoachingSection.css";
 import type { AIVideoComment } from "../types/AIComment";
@@ -14,15 +14,17 @@ const AICoachingSection: React.FC<AICoachingSectionProps> = ({ videoId }) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [isGenerating, setIsGenerating] = useState<boolean>(false);
     const [error, setError] = useState<string | null>(null);
-    const [copiedKey, setCopiedKey] = useState<"line1" | "line2" | null>(null);
 
+    // 초기 로딩: 코멘트 존재 여부만 확인
     const load = useCallback(async () => {
         setIsLoading(true);
         setError(null);
         try {
             const res = await AiCoachingApi.get(videoId);
-            setComment(res);
+            setComment(res); // null이면 null로 설정
         } catch (e: any) {
+            // 204는 정상 케이스이므로 에러로 처리하지 않음
+            console.error("AI 코멘트 조회 실패:", e);
             setError(e?.message ?? "AI 코멘트를 불러오지 못했어요.");
         } finally {
             setIsLoading(false);
@@ -33,6 +35,7 @@ const AICoachingSection: React.FC<AICoachingSectionProps> = ({ videoId }) => {
         void load();
     }, [load]);
 
+    // 사용자가 버튼 클릭 시에만 생성 요청
     const handleGenerate = async () => {
         setIsGenerating(true);
         setError(null);
@@ -46,21 +49,16 @@ const AICoachingSection: React.FC<AICoachingSectionProps> = ({ videoId }) => {
         }
     };
 
-    const handleCopy = (text: string, key: "line1" | "line2") => {
-        navigator.clipboard.writeText(text);
-        setCopiedKey(key);
-        setTimeout(() => setCopiedKey(null), 1500);
-    };
-
     return (
         <section className="aicoach">
             <div className="aicoach__header">
-                <h3 className="aicoach__title">
+                <h4 className="aicoach__title">
                     <Sparkles size={18} className="aicoach__icon" />
                     AI 코칭
-                </h3>
+                </h4>
             </div>
 
+            {/* 초기 로딩 */}
             {isLoading && (
                 <div className="aicoach__loading">
                     <div className="aicoach__spinner" />
@@ -68,6 +66,7 @@ const AICoachingSection: React.FC<AICoachingSectionProps> = ({ videoId }) => {
                 </div>
             )}
 
+            {/* 생성 중 */}
             {isGenerating && (
                 <div className="aicoach__loading">
                     <div className="aicoach__spinner" />
@@ -75,15 +74,24 @@ const AICoachingSection: React.FC<AICoachingSectionProps> = ({ videoId }) => {
                 </div>
             )}
 
-            {error && !isLoading && !isGenerating && (
+            {/* 에러 상태 (조회 중 에러 발생) */}
+            {error && !isLoading && !isGenerating && !comment && (
                 <div className="aicoach__error">
                     <p className="aicoach__error-text">⚠️ {error}</p>
-                    <button className="aicoach__btn" onClick={handleGenerate}>
-                        다시 시도
+                    <button className="aicoach__btn" onClick={load}>
+                        다시 불러오기
                     </button>
                 </div>
             )}
 
+            {/* 생성 중 에러 */}
+            {error && !isLoading && !isGenerating && comment && (
+                <div className="aicoach__error">
+                    <p className="aicoach__error-text">⚠️ {error}</p>
+                </div>
+            )}
+
+            {/* 코멘트 없음 - 생성 버튼 표시 */}
             {!comment && !isLoading && !isGenerating && !error && (
                 <div className="aicoach__empty">
                     <p className="aicoach__empty-text">아직 생성된 AI 코멘트가 없어요.</p>
@@ -94,19 +102,14 @@ const AICoachingSection: React.FC<AICoachingSectionProps> = ({ videoId }) => {
                 </div>
             )}
 
+            {/* 코멘트 표시 */}
             {comment && !isLoading && !isGenerating && (
                 <div className="aicoach__feedback">
                     <div className="aicoach__item">
-                        <div className="aicoach__item-header">
-                            {/* <span className="aicoach__label">⚡ 속도</span> */}
-                        </div>
                         <p className="aicoach__text">{comment.structured.line1}</p>
                     </div>
 
                     <div className="aicoach__item">
-                        <div className="aicoach__item-header">
-                            {/* <span className="aicoach__label">📐 각도</span> */}
-                        </div>
                         <p className="aicoach__text">{comment.structured.line2}</p>
                     </div>
 

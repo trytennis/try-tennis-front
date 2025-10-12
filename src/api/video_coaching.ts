@@ -100,23 +100,36 @@ export async function fetchMyFacilityCoaches(params?: {
 }
 
 // =====================
-// AI Coaching (두 줄 평)
+// AI Coaching 
 // =====================
 
 export class AiCoachingApi {
-    /** 단일 조회 (없으면 204) */
+    /** 
+     * AI 코멘트 조회
+     * @returns AIVideoComment | null (없으면 null)
+     */
     static async get(videoId: string): Promise<AIVideoComment | null> {
         try {
-            const res = await authGet<AIVideoComment>(`/api/coaching/${videoId}/ai/comment`);
+            const res = await authGet<AIVideoComment>(
+                `/api/coaching/${videoId}/ai/comment`
+            );
             return res;
         } catch (e: any) {
-            // authGet가 204를 예외로 처리한다면 여기에서 null 반환
-            if (e?.status === 204) return null;
+            // 204 No Content = 아직 AI 코멘트 없음
+            if (e?.status === 204 || e?.response?.status === 204) {
+                return null;
+            }
             throw e;
         }
     }
 
-    /** 생성(기본) 또는 교체(replace=true) */
+    /** 
+     * AI 코멘트 생성 또는 교체
+     * @param videoId - 분석 영상 ID
+     * @param opts.model - OpenAI 모델명 (기본: gpt-4o-mini)
+     * @param opts.replace - true면 기존 교체, false면 신규 생성
+     * @returns 생성/수정된 AI 코멘트
+     */
     static async createOrReplace(
         videoId: string,
         opts?: { model?: string; replace?: boolean }
@@ -124,6 +137,40 @@ export class AiCoachingApi {
         const payload: Record<string, any> = {};
         if (opts?.model) payload.model = opts.model;
         if (opts?.replace !== undefined) payload.replace = opts.replace;
-        return authPost<AIVideoComment>(`/api/coaching/${videoId}/ai/comment`, payload);
+
+        return authPost<AIVideoComment>(
+            `/api/coaching/${videoId}/ai/comment`,
+            payload
+        );
+    }
+
+    /**
+     * AI 코멘트 새로고침 (기존 있으면 교체, 없으면 생성)
+     * @param videoId - 분석 영상 ID
+     * @param model - OpenAI 모델명
+     */
+    static async refresh(
+        videoId: string,
+        model: string = 'gpt-4o-mini'
+    ): Promise<AIVideoComment> {
+        try {
+            // 먼저 기존 코멘트 확인
+            const existing = await this.get(videoId);
+
+            // 있으면 교체, 없으면 생성
+            return await this.createOrReplace(videoId, {
+                model,
+                replace: existing !== null
+            });
+        } catch (e: any) {
+            // 409 Conflict (이미 존재) → replace로 재시도
+            if (e?.status === 409 || e?.response?.status === 409) {
+                return await this.createOrReplace(videoId, {
+                    model,
+                    replace: true
+                });
+            }
+            throw e;
+        }
     }
 }
