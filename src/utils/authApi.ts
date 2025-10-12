@@ -37,29 +37,50 @@ async function request<T>(path: string, init: RequestInit): Promise<T> {
         await supabase.auth.signOut().catch(() => { });
         throw new Error("인증이 필요합니다. 다시 로그인해 주세요.");
     }
+
+    // 204 No Content는 null 반환 (JSON 파싱 시도 안 함)
+    if (res.status === 204) {
+        return null as T;
+    }
+
     if (!res.ok) {
         const txt = await res.text();
         throw new Error(txt || `API 요청 실패: ${res.status}`);
     }
-    return res.json();
+
+    // 응답 본문 확인 후 JSON 파싱
+    const text = await res.text();
+    if (!text || text.trim() === '') {
+        return null as T;
+    }
+
+    try {
+        return JSON.parse(text);
+    } catch (e) {
+        throw new Error(`JSON 파싱 실패: ${text}`);
+    }
 }
 
 export async function authPost<T = any>(path: string, body: object): Promise<T> {
     const headers = await buildHeaders(true);
     return request<T>(path, { method: "POST", headers, body: JSON.stringify(body), credentials: "include" });
 }
+
 export async function authPut<T = any>(path: string, body: object): Promise<T> {
     const headers = await buildHeaders(true);
     return request<T>(path, { method: "PUT", headers, body: JSON.stringify(body), credentials: "include" });
 }
+
 export async function authGet<T = any>(path: string): Promise<T> {
     const headers = await buildHeaders(false);
     return request<T>(path, { method: "GET", headers, credentials: "include" });
 }
+
 export async function authPatch<T = any>(path: string, body: object): Promise<T> {
     const headers = await buildHeaders(true);
     return request<T>(path, { method: "PATCH", headers, body: JSON.stringify(body), credentials: "include" });
 }
+
 export async function authDelete<T = any>(path: string): Promise<T> {
     const headers = await buildHeaders(false);
     return request<T>(path, { method: "DELETE", headers, credentials: "include" });
