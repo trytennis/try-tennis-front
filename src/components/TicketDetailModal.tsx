@@ -1,6 +1,18 @@
 // TicketDetailModal.tsx
 import React, { useEffect, useState } from 'react';
-import { X, Users, Calendar, Clock, DollarSign, ChevronLeft, Edit2, Trash2, Save, XCircle } from 'lucide-react';
+import {
+    X,
+    Users,
+    Calendar,
+    Clock,
+    DollarSign,
+    ChevronLeft,
+    Edit2,
+    Trash2,
+    Save,
+    XCircle,
+    Building2
+} from 'lucide-react';
 import '../styles/TicketDetailModal.css';
 import type { Ticket } from '../types/Ticket';
 import type { AssignedUser } from '../types/AssignedUser';
@@ -35,7 +47,7 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
                 try {
                     const [ticketData, userList] = await Promise.all([
                         TicketsApi.getById(ticketId),
-                        TicketsApi.listUsers(ticketId),
+                        TicketsApi.listUsers(ticketId)
                     ]);
                     setOriginalTicket(ticketData);
                     setEditedTicket(ticketData);
@@ -67,7 +79,7 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
                 name: editedTicket.name,
                 lesson_count: Number(editedTicket.lesson_count),
                 valid_days: Number(editedTicket.valid_days),
-                price: Number(editedTicket.price),
+                price: Number(editedTicket.price)
             });
             setOriginalTicket(editedTicket);
             setMode('view');
@@ -106,16 +118,14 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
 
         // 회당 가격 자동 계산
         if (field === 'price' || field === 'lesson_count') {
-            updated.price_per_lesson = updated.lesson_count > 0
-                ? Math.round(updated.price / updated.lesson_count)
-                : 0;
+            updated.price_per_lesson =
+                updated.lesson_count > 0 ? Math.round(updated.price / updated.lesson_count) : 0;
         }
 
         setEditedTicket(updated);
     };
 
-    const fmtDate = (iso?: string | null) =>
-        iso ? new Date(iso).toLocaleDateString('ko-KR') : '-';
+    const fmtDate = (iso?: string | null) => (iso ? new Date(iso).toLocaleDateString('ko-KR') : '-');
 
     const handleBackdropClick = (e: React.MouseEvent) => {
         if (e.target === e.currentTarget) {
@@ -158,16 +168,25 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
                                 <div className="tdm-info-card">
                                     {/* Card Header with Actions */}
                                     <div className="tdm-card-header">
-                                        {mode === 'edit' ? (
-                                            <input
-                                                type="text"
-                                                value={ticket.name}
-                                                onChange={(e) => handleInputChange('name', e.target.value)}
-                                                className="tdm-name-input"
-                                            />
-                                        ) : (
-                                            <h3 className="tdm-ticket-name">{ticket.name}</h3>
-                                        )}
+                                        <div className="tdm-title-wrap">
+                                            {!!ticket.facility_name && (
+                                                <div className="tdm-facility-badge">
+                                                    <Building2 className="tdm-facility-icon" />
+                                                    {ticket.facility_name}
+                                                </div>
+                                            )}
+
+                                            {mode === 'edit' ? (
+                                                <input
+                                                    type="text"
+                                                    value={ticket.name}
+                                                    onChange={(e) => handleInputChange('name', e.target.value)}
+                                                    className="tdm-name-input"
+                                                />
+                                            ) : (
+                                                <h3 className="tdm-ticket-name">{ticket.name}</h3>
+                                            )}
+                                        </div>
 
                                         <div className="tdm-action-buttons">
                                             {mode === 'view' ? (
@@ -248,9 +267,7 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
                                                     className="tdm-stat-input-price"
                                                 />
                                             ) : (
-                                                <p className="tdm-stat-value-price">
-                                                    {ticket.price.toLocaleString()}원
-                                                </p>
+                                                <p className="tdm-stat-value-price">{ticket.price.toLocaleString()}원</p>
                                             )}
                                         </div>
 
@@ -284,9 +301,7 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
                                     </div>
 
                                     {users.length === 0 ? (
-                                        <div className="tdm-users-empty">
-                                            아직 이 수강권을 배정받은 유저가 없습니다.
-                                        </div>
+                                        <div className="tdm-users-empty">아직 이 수강권을 배정받은 유저가 없습니다.</div>
                                     ) : (
                                         <div className="tdm-table-wrapper">
                                             <table className="tdm-table">
@@ -303,9 +318,7 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
                                                         <tr key={user.user_id}>
                                                             <td className="tdm-user-name">{user.name}</td>
                                                             <td>
-                                                                <span className="tdm-remaining-badge">
-                                                                    {user.remaining_count}회
-                                                                </span>
+                                                                <span className="tdm-remaining-badge">{user.remaining_count}회</span>
                                                             </td>
                                                             <td className="tdm-user-date">{fmtDate(user.assigned_at)}</td>
                                                             <td className="tdm-user-date">{fmtDate(user.expires_at)}</td>
@@ -338,21 +351,16 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
 
                         <div className="tdm-delete-warning">
                             <p>
-                                ⚠️ <strong>현재 {users.length}명</strong>의 회원이 이 수강권을 사용 중입니다.<br />
+                                ⚠️ <strong>현재 {users.length}명</strong>의 회원이 이 수강권을 사용 중입니다.
+                                <br />
                             </p>
                         </div>
 
                         <div className="tdm-delete-actions">
-                            <button
-                                onClick={() => setShowDeleteConfirm(false)}
-                                className="tdm-delete-cancel"
-                            >
+                            <button onClick={() => setShowDeleteConfirm(false)} className="tdm-delete-cancel">
                                 취소
                             </button>
-                            <button
-                                onClick={confirmDelete}
-                                className="tdm-delete-confirm"
-                            >
+                            <button onClick={confirmDelete} className="tdm-delete-confirm">
                                 삭제하기
                             </button>
                         </div>

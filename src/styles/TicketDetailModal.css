@@ -78,6 +78,33 @@
     margin: 0;
 }
 
+.tdm-title-wrap {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.tdm-facility-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    width: fit-content;
+    padding: 4px 10px;
+    background: linear-gradient(135deg, #f0fdf4, #dcfce7);
+    border: 1px solid #86efac;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #059669;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.tdm-facility-icon {
+    width: 12px;
+    height: 12px;
+}
+
 /* ========== Modal Content ========== */
 .tdm-content {
     overflow-y: auto;
