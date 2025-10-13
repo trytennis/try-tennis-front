@@ -32,15 +32,26 @@ const TicketsPage: React.FC = () => {
 
     const handleAddSubmit = async (payload: NewTicketPayload) => {
         const created = await TicketsApi.create(payload);
-        if (typeof (created as any).price_per_lesson !== 'number') {
-            (created as any).price_per_lesson = Math.floor(
-                created.price / created.lesson_count
-            );
-        }
-        // 빠르게 반영하려면 낙관적 추가
-        setTickets((prev) => [created, ...prev]);
+
+        const count = Number(created.lesson_count) || 0;
+        const price = Number(created.price) || 0;
+        const ppl =
+            created.price_per_lesson != null
+                ? Number(created.price_per_lesson)
+                : (count > 0 ? Math.floor(price / count) : 0);
+
+        const normalized: Ticket = {
+            ...created,
+            price: price,
+            lesson_count: count,
+            price_per_lesson: Number.isFinite(ppl) ? ppl : 0,
+        } as Ticket;
+
+        // 낙관적 반영
+        setTickets((prev) => [normalized, ...prev]);
         alert('수강권이 추가되었습니다!');
-        // 혹시 서버 정렬/계산 필드 차이가 있으면 아래 재조회로 동기화
+
+        // 서버 정렬/계산과 동기화
         await fetchTickets();
     };
 
@@ -69,25 +80,14 @@ const TicketsPage: React.FC = () => {
 
                 <div className="ticket-grid">
                     {isLoading
-                        ? Array.from({ length: 3 }).map((_, i) => (
-                            <TicketSkeletonCard key={i} />
-                        ))
-                        : tickets.map((ticket) => {
-                            const ppl =
-                                (ticket as any).price_per_lesson ??
-                                Math.floor(ticket.price / ticket.lesson_count);
-                            return (
-                                <TicketCard
-                                    key={ticket.id}
-                                    name={ticket.name}
-                                    count={ticket.lesson_count}
-                                    duration={`${ticket.valid_days}일`}
-                                    price={`${ticket.price.toLocaleString()}원`}
-                                    pricePer={`${ppl.toLocaleString()}원`}
-                                    onClick={() => handleTicketClick(ticket.id)}
-                                />
-                            );
-                        })}
+                        ? Array.from({ length: 3 }).map((_, i) => <TicketSkeletonCard key={i} />)
+                        : tickets.map((ticket) => (
+                            <TicketCard
+                                key={ticket.id}
+                                ticket={ticket}
+                                onClick={() => handleTicketClick(ticket.id)}
+                            />
+                        ))}
                 </div>
             </div>
 
