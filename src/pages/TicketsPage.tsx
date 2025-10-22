@@ -103,6 +103,7 @@ const TicketsPage: React.FC = () => {
                 isOpen={isDetailModalOpen}
                 onClose={handleCloseDetailModal}
                 ticketId={selectedTicketId}
+                onUpdate={fetchTickets} // 수정/삭제 후 리스트 새로고침
             />
         </div>
     );
