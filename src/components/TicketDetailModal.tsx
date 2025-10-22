@@ -113,17 +113,26 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
     const handleInputChange = (field: keyof Ticket, value: string | number) => {
         if (!editedTicket) return;
 
-        const newValue = typeof value === 'string' ? parseFloat(value) || 0 : value;
+        let newValue: string | number = value;
+
+        // 숫자 필드만 parse
+        if (["lesson_count", "valid_days", "price", "price_per_lesson"].includes(field)) {
+            newValue = typeof value === "string" ? Number(value) || 0 : value;
+        }
+
         const updated = { ...editedTicket, [field]: newValue };
 
         // 회당 가격 자동 계산
-        if (field === 'price' || field === 'lesson_count') {
+        if (field === "price" || field === "lesson_count") {
             updated.price_per_lesson =
-                updated.lesson_count > 0 ? Math.round(updated.price / updated.lesson_count) : 0;
+                updated.lesson_count > 0
+                    ? Math.round(updated.price / updated.lesson_count)
+                    : 0;
         }
 
         setEditedTicket(updated);
     };
+
 
     const fmtDate = (iso?: string | null) => (iso ? new Date(iso).toLocaleDateString('ko-KR') : '-');
 
