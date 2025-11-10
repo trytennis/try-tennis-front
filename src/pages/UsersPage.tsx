@@ -22,7 +22,7 @@ const UsersPage: React.FC = () => {
     }, []);
 
     return (
-        <div className="page-container">
+        <div className="users-page-main">
             <div className="user-header">
                 {/* <h2>회원 관리</h2> */}
                 {/* <button className="add-button" onClick={() => navigate('/users/new')}>
