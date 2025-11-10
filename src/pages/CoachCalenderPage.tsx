@@ -22,14 +22,14 @@ const CoachCalendar = () => {
         includeCancelled: false,
     });
 
-  // 월 범위 계산: 로컬 기준으로 1일 ~ 말일 반환
-  const getMonthRange = (date: Date) => {
-    const y = date.getFullYear();
-    const m = date.getMonth(); // 0=1월
-    const startDate = new Date(y, m, 1);        // 로컬타임 1일 00:00
-    const endDate   = new Date(y, m + 1, 0);    // 로컬타임 말일 00:00
-    return { start: formatLocalDate(startDate), end: formatLocalDate(endDate) };
-  };
+    // 월 범위 계산: 로컬 기준으로 1일 ~ 말일 반환
+    const getMonthRange = (date: Date) => {
+        const y = date.getFullYear();
+        const m = date.getMonth(); // 0=1월
+        const startDate = new Date(y, m, 1);        // 로컬타임 1일 00:00
+        const endDate = new Date(y, m + 1, 0);    // 로컬타임 말일 00:00
+        return { start: formatLocalDate(startDate), end: formatLocalDate(endDate) };
+    };
 
     const fetchSchedule = async () => {
         setLoading(true);
@@ -125,6 +125,8 @@ const CoachCalendar = () => {
                             // 정책상: completed/cancelled/confirmed만 허용 (백엔드가드 있음)
                             await updateReservationStatus(eventId, newStatus as any);
                             await fetchSchedule();
+                            setIsModalOpen(false);            // 성공 시 모달 닫기
+                            setSelectedEvent(null);
                         } catch (e: any) {
                             alert(e?.message || "상태 변경에 실패했습니다.");
                         }
