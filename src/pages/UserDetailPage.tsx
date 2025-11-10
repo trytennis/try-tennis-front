@@ -6,7 +6,7 @@ import '../styles/UserDetailPage.css';
 import AssignTicketModal from '../components/AssignTicketModal';
 import { formatDate, formatPrice } from '../utils/format';
 import UserInfoCard from '../components/UserInfoCard';
-import { authGet, authPut } from '../utils/authApi';
+import { authGet, authPut, authDelete } from '../utils/authApi';
 
 const UserDetailPage = () => {
     const { userId } = useParams();
@@ -21,6 +21,7 @@ const UserDetailPage = () => {
         birthdate: null
     });
     const [saving, setSaving] = useState(false);
+    const [deleting, setDeleting] = useState(false);
     const navigate = useNavigate();
 
     const fetchData = async () => {
@@ -30,7 +31,6 @@ const UserDetailPage = () => {
             const userTickets = await authGet<UserTicket[]>(`/api/users/${userId}/tickets`);
             setUser(user);
             setTickets(userTickets);
-            // 사용자 정보를 form에도 설정
             setForm({
                 name: user.name,
                 gender: user.gender,
@@ -44,7 +44,7 @@ const UserDetailPage = () => {
 
     const handleSave = async () => {
         if (!userId || !user) return;
-        
+
         setSaving(true);
         try {
             const updatedUser = await authPut<User>(`/api/users/${userId}`, form);
@@ -61,7 +61,6 @@ const UserDetailPage = () => {
 
     const handleCancel = () => {
         if (!user) return;
-        // 원래 값으로 복원
         setForm({
             name: user.name,
             gender: user.gender,
@@ -69,6 +68,35 @@ const UserDetailPage = () => {
             birthdate: user.birthdate
         });
         setEditing(false);
+    };
+
+    // 삭제 핸들러
+    const handleDelete = async () => {
+        if (!userId || !user) return;
+
+        // 1차 확인
+        const ok1 = window.confirm(
+            `정말로 ‘${user.name || '이 회원'}’을(를) 삭제(탈퇴 처리)하시겠어요?\n이 작업은 되돌릴 수 없습니다.`
+        );
+        if (!ok1) return;
+
+        // 2차 확인(안전장치)
+        const ok2 = window.confirm(
+            '삭제 시 로그인은 차단되고, 재가입 시 새 프로필로 시작합니다.'
+        );
+        if (!ok2) return;
+
+        setDeleting(true);
+        try {
+            await authDelete(`/api/users/${userId}`);
+            // 목록으로 이동 (필요시 토스트 상태 전달)
+            navigate('/users', { state: { toast: { type: 'success', message: '회원이 삭제되었습니다.' } } });
+        } catch (err) {
+            console.error('회원 삭제 실패', err);
+            alert('삭제에 실패했습니다. 잠시 후 다시 시도해주세요.');
+        } finally {
+            setDeleting(false);
+        }
     };
 
     useEffect(() => {
@@ -91,8 +119,8 @@ const UserDetailPage = () => {
                 <div className="header-right">
                     {editing ? (
                         <>
-                            <button 
-                                className="save-button" 
+                            <button
+                                className="save-button"
                                 onClick={handleSave}
                                 disabled={saving}
                             >
@@ -101,13 +129,24 @@ const UserDetailPage = () => {
                             <button className="cancel-button" onClick={handleCancel}>취소</button>
                         </>
                     ) : (
-                        <button className="edit-button" onClick={() => setEditing(true)}>수정</button>
+                        <>
+                            <button className="edit-button" onClick={() => setEditing(true)}>수정</button>
+                            {/* 삭제 버튼 */}
+                            <button
+                                className="delete-button"
+                                onClick={handleDelete}
+                                disabled={deleting}
+                                title="회원 삭제"
+                            >
+                                {deleting ? '삭제 중...' : '삭제'}
+                            </button>
+                        </>
                     )}
                 </div>
             </div>
 
             <section className="card-section">
-                <UserInfoCard 
+                <UserInfoCard
                     user={user}
                     editing={editing}
                     form={form}
@@ -120,7 +159,6 @@ const UserDetailPage = () => {
                     <h3>현재 수강권</h3>
                 </div>
                 <div className='ticket-list-row'>
-                    {/* 배정 카드 */}
                     <button className="assign-card-button" onClick={() => setShowModal(true)}>
                         <span className="plus-icon">＋</span>
                     </button>
