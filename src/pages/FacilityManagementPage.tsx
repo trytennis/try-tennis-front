@@ -4,6 +4,25 @@ import '../styles/FacilityPage.css';
 import { FacilitiesApi } from '../api/facility';
 import type { Facility, FacilityCreatePayload, FacilityUpdatePayload } from '../types/FacilityData';
 
+const getFacilityDeleteErrorMessage = (err: unknown) => {
+    const fallback = '시설 삭제에 실패했습니다.';
+    const raw = err instanceof Error ? err.message : '';
+
+    if (!raw) return fallback;
+
+    try {
+        const parsed = JSON.parse(raw);
+        if (parsed?.profile_count || parsed?.ticket_count) {
+            return `소속 인원 ${parsed.profile_count ?? 0}명, 수강권 ${parsed.ticket_count ?? 0}개가 남아 있어 시설을 삭제할 수 없습니다. 먼저 소속 변경 또는 삭제를 처리해주세요.`;
+        }
+        if (parsed?.error) return parsed.error;
+    } catch {
+        // Plain-text error messages are shown below.
+    }
+
+    return raw || fallback;
+};
+
 const FacilityManagementPage: React.FC = () => {
     const [facilities, setFacilities] = useState<Facility[]>([]);
     const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
@@ -104,7 +123,7 @@ const FacilityManagementPage: React.FC = () => {
             setSuccessMessage('시설이 성공적으로 삭제되었습니다.');
             loadFacilities();
         } catch (err) {
-            setError('시설 삭제에 실패했습니다.');
+            setError(getFacilityDeleteErrorMessage(err));
             console.error(err);
         } finally {
             setLoading(false);
