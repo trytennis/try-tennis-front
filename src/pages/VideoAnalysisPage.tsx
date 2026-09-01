@@ -28,7 +28,7 @@ const VideoAnalysisPage: React.FC = () => {
   useEffect(() => {
     (async () => {
       try {
-        const list = await fetchAnalysisHistory(10, 0);
+        const list = await fetchAnalysisHistory(50, 0);
         setVideoHistory(list);
         setSelectedIndex(0);
       } catch {
