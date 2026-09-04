@@ -1,0 +1,210 @@
+.screen-admin {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px;
+  color: var(--txt-strong);
+}
+
+.screen-admin__header,
+.screen-admin__toolbar,
+.screen-admin__tablet,
+.screen-admin__form,
+.screen-admin__panel {
+  border: 1px solid var(--bd-soft);
+  border-radius: 10px;
+  background: var(--bg-card);
+}
+
+.screen-admin__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 22px 24px;
+  margin-bottom: 18px;
+}
+
+.screen-admin__header p {
+  margin: 0 0 6px;
+  color: var(--txt-muted);
+  font-weight: 700;
+}
+
+.screen-admin__header h1 {
+  margin: 0;
+  font-size: 30px;
+}
+
+.screen-admin button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border: 0;
+  border-radius: 8px;
+  padding: 10px 14px;
+  background: var(--green-700);
+  color: #fff;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.screen-admin button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.screen-admin__notice {
+  margin-bottom: 14px;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: #fff7d6;
+  color: #755915;
+  font-weight: 700;
+}
+
+.screen-admin__toolbar {
+  display: grid;
+  grid-template-columns: minmax(240px, 1fr) 180px auto;
+  gap: 14px;
+  align-items: end;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.screen-admin label {
+  display: grid;
+  gap: 6px;
+  color: var(--txt-muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.screen-admin input,
+.screen-admin select {
+  min-height: 42px;
+  border: 1px solid var(--bd-soft);
+  border-radius: 8px;
+  padding: 0 12px;
+  color: var(--txt-strong);
+  font-size: 14px;
+}
+
+.screen-admin__toolbar > div {
+  display: flex;
+  gap: 8px;
+}
+
+.screen-admin__toolbar span {
+  min-height: 42px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 8px;
+  padding: 0 12px;
+  background: var(--bg-soft);
+  color: var(--green-700);
+  font-weight: 900;
+}
+
+.screen-admin__tablet {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 16px;
+  margin-bottom: 14px;
+}
+
+.screen-admin__tablet strong,
+.screen-admin__tablet span {
+  display: block;
+}
+
+.screen-admin__tablet span {
+  margin-top: 4px;
+  color: var(--txt-muted);
+  font-size: 13px;
+  word-break: break-all;
+}
+
+.screen-admin__form {
+  display: grid;
+  grid-template-columns: 1.5fr 90px 120px 120px 120px auto;
+  gap: 10px;
+  padding: 16px;
+  margin-bottom: 18px;
+}
+
+.screen-admin__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 18px;
+}
+
+.screen-admin__panel {
+  padding: 18px;
+}
+
+.screen-admin__panel h2 {
+  margin: 0 0 14px;
+  font-size: 20px;
+}
+
+.screen-admin__rooms,
+.screen-admin__reservations {
+  display: grid;
+  gap: 10px;
+}
+
+.screen-admin__rooms article,
+.screen-admin__reservations article {
+  display: grid;
+  grid-template-columns: 1fr 140px auto;
+  gap: 10px;
+  align-items: center;
+  border: 1px solid var(--bd-soft);
+  border-radius: 8px;
+  padding: 12px;
+  background: var(--bg-soft);
+}
+
+.screen-admin__rooms strong,
+.screen-admin__rooms span,
+.screen-admin__reservations strong,
+.screen-admin__reservations span {
+  display: block;
+}
+
+.screen-admin__rooms span,
+.screen-admin__reservations span {
+  margin-top: 5px;
+  color: var(--txt-muted);
+  font-size: 13px;
+}
+
+.screen-admin__reservations em {
+  justify-self: start;
+  border-radius: 999px;
+  padding: 5px 9px;
+  background: #eef6ff;
+  color: var(--info-500);
+  font-style: normal;
+  font-size: 12px;
+  font-weight: 900;
+}
+
+.screen-admin__reservations button {
+  background: var(--error-500);
+}
+
+@media (max-width: 920px) {
+  .screen-admin__toolbar,
+  .screen-admin__form,
+  .screen-admin__grid {
+    grid-template-columns: 1fr;
+  }
+
+  .screen-admin__rooms article,
+  .screen-admin__reservations article {
+    grid-template-columns: 1fr;
+  }
+}

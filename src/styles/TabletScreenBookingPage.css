@@ -1,0 +1,198 @@
+.tablet-screen {
+  min-height: 100vh;
+  display: grid;
+  align-content: start;
+  gap: 18px;
+  padding: 28px;
+  background: #f5f7f4;
+  color: #1f2a36;
+}
+
+.tablet-screen header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 10px;
+  padding: 26px;
+  background: #355b43;
+  color: #fff;
+}
+
+.tablet-screen header span {
+  display: block;
+  margin-bottom: 8px;
+  font-size: 18px;
+  font-weight: 800;
+  opacity: 0.9;
+}
+
+.tablet-screen h1,
+.tablet-screen h2,
+.tablet-screen p {
+  margin: 0;
+}
+
+.tablet-screen h1 {
+  font-size: 42px;
+}
+
+.tablet-screen h2 {
+  font-size: 24px;
+}
+
+.tablet-screen header button,
+.tablet-screen__form button,
+.tablet-screen--done button {
+  border: 0;
+  border-radius: 10px;
+  padding: 18px 24px;
+  background: #1f2a36;
+  color: #fff;
+  font-size: 20px;
+  font-weight: 900;
+}
+
+.tablet-screen header button {
+  display: grid;
+  place-items: center;
+  width: 64px;
+  height: 64px;
+  padding: 0;
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.tablet-screen__notice {
+  border-radius: 10px;
+  padding: 18px 20px;
+  background: #fff4cf;
+  color: #6f5214;
+  font-size: 20px;
+  font-weight: 800;
+}
+
+.tablet-screen__date,
+.tablet-screen__rooms,
+.tablet-screen__slots,
+.tablet-screen__form {
+  display: grid;
+  gap: 16px;
+  border: 1px solid #e2e8e3;
+  border-radius: 10px;
+  padding: 22px;
+  background: #fff;
+}
+
+.tablet-screen__date label {
+  display: grid;
+  gap: 10px;
+  color: #6f7b74;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.tablet-screen input {
+  min-height: 64px;
+  border: 1px solid #d8e0da;
+  border-radius: 10px;
+  padding: 0 18px;
+  color: #1f2a36;
+  font-size: 24px;
+}
+
+.tablet-screen__rooms > div,
+.tablet-screen__slots > div {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 14px;
+}
+
+.tablet-screen__rooms button,
+.tablet-screen__slots button {
+  min-height: 122px;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  border: 2px solid #dfe7e1;
+  border-radius: 10px;
+  background: #fff;
+  color: #24312a;
+  font-size: 18px;
+  font-weight: 900;
+}
+
+.tablet-screen__rooms button.active,
+.tablet-screen__slots button.active {
+  border-color: #355b43;
+  background: #e9f2ec;
+  color: #1c3c24;
+}
+
+.tablet-screen__rooms button:disabled,
+.tablet-screen__slots button:disabled {
+  background: #f2f3f2;
+  color: #a7ada9;
+}
+
+.tablet-screen__rooms span,
+.tablet-screen__slots span {
+  color: #6f7b74;
+  font-size: 15px;
+}
+
+.tablet-screen__slots strong {
+  font-size: 28px;
+}
+
+.tablet-screen__form {
+  grid-template-columns: 1fr 1fr auto;
+  align-items: end;
+}
+
+.tablet-screen__form h2 {
+  grid-column: 1 / -1;
+}
+
+.tablet-screen__form button {
+  min-height: 64px;
+}
+
+.tablet-screen__form button:disabled {
+  opacity: 0.45;
+}
+
+.tablet-screen--done {
+  place-items: center;
+  align-content: center;
+  text-align: center;
+}
+
+.tablet-screen--done svg {
+  color: #355b43;
+}
+
+.tablet-screen--done h1 {
+  font-size: 46px;
+}
+
+.tablet-screen--done p {
+  color: #6f7b74;
+  font-size: 24px;
+}
+
+.tablet-screen--done strong {
+  font-size: 32px;
+}
+
+@media (max-width: 760px) {
+  .tablet-screen {
+    padding: 18px;
+  }
+
+  .tablet-screen h1 {
+    font-size: 32px;
+  }
+
+  .tablet-screen__form {
+    grid-template-columns: 1fr;
+  }
+}

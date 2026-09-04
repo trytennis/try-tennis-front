@@ -18,6 +18,8 @@ import LoginPage from '../pages/LoginPage';
 import MyPage from '../pages/MyPage';
 import FacilityManagementPage from '../pages/FacilityManagementPage';
 import CoachingPage from '../pages/CoachingPage';
+import ScreenManagementPage from '../pages/ScreenManagementPage';
+import TabletScreenBookingPage from '../pages/TabletScreenBookingPage';
 
 export default function Router() {
   return (
@@ -36,6 +38,7 @@ export default function Router() {
           <Route path="users/new" element={<UserProfileCreatePage />} />
           <Route path="users/:userId" element={<UserDetailPage />} />
           <Route path="facility" element={<FacilityManagementPage />} />
+          <Route path="screens" element={<ScreenManagementPage />} />
           <Route path="videos" element={<VideoAnalysisPage />} />
           <Route path="coaching" element={<CoachingPage />} />
           <Route path="tickets" element={<TicketsPage />} />
@@ -48,6 +51,7 @@ export default function Router() {
         <Route path="/signup" element={<SignUpPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/auth/callback" element={<AuthCallbackPage />} />
+        <Route path="/tablet/screen-booking/:facilityId" element={<TabletScreenBookingPage />} />
       </Routes>
     </BrowserRouter>
   );

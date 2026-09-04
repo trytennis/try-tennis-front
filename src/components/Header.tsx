@@ -1,7 +1,7 @@
 // src/components/Header.tsx
 import React from 'react';
 import '../styles/Header.css';
-import { Calendar, Ticket, UserCircle, Users, Video, NotebookPen, ListCheck, Store, MessageSquareMoreIcon } from 'lucide-react';
+import { Calendar, Ticket, UserCircle, Users, Video, NotebookPen, ListCheck, Store, MessageSquareMoreIcon, Monitor } from 'lucide-react';
 import { Link, useLocation } from 'react-router-dom';
 import logo from '../assets/thetry_logo.png';
 import { useMyRole } from '../utils/useMyRole';
@@ -23,6 +23,7 @@ const Header = () => {
     tickets: role === "super_admin" || role === "facility_admin" || role === "coach",
     my: true,
     facility: role === "super_admin" || role === "facility_admin",
+    screens: role === "super_admin" || role === "facility_admin" || role === "coach",
     coaching: role === "super_admin" || role === "facility_admin" || role === "coach",
   };
 
@@ -83,6 +84,13 @@ const Header = () => {
                 <Link to="/facility" className={`nav-btn ${isActive('/facility') ? 'active' : ''}`} aria-current={isActive('/facility') ? 'page' : undefined}>
                   <Store className="header-icon" />
                   시설 관리
+                </Link>
+              )}
+
+              {canSee.screens && (
+                <Link to="/screens" className={`nav-btn ${isActive('/screens') ? 'active' : ''}`} aria-current={isActive('/screens') ? 'page' : undefined}>
+                  <Monitor className="header-icon" />
+                  스크린 관리
                 </Link>
               )}
 
