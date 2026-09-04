@@ -23,7 +23,7 @@ const Header = () => {
     tickets: role === "super_admin" || role === "facility_admin" || role === "coach",
     my: true,
     facility: role === "super_admin" || role === "facility_admin",
-    screens: role === "super_admin" || role === "facility_admin" || role === "coach",
+    screens: role === "super_admin" || role === "facility_admin" || role === "admin" || role === "coach",
     coaching: role === "super_admin" || role === "facility_admin" || role === "coach",
   };
 
