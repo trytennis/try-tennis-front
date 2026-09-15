@@ -77,6 +77,7 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
         try {
             await TicketsApi.update(ticketId, {
                 name: editedTicket.name,
+                usage_type: editedTicket.usage_type || "lesson",
                 lesson_count: Number(editedTicket.lesson_count),
                 valid_days: Number(editedTicket.valid_days),
                 price: Number(editedTicket.price)
@@ -225,6 +226,7 @@ const TicketDetailModal: React.FC<TicketDetailModalProps> = ({
                                     </div>
 
                                     {/* Stats Grid */}
+                                    <label>수강권 종류 {mode === 'edit' ? <select value={ticket.usage_type || "lesson"} onChange={(e) => handleInputChange('usage_type', e.target.value)}><option value="lesson">레슨</option><option value="screen">스크린룸</option></select> : <span>{ticket.usage_type === "screen" ? "스크린룸" : "레슨"}</span>}</label>
                                     <div className="tdm-stats-grid">
                                         {/* 횟수 */}
                                         <div className={`tdm-stat-card ${mode === 'edit' ? 'editable' : ''}`}>

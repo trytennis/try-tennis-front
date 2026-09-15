@@ -7,6 +7,7 @@ const AddTicketPage: React.FC = () => {
     const navigate = useNavigate();
 
     const [name, setName] = useState('');
+    const [usageType, setUsageType] = useState<'lesson' | 'screen'>('lesson');
     const [lessonCount, setLessonCount] = useState(0);
     const [validDays, setValidDays] = useState(30);
     const [price, setPrice] = useState(0);
@@ -37,6 +38,7 @@ const AddTicketPage: React.FC = () => {
             // auth 토큰 자동첨부 / 권한 체크는 서버에서
             await TicketsApi.create({
                 name,
+                usage_type: usageType,
                 lesson_count: lessonCount,
                 valid_days: validDays,
                 price,
@@ -65,6 +67,12 @@ const AddTicketPage: React.FC = () => {
             <form className="ticket-form" onSubmit={handleSubmit}>
                 <h2>수강권 추가</h2>
 
+                <label className="atm-label">수강권 종류
+                    <select className="atm-input" value={usageType} onChange={(e) => setUsageType(e.target.value as 'lesson' | 'screen')}>
+                        <option value="lesson">레슨 수강권</option>
+                        <option value="screen">스크린룸 수강권 (예약 1칸당 1회)</option>
+                    </select>
+                </label>
                 <label>
                     수강권 이름
                     <input

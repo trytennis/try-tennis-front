@@ -7,6 +7,7 @@ import { FacilitiesApi } from '../api/facility';
 import type { Facility } from '../types/FacilityData';
 
 export type NewTicketPayload = {
+    usage_type: "lesson" | "screen";
     name: string;
     lesson_count: number;
     valid_days: number;
@@ -26,6 +27,7 @@ const AddTicketModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
     const isSuperAdmin = role === 'super_admin';
 
     const [name, setName] = useState('');
+    const [usageType, setUsageType] = useState<'lesson' | 'screen'>('lesson');
     const [lessonCount, setLessonCount] = useState('');
     const [validDays, setValidDays] = useState('30');
     const [price, setPrice] = useState('');
@@ -85,6 +87,7 @@ const AddTicketModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
 
     const resetForm = () => {
         setName('');
+        setUsageType('lesson');
         setLessonCount('');
         setValidDays('30');
         setPrice('');
@@ -108,6 +111,7 @@ const AddTicketModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
         try {
             const payload: NewTicketPayload = {
                 name,
+                usage_type: usageType,
                 lesson_count: parseInt(lessonCount),
                 valid_days: parseInt(validDays),
                 price: parseInt(price),
@@ -177,6 +181,12 @@ const AddTicketModal: React.FC<Props> = ({ isOpen, onClose, onSubmit }) => {
                         </div>
                     )}
 
+                <label className="atm-label">수강권 종류
+                    <select className="atm-input" value={usageType} onChange={(e) => setUsageType(e.target.value as 'lesson' | 'screen')}>
+                        <option value="lesson">레슨 수강권</option>
+                        <option value="screen">스크린룸 수강권 (예약 1칸당 1회)</option>
+                    </select>
+                </label>
                     {/* 수강권 이름 */}
                     <div className="atm-field">
                         <label className="atm-label">

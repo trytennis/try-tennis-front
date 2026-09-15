@@ -1,6 +1,7 @@
 // 수강권
 
 export interface Ticket {
+    usage_type?: "lesson" | "screen";
     id: string;
     name: string;
     lesson_count: number;
