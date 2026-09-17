@@ -402,6 +402,7 @@ const FacilityManagementPage: React.FC = () => {
                             <h2 className="facility-modal-title">
                                 {selectedFacility.name} - 멤버 목록
                             </h2>
+                            <button type="button" onClick={() => setShowMembersModal(false)} className="facility-btn-cancel">닫기</button>
                         </div>
 
                         <div className="facility-member-filters">
@@ -442,14 +443,6 @@ const FacilityManagementPage: React.FC = () => {
                             </div>
                         )}
 
-                        <div className="facility-modal-actions">
-                            <button
-                                onClick={() => setShowMembersModal(false)}
-                                className="facility-btn-primary facility-btn-full"
-                            >
-                                닫기
-                            </button>
-                        </div>
                     </div>
                 </div>
             )}
