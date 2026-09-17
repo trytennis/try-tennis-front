@@ -142,7 +142,7 @@ const ReservationManagePage = () => {
                             key={reservation.id}
                             reservation={reservation}
                             onCancel={handleCancel}    // 취소만
-                            showActions={role === "super_admin" || role === "facility_admin"}
+                            showActions={role === "super_admin" || role === "facility_admin" || role === "coach"}
                         />
                     ))
                 )}
