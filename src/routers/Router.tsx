@@ -12,7 +12,7 @@ import ReservationManagePage from '../pages/ReservationManagementPage';
 import UserProfileCreatePage from '../pages/UserProfileCreatePage';
 import CoachCalendar from '../pages/CoachCalenderPage';
 import AuthCallbackPage from '../pages/AuthCallbackPage';
-import ProtectedRoute from './ProtectedRouter';
+import ProtectedRoute, { RoleRoute } from './ProtectedRouter';
 import SignUpPage from '../pages/SignUpPage';
 import LoginPage from '../pages/LoginPage';
 import MyPage from '../pages/MyPage';
@@ -37,13 +37,13 @@ export default function Router() {
           <Route path="users" element={<UsersPage />} />
           <Route path="users/new" element={<UserProfileCreatePage />} />
           <Route path="users/:userId" element={<UserDetailPage />} />
-          <Route path="facility" element={<FacilityManagementPage />} />
-          <Route path="screens" element={<ScreenManagementPage />} />
+          <Route path="facility" element={<RoleRoute roles={["super_admin", "facility_admin"]}><FacilityManagementPage /></RoleRoute>} />
+          <Route path="screens" element={<RoleRoute roles={["super_admin", "facility_admin", "coach"]}><ScreenManagementPage /></RoleRoute>} />
           <Route path="videos" element={<VideoAnalysisPage />} />
           <Route path="coaching" element={<CoachingPage />} />
-          <Route path="tickets" element={<TicketsPage />} />
-          <Route path="tickets/add" element={<AddTicketPage />} />
-          <Route path="tickets/:ticketId" element={<TicketDetailPage />} />
+          <Route path="tickets" element={<RoleRoute roles={["super_admin", "facility_admin"]}><TicketsPage /></RoleRoute>} />
+          <Route path="tickets/add" element={<RoleRoute roles={["super_admin", "facility_admin"]}><AddTicketPage /></RoleRoute>} />
+          <Route path="tickets/:ticketId" element={<RoleRoute roles={["super_admin", "facility_admin"]}><TicketDetailPage /></RoleRoute>} />
           <Route path="my" element={<MyPage />} />
         </Route>
 

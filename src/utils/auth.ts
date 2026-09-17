@@ -30,10 +30,12 @@ export async function signUp(form: SignUpForm) {
       data: {
         name: form.name,
         phone: form.phone || null,
-        user_type: form.user_type ?? 'student',   // 서버/트리거에서 기본값/검증 병행
+        // Public signup can only create a regular member. Staff roles are
+        // granted through an authenticated admin invitation flow.
+        user_type: 'student',
         gender: form.gender || null,
         birthdate: form.birthdate || null,
-        facility_id: form.facility_id || null,
+        facility_id: null,
         memo: form.memo || null,
 
         // 동의/버전

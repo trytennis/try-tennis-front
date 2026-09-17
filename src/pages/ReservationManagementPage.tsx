@@ -3,8 +3,10 @@ import type { Reservation } from "../types/Reservation";
 import ReservationItem from "../components/ReservationItem";
 import "../styles/ReservationManagement.css";
 import { fetchReservationsByCoach, updateReservationStatus } from "../api/reservation";
+import { useMyRole } from "../utils/useMyRole";
 
 const ReservationManagePage = () => {
+    const { role } = useMyRole();
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [statusFilter, setStatusFilter] =
         useState<"all" | "confirmed" | "completed" | "cancelled">("all");
@@ -140,7 +142,7 @@ const ReservationManagePage = () => {
                             key={reservation.id}
                             reservation={reservation}
                             onCancel={handleCancel}    // 취소만
-                            showActions={true}
+                            showActions={role === "super_admin" || role === "facility_admin"}
                         />
                     ))
                 )}

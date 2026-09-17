@@ -70,6 +70,19 @@ const UserDetailPage = () => {
         setEditing(false);
     };
 
+    const handleDeleteTicket = async (ticket: UserTicket) => {
+        if (!userId) return;
+        const ok = window.confirm(`'${ticket.tickets.name}' 수강권을 이 회원에게서 삭제할까요?`);
+        if (!ok) return;
+        try {
+            await authDelete(`/api/users/${userId}/tickets/${ticket.id}`);
+            await fetchData();
+        } catch (err) {
+            const message = err instanceof Error ? err.message : '수강권 삭제에 실패했습니다.';
+            alert(message);
+        }
+    };
+
     // 삭제 핸들러
     const handleDelete = async () => {
         if (!userId || !user) return;
@@ -167,7 +180,10 @@ const UserDetailPage = () => {
                             <div key={i} className="current-ticket-card">
                                 <div className="ticket-header">
                                     <h4>{ticket.tickets.name}</h4>
-                                    <span className="price">{formatPrice(ticket.tickets.price)}</span>
+                                    <div className="ticket-actions">
+                                        <span className="price">{formatPrice(ticket.tickets.price)}</span>
+                                        <button type="button" className="ticket-delete-button" onClick={() => handleDeleteTicket(ticket)}>삭제</button>
+                                    </div>
                                 </div>
                                 <div className="ticket-grid">
                                     <div><span>총 횟수</span><div>{ticket.tickets.lesson_count}회</div></div>
@@ -184,11 +200,14 @@ const UserDetailPage = () => {
             <section className="card-section">
                 <h3>지난 수강권</h3>
                 <div className="ticket-list-grid">
-                    {expiredTickets.map((ticket, i) => (
-                        <div key={i} className="past-ticket-card">
+                        {expiredTickets.map((ticket, i) => (
+                            <div key={i} className="past-ticket-card">
                             <div className="ticket-header">
                                 <h4>{ticket.tickets.name}</h4>
-                                <span className="badge">완료</span>
+                                <div className="ticket-actions">
+                                    <span className="badge">완료</span>
+                                    <button type="button" className="ticket-delete-button" onClick={() => handleDeleteTicket(ticket)}>삭제</button>
+                                </div>
                             </div>
                             <div className="ticket-info">
                                 <div><span>횟수</span><span>{ticket.tickets.lesson_count}회</span></div>

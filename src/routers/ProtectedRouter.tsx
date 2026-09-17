@@ -4,12 +4,21 @@ import { supabase } from "../utils/supabaseClient";
 import { Navigate, useLocation } from "react-router-dom";
 import { authGet } from "../utils/authApi";
 import { clearProfileCache, getCachedProfile, setCachedProfile } from "../utils/authState";
+import { useMyRole } from "../utils/useMyRole";
 
 type Props = {
     children: JSX.Element;
     redirectTo?: string;      // 로그인/콜백 등 리다이렉트 목적지
     requireActive?: boolean;  // profiles.is_active 체크할지
 };
+
+export function RoleRoute({ children, roles }: { children: JSX.Element; roles: string[] }) {
+    const { role, loading } = useMyRole();
+    if (loading) return <div />;
+    if (!role || !roles.includes(role)) return <Navigate to="/videos" replace />;
+    return children;
+}
+
 
 export default function ProtectedRoute({
     children,
