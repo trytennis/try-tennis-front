@@ -11,3 +11,7 @@
     align-items: center;
     margin-bottom: 12px;
 }
+.users-filters { display:flex; gap:8px; align-items:center; margin:0 auto 16px; max-width:1400px; }
+.users-filters input { flex:1; padding:10px 12px; border:1px solid #d6ded9; border-radius:8px; }
+.users-filters button { padding:9px 14px; border:1px solid #d6ded9; border-radius:8px; background:#fff; cursor:pointer; }
+.users-filters button.active { background:#1d4b35; color:#fff; border-color:#1d4b35; }

@@ -8,6 +8,8 @@ import { authGet } from '../utils/authApi';
 const UsersPage: React.FC = () => {
     const navigate = useNavigate();
     const [users, setUsers] = useState<User[]>([]);
+    const [query, setQuery] = useState('');
+    const [role, setRole] = useState('all');
 
     useEffect(() => {
         const fetchUsers = async () => {
@@ -29,7 +31,18 @@ const UsersPage: React.FC = () => {
                     관리자용 회원 수동 등록
                 </button> */}
             </div>
-            <UserListTable users={users} />
+            <div className="users-filters">
+                <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="이름·전화번호 검색" />
+                {['all', 'coach', 'student'].map((value) => (
+                    <button key={value} type="button" className={role === value ? 'active' : ''} onClick={() => setRole(value)}>
+                        {value === 'all' ? '전체' : value === 'coach' ? '코치' : '회원'}
+                    </button>
+                ))}
+            </div>
+            <UserListTable users={users.filter((u) => {
+                const q = query.trim().toLowerCase();
+                return (role === 'all' || u.user_type === role) && (!q || u.name.toLowerCase().includes(q) || (u.phone || '').includes(q));
+            })} />
         </div>
     );
 };
