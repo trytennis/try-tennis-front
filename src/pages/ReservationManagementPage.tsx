@@ -12,6 +12,22 @@ const ReservationManagePage = () => {
     const [statusFilter, setStatusFilter] =
         useState<"all" | "confirmed" | "completed" | "cancelled">("all");
     const handleEdit = async (reservation: Reservation) => {
+        let reassignment: { user_id: string; user_ticket_id: string } | undefined;
+        if (role === "facility_admin") {
+            const members = await authGet<Array<{ id: string; name: string }>>('/api/users');
+            const memberChoices = members.map((m, i) => `${i + 1}. ${m.name}`).join('\n');
+            const memberPick = window.prompt(`회원 변경 (번호, 현재: ${reservation.user_name})\n${memberChoices}`, "");
+            if (memberPick) {
+                const member = members[Number(memberPick) - 1];
+                if (member) {
+                    const tickets = await authGet<Array<{ id: string; remaining_count: number; tickets?: { name: string } }>>(`/api/users/${member.id}/tickets`);
+                    const ticketChoices = tickets.map((t, i) => `${i + 1}. ${t.tickets?.name || '수강권'} (${t.remaining_count}회)`).join('\n');
+                    const ticketPick = window.prompt(`수강권 선택\n${ticketChoices}`, "");
+                    const ticket = tickets[Number(ticketPick) - 1];
+                    if (ticket) reassignment = { user_id: member.id, user_ticket_id: ticket.id };
+                }
+            }
+        }
         const date = window.prompt('날짜 (YYYY-MM-DD)', reservation.date);
         if (!date) return;
         const start_time = window.prompt('시작 시간 (HH:MM)', reservation.start_time);
@@ -28,7 +44,7 @@ const ReservationManagePage = () => {
                 if (Number.isInteger(index) && coaches[index]) coach_id = coaches[index].id;
             }
         }
-        try { await authPut(`/api/reservations/${reservation.id}`, { date, start_time, end_time, ...(role === "facility_admin" ? { coach_id } : {}) }); await loadReservations(); }
+        try { await authPut(`/api/reservations/${reservation.id}`, { date, start_time, end_time, ...(role === "facility_admin" ? { coach_id, ...reassignment } : {}) }); await loadReservations(); }
         catch (e: any) { alert(e?.message || '예약 시간 수정에 실패했습니다.'); }
     };
     const [dateFilter, setDateFilter] = useState("");
