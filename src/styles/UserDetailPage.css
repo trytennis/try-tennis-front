@@ -196,6 +196,14 @@
     cursor: pointer;
     font-size: 13px;
 }
+.ticket-edit-button {
+    border: 1px solid #b8cfc1;
+    background: #f1f7f3;
+    color: #1d4b35;
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+}
 
 .ticket-delete-button:hover {
     background: #ffe7e7;

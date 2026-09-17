@@ -83,6 +83,25 @@ const UserDetailPage = () => {
         }
     };
 
+    const handleEditTicket = async (ticket: UserTicket) => {
+        if (!userId) return;
+        const remaining = window.prompt('잔여 횟수', String(ticket.remaining_count));
+        if (remaining === null) return;
+        const start_date = window.prompt('시작일 (YYYY-MM-DD)', ticket.assigned_at?.slice(0, 10) || '');
+        if (start_date === null) return;
+        const expires_at = window.prompt('만료일 (YYYY-MM-DD)', ticket.expires_at || '');
+        if (expires_at === null) return;
+        try {
+            await authPut(`/api/users/${userId}/tickets/${ticket.id}`, {
+                remaining_count: Number(remaining), start_date, expires_at,
+            });
+            await fetchData();
+        } catch (err) {
+            const message = err instanceof Error ? err.message : '수강권 수정에 실패했습니다.';
+            alert(message);
+        }
+    };
+
     // 삭제 핸들러
     const handleDelete = async () => {
         if (!userId || !user) return;
@@ -182,6 +201,7 @@ const UserDetailPage = () => {
                                     <h4>{ticket.tickets.name}</h4>
                                     <div className="ticket-actions">
                                         <span className="price">{formatPrice(ticket.tickets.price)}</span>
+                                        <button type="button" className="ticket-edit-button" onClick={() => handleEditTicket(ticket)}>수정</button>
                                         <button type="button" className="ticket-delete-button" onClick={() => handleDeleteTicket(ticket)}>삭제</button>
                                     </div>
                                 </div>
@@ -206,6 +226,7 @@ const UserDetailPage = () => {
                                 <h4>{ticket.tickets.name}</h4>
                                 <div className="ticket-actions">
                                     <span className="badge">완료</span>
+                                    <button type="button" className="ticket-edit-button" onClick={() => handleEditTicket(ticket)}>수정</button>
                                     <button type="button" className="ticket-delete-button" onClick={() => handleDeleteTicket(ticket)}>삭제</button>
                                 </div>
                             </div>
