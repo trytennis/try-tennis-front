@@ -397,7 +397,7 @@ const FacilityManagementPage: React.FC = () => {
             {/* 멤버 목록 모달 */}
             {showMembersModal && selectedFacility && (
                 <div className="facility-modal-overlay">
-                    <div className="facility-modal-content" style={{ maxWidth: '700px' }}>
+                    <div className="facility-modal-content facility-member-modal" style={{ maxWidth: '700px' }}>
                         <div className="facility-modal-header">
                             <h2 className="facility-modal-title">
                                 {selectedFacility.name} - 멤버 목록

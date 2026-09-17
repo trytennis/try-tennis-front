@@ -427,6 +427,24 @@
     gap: 12px;
 }
 
+.facility-member-modal {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.facility-member-modal .facility-members-list {
+    min-height: 0;
+    overflow-y: auto;
+    flex: 1;
+    padding-right: 4px;
+}
+
+.facility-member-modal .facility-modal-header,
+.facility-member-modal .facility-member-filters {
+    flex-shrink: 0;
+}
+
 .facility-member-item {
     display: flex;
     justify-content: space-between;
