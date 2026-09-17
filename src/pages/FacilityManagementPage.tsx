@@ -41,6 +41,8 @@ const FacilityManagementPage: React.FC = () => {
     const [createForm, setCreateForm] = useState<FacilityCreatePayload>({ name: '', address: '' });
     const [editForm, setEditForm] = useState<FacilityUpdatePayload>({ name: '', address: '' });
     const [selectedMember, setSelectedMember] = useState<string>('');
+    const [memberSearch, setMemberSearch] = useState('');
+    const [memberRoleFilter, setMemberRoleFilter] = useState<'all' | 'coach' | 'student'>('all');
 
     // 초기 데이터 로드
     useEffect(() => {
@@ -402,9 +404,25 @@ const FacilityManagementPage: React.FC = () => {
                             </h2>
                         </div>
 
-                        {members.length > 0 ? (
+                        <div className="facility-member-filters">
+                            <input value={memberSearch} onChange={(e) => setMemberSearch(e.target.value)} placeholder="이름·연락처 검색" />
+                            {(['all', 'coach', 'student'] as const).map((role) => (
+                                <button key={role} type="button" className={memberRoleFilter === role ? 'active' : ''} onClick={() => setMemberRoleFilter(role)}>
+                                    {role === 'all' ? '전체' : role === 'coach' ? '코치' : '회원'}
+                                </button>
+                            ))}
+                        </div>
+                        {members.filter((member) => {
+                            const q = memberSearch.trim().toLowerCase();
+                            return (memberRoleFilter === 'all' || member.user_type === memberRoleFilter)
+                                && (!q || member.name.toLowerCase().includes(q) || (member.phone || '').includes(q));
+                        }).length > 0 ? (
                             <div className="facility-members-list">
-                                {members.map((member) => (
+                                {members.filter((member) => {
+                                    const q = memberSearch.trim().toLowerCase();
+                                    return (memberRoleFilter === 'all' || member.user_type === memberRoleFilter)
+                                        && (!q || member.name.toLowerCase().includes(q) || (member.phone || '').includes(q));
+                                }).map((member) => (
                                     <div key={member.id} className="facility-member-item">
                                         <div className="facility-member-info">
                                             <div className="facility-member-name">{member.name}</div>
