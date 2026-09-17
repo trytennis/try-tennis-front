@@ -2,7 +2,7 @@ import type { TimeSlot } from "../types/TimeSlot";
 import type { UserTicket } from "../types/UserTicket";
 import type { Reservation } from "../types/Reservation";
 import type { ScheduleEvent } from "../types/Schedule";
-import { authGet, authPatch } from "../utils/authApi";
+import { authGet, authPatch, authPut } from "../utils/authApi";
 
 // 코치별 예약 가능 시간대 조회
 export const fetchAvailableSlots = async (
@@ -56,6 +56,9 @@ export const cancelReservation = async (
   reservationId: string,
   reason = "코치 측 취소"
 ) => updateReservationStatus(reservationId, "cancelled", reason);
+
+export const updateReservationTime = async (reservationId: string, data: { date: string; start_time: string; end_time: string }) =>
+  authPut(`/api/reservations/${reservationId}`, data);
 
 
 // 코치 캘린더 조회 (confirmed/completed 기본, include_cancelled 옵션)

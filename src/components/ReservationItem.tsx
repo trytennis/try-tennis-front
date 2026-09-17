@@ -5,10 +5,11 @@ import type { Reservation } from "../types/Reservation";
 interface Props {
     reservation: Reservation;
     onCancel?: (id: string) => void;
+    onEdit?: (reservation: Reservation) => void;
     showActions?: boolean;
 }
 
-const ReservationItem = ({ reservation, onCancel, showActions = true }: Props) => {
+const ReservationItem = ({ reservation, onCancel, onEdit, showActions = true }: Props) => {
     const handleCancel = () => onCancel?.(reservation.id);
 
     const getStatusClass = () => {
@@ -107,6 +108,7 @@ const ReservationItem = ({ reservation, onCancel, showActions = true }: Props) =
             {/* 취소만 노출: 확정 상태일 때만 버튼 표시(완료/취소 건은 숨김) */}
             {showActions && reservation.status === "confirmed" && (
                 <div className="action-buttons">
+                    {onEdit && <button className="edit-btn" onClick={() => onEdit(reservation)}>시간 수정</button>}
                     <button className="reject-btn" onClick={handleCancel}>취소</button>
                 </div>
             )}

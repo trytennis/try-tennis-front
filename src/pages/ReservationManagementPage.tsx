@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo } from "react";
 import type { Reservation } from "../types/Reservation";
 import ReservationItem from "../components/ReservationItem";
 import "../styles/ReservationManagement.css";
-import { fetchReservationsByCoach, updateReservationStatus } from "../api/reservation";
+import { fetchReservationsByCoach, updateReservationStatus, updateReservationTime } from "../api/reservation";
 import { useMyRole } from "../utils/useMyRole";
 
 const ReservationManagePage = () => {
@@ -10,6 +10,16 @@ const ReservationManagePage = () => {
     const [reservations, setReservations] = useState<Reservation[]>([]);
     const [statusFilter, setStatusFilter] =
         useState<"all" | "confirmed" | "completed" | "cancelled">("all");
+    const handleEdit = async (reservation: Reservation) => {
+        const date = window.prompt('날짜 (YYYY-MM-DD)', reservation.date);
+        if (!date) return;
+        const start_time = window.prompt('시작 시간 (HH:MM)', reservation.start_time);
+        if (!start_time) return;
+        const end_time = window.prompt('종료 시간 (HH:MM)', reservation.end_time);
+        if (!end_time) return;
+        try { await updateReservationTime(reservation.id, { date, start_time, end_time }); await loadReservations(); }
+        catch (e: any) { alert(e?.message || '예약 시간 수정에 실패했습니다.'); }
+    };
     const [dateFilter, setDateFilter] = useState("");
     const [loading, setLoading] = useState(false);
 
@@ -143,6 +153,7 @@ const ReservationManagePage = () => {
                             reservation={reservation}
                             onCancel={handleCancel}    // 취소만
                             showActions={role === "super_admin" || role === "facility_admin" || role === "coach"}
+                            onEdit={role === "coach" ? handleEdit : undefined}
                         />
                     ))
                 )}
