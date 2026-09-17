@@ -29,7 +29,7 @@ const CoachRequestDetail: React.FC<Props> = ({
 }) => {
     const [text, setText] = useState("");
     const isCoachOrAbove =
-        myRole === "coach" || myRole === "facility_admin" || myRole === "super_admin" || myRole === "admin";
+        myRole === "coach" || myRole === "facility_admin" || myRole === "super_admin";
 
     const v = request.video;
 

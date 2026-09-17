@@ -31,7 +31,7 @@ const CoachingRequestList: React.FC<Props> = ({ requests, onSelect, myRole }) =>
         <div className="req-list">
             {requests.map((r) => {
                 const showName =
-                    myRole === "coach" || myRole === "facility_admin" || myRole === "super_admin" || myRole === "admin"
+                    myRole === "coach" || myRole === "facility_admin" || myRole === "super_admin"
                         ? r.requester?.name // 코치에게는 요청자 이름
                         : r.coach?.name;     // 학생에게는 코치 이름
                 return (

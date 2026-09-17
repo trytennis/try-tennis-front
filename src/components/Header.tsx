@@ -20,10 +20,10 @@ const Header = () => {
     schedule: role === "super_admin" || role === "facility_admin" || role === "coach",
     users: role === "super_admin" || role === "facility_admin" || role === "coach",
     videos: true, // 모든 롤
-    tickets: role === "super_admin" || role === "facility_admin" || role === "coach",
+    tickets: role === "super_admin" || role === "facility_admin",
     my: true,
     facility: role === "super_admin" || role === "facility_admin",
-    screens: role === "super_admin" || role === "facility_admin" || role === "admin" || role === "coach",
+    screens: role === "super_admin" || role === "facility_admin" || role === "coach",
     coaching: role === "super_admin" || role === "facility_admin" || role === "coach",
   };
 
