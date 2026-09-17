@@ -2,7 +2,8 @@ import React, { useEffect, useState, useMemo } from "react";
 import type { Reservation } from "../types/Reservation";
 import ReservationItem from "../components/ReservationItem";
 import "../styles/ReservationManagement.css";
-import { fetchReservationsByCoach, updateReservationStatus, updateReservationTime } from "../api/reservation";
+import { fetchReservationsByCoach, updateReservationStatus } from "../api/reservation";
+import { authGet, authPut } from "../utils/authApi";
 import { useMyRole } from "../utils/useMyRole";
 
 const ReservationManagePage = () => {
@@ -17,7 +18,17 @@ const ReservationManagePage = () => {
         if (!start_time) return;
         const end_time = window.prompt('종료 시간 (HH:MM)', reservation.end_time);
         if (!end_time) return;
-        try { await updateReservationTime(reservation.id, { date, start_time, end_time }); await loadReservations(); }
+        let coach_id = reservation.coach_id;
+        if (role === "facility_admin") {
+            const coaches = await authGet<Array<{ id: string; name: string }>>('/api/coaches');
+            const choices = coaches.map((c, i) => `${i + 1}. ${c.name}`).join('\n');
+            const selected = window.prompt(`코치 변경 (번호, 현재: ${reservation.coach_name})\n${choices}`, "");
+            if (selected) {
+                const index = Number(selected) - 1;
+                if (Number.isInteger(index) && coaches[index]) coach_id = coaches[index].id;
+            }
+        }
+        try { await authPut(`/api/reservations/${reservation.id}`, { date, start_time, end_time, ...(role === "facility_admin" ? { coach_id } : {}) }); await loadReservations(); }
         catch (e: any) { alert(e?.message || '예약 시간 수정에 실패했습니다.'); }
     };
     const [dateFilter, setDateFilter] = useState("");
