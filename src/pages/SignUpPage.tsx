@@ -1,10 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Mail, Eye, EyeOff, User, Shield, Lock, CheckCircle } from "lucide-react";
 import "../styles/SignUpPage.css";
 import { signUp } from "../utils/auth";
 import logo from '../assets/thetry_logo.png';
-import type { Facility } from "../types/FacilityData";
-import { FacilitiesApi } from "../api/facility";
 
 type Errors = Record<string, string>;
 
@@ -17,8 +15,6 @@ export default function SignUpPage() {
         phone: "",
         gender: "",
         birthdate: "",
-        user_type: "",
-        facility_id: "",
         memo: "",
         terms_agreed: false,
         privacy_agreed: false,
@@ -26,9 +22,6 @@ export default function SignUpPage() {
         consent_marketing: false,
     });
 
-    const [facilities, setFacilities] = useState<Facility[]>([]);
-    const [facLoading, setFacLoading] = useState(true);
-    const [facError, setFacError] = useState<string | null>(null);
 
     const [errors, setErrors] = useState<Errors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
@@ -46,23 +39,6 @@ export default function SignUpPage() {
         if (d.length < 8) return `${d.slice(0, 3)}-${d.slice(3)}`;
         return `${d.slice(0, 3)}-${d.slice(3, 7)}-${d.slice(7)}`;
     };
-
-    useEffect(() => {
-        let mounted = true;
-        (async () => {
-            try {
-                setFacLoading(true);
-                setFacError(null);
-                const list = await FacilitiesApi.list();
-                if (mounted) setFacilities(list ?? []);
-            } catch (e: any) {
-                if (mounted) setFacError(e?.message || "시설 목록을 불러오지 못했어요.");
-            } finally {
-                if (mounted) setFacLoading(false);
-            }
-        })();
-        return () => { mounted = false; };
-    }, []);
 
     function handleInputChange(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) {
         const { name, value, type } = e.target as HTMLInputElement;
@@ -109,10 +85,10 @@ export default function SignUpPage() {
                 password: formData.password,
                 name: formData.name,
                 phone: formData.phone,
-                user_type: (formData.user_type as any) || 'student',
+                user_type: 'student',
                 gender: formData.gender || undefined,
                 birthdate: formData.birthdate || undefined,
-                facility_id: formData.facility_id || undefined,
+                facility_id: undefined,
                 memo: formData.memo || undefined,
                 agree_terms: formData.terms_agreed,
                 agree_privacy: formData.privacy_agreed,
@@ -176,10 +152,8 @@ export default function SignUpPage() {
                             <p>이메일: {formData.email}</p>
                             <p>이름: {formData.name}</p>
                             <p>
-                                회원 유형: {formData.user_type === "student" ? "학생" :
-                                    formData.user_type === "coach" ? "코치" : "시설 관리자"}
+                                회원 유형: 회원
                             </p>
-                            {formData.facility_id && <p>소속 시설: {facilities.find(f => f.id === formData.facility_id)?.name}</p>}
                         </div>
                     </div>
 
@@ -344,62 +318,13 @@ export default function SignUpPage() {
 
                             <div className="su__field">
                                 <label className="su__label u-text-muted">회원 유형</label>
-                                <select name="user_type" value={formData.user_type}
-                                    onChange={handleInputChange} className="u-input">
-                                    <option value="student">학생</option>
-                                    <option value="coach">코치</option>
-                                    <option value="facility_admin">시설 관리자</option>
-                                </select>
+                                <input className="u-input" value="회원" readOnly />
                             </div>
                         </div>
 
                         <div className="su__field">
                             <label className="su__label u-text-muted">소속 시설</label>
-
-                            <select
-                                name="facility_id"
-                                value={formData.facility_id}
-                                onChange={handleInputChange}
-                                className="u-input"
-                                disabled={facLoading || !!facError}
-                            >
-                                {/* 상태에 따라 안내 옵션 출력 */}
-                                {facLoading && <option value="">불러오는 중...</option>}
-                                {(!facLoading && facError) && <option value="">{facError}</option>}
-                                {(!facLoading && !facError && facilities.length === 0) && (
-                                    <option value="">등록된 시설이 없습니다</option>
-                                )}
-                                {(!facLoading && !facError && facilities.length > 0) && (
-                                    <>
-                                        <option value="">선택하세요</option>
-                                        {facilities.map((f) => (
-                                            <option key={f.id} value={f.id}>{f.name}</option>
-                                        ))}
-                                    </>
-                                )}
-                            </select>
-
-                            {/* 재시도 링크 (선택) */}
-                            {facError && (
-                                <button
-                                    type="button"
-                                    className="u-link"
-                                    onClick={async () => {
-                                        try {
-                                            setFacLoading(true);
-                                            setFacError(null);
-                                            const list = await FacilitiesApi.list();
-                                            setFacilities(list ?? []);
-                                        } catch (e: any) {
-                                            setFacError(e?.message || "다시 불러오기에 실패했어요.");
-                                        } finally {
-                                            setFacLoading(false);
-                                        }
-                                    }}
-                                >
-                                    다시 불러오기
-                                </button>
-                            )}
+                            <input className="u-input" value="가입 후 시설 관리자가 지정합니다" readOnly />
                         </div>
 
                     </div>
