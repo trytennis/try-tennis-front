@@ -15,10 +15,12 @@ const ReservationManagePage = () => {
         let reassignment: { user_id: string; user_ticket_id: string } | undefined;
         if (role === "facility_admin") {
             const members = await authGet<Array<{ id: string; name: string }>>('/api/users');
-            const memberChoices = members.map((m, i) => `${i + 1}. ${m.name}`).join('\n');
+            const search = window.prompt('회원 이름 또는 전화번호 검색', '') || '';
+            const filteredMembers = members.filter((m: any) => !search || m.name.includes(search) || (m.phone || '').includes(search));
+            const memberChoices = filteredMembers.map((m, i) => `${i + 1}. ${m.name}`).join('\n');
             const memberPick = window.prompt(`회원 변경 (번호, 현재: ${reservation.user_name})\n${memberChoices}`, "");
             if (memberPick) {
-                const member = members[Number(memberPick) - 1];
+                const member = filteredMembers[Number(memberPick) - 1];
                 if (member) {
                     const tickets = await authGet<Array<{ id: string; remaining_count: number; tickets?: { name: string } }>>(`/api/users/${member.id}/tickets`);
                     const ticketChoices = tickets.map((t, i) => `${i + 1}. ${t.tickets?.name || '수강권'} (${t.remaining_count}회)`).join('\n');
