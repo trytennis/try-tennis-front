@@ -9,9 +9,32 @@ import { useMyRole } from "../utils/useMyRole";
 const ReservationManagePage = () => {
     const { role } = useMyRole();
     const [reservations, setReservations] = useState<Reservation[]>([]);
+    const [editTarget, setEditTarget] = useState<Reservation | null>(null);
+    const [editSearch, setEditSearch] = useState('');
+    const [editMembers, setEditMembers] = useState<any[]>([]);
+    const [editMemberId, setEditMemberId] = useState('');
+    const [editTickets, setEditTickets] = useState<any[]>([]);
+    const [editTicketId, setEditTicketId] = useState('');
+    const [editDate, setEditDate] = useState('');
+    const [editStart, setEditStart] = useState('');
+    const [editEnd, setEditEnd] = useState('');
     const [statusFilter, setStatusFilter] =
         useState<"all" | "confirmed" | "completed" | "cancelled">("all");
     const handleEdit = async (reservation: Reservation) => {
+        if (role === 'facility_admin') {
+            setEditTarget(reservation); setEditDate(reservation.date); setEditStart(reservation.start_time); setEditEnd(reservation.end_time);
+            setEditMembers(await authGet<any[]>('/api/users')); return;
+        }
+        const date = window.prompt('날짜 (YYYY-MM-DD)', reservation.date);
+        if (!date) return;
+        const start_time = window.prompt('시작 시간 (HH:MM)', reservation.start_time);
+        if (!start_time) return;
+        const end_time = window.prompt('종료 시간 (HH:MM)', reservation.end_time);
+        if (!end_time) return;
+        try { await authPut(`/api/reservations/${reservation.id}`, { date, start_time, end_time }); await loadReservations(); } catch (e: any) { alert(e?.message || '수정 실패'); }
+        return;
+        /* legacy prompt flow retained below for reference */
+        /*
         let reassignment: { user_id: string; user_ticket_id: string } | undefined;
         if (role === "facility_admin") {
             const members = await authGet<Array<{ id: string; name: string }>>('/api/users');
@@ -48,6 +71,7 @@ const ReservationManagePage = () => {
         }
         try { await authPut(`/api/reservations/${reservation.id}`, { date, start_time, end_time, ...(role === "facility_admin" ? { coach_id, ...reassignment } : {}) }); await loadReservations(); }
         catch (e: any) { alert(e?.message || '예약 시간 수정에 실패했습니다.'); }
+        */
     };
     const [dateFilter, setDateFilter] = useState("");
     const [loading, setLoading] = useState(false);
@@ -96,6 +120,13 @@ const ReservationManagePage = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [statusFilter, dateFilter]);
 
+    useEffect(() => { if (editMemberId) authGet<any[]>(`/api/users/${editMemberId}/tickets`).then(setEditTickets); }, [editMemberId]);
+
+    const saveEdit = async () => {
+        if (!editTarget) return;
+        try { await authPut(`/api/reservations/${editTarget.id}`, { date: editDate, start_time: editStart, end_time: editEnd, user_id: editMemberId, user_ticket_id: editTicketId }); setEditTarget(null); await loadReservations(); } catch (e: any) { alert(e?.message || '예약 수정에 실패했습니다.'); }
+    };
+
     return (
         <div className="reservation-management-main">
             <div className="reservation-management-header">
@@ -104,6 +135,7 @@ const ReservationManagePage = () => {
                     <span className="coach-name"></span> 코치님의 개인 레슨 예약을 관리하세요
                 </p>
             </div>
+            {editTarget && <div className="facility-modal-overlay"><div className="facility-modal-content"><h2>예약 수정</h2><input placeholder="회원 검색" value={editSearch} onChange={e=>setEditSearch(e.target.value)} /><select value={editMemberId} onChange={e=>setEditMemberId(e.target.value)}><option value="">회원 선택</option>{editMembers.filter(m=>!editSearch || m.name.includes(editSearch) || (m.phone||'').includes(editSearch)).map(m=><option key={m.id} value={m.id}>{m.name} ({m.phone||'-'})</option>)}</select><select value={editTicketId} onChange={e=>setEditTicketId(e.target.value)}><option value="">수강권 선택</option>{editTickets.map(t=><option key={t.id} value={t.id}>{t.tickets?.name} · 잔여 {t.remaining_count}회</option>)}</select><input type="date" value={editDate} onChange={e=>setEditDate(e.target.value)} /><input type="time" value={editStart} onChange={e=>setEditStart(e.target.value)} /><input type="time" value={editEnd} onChange={e=>setEditEnd(e.target.value)} /><button onClick={saveEdit}>저장</button><button onClick={()=>setEditTarget(null)}>취소</button></div></div>}
 
             {/* 통계 섹션 */}
             <div className="stats-section">
