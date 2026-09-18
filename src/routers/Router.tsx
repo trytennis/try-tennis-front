@@ -20,6 +20,7 @@ import FacilityManagementPage from '../pages/FacilityManagementPage';
 import CoachingPage from '../pages/CoachingPage';
 import ScreenManagementPage from '../pages/ScreenManagementPage';
 import TabletScreenBookingPage from '../pages/TabletScreenBookingPage';
+import AuditLogPage from '../pages/AuditLogPage';
 
 export default function Router() {
   return (
@@ -37,6 +38,7 @@ export default function Router() {
           <Route path="users" element={<UsersPage />} />
           <Route path="users/new" element={<UserProfileCreatePage />} />
           <Route path="users/:userId" element={<UserDetailPage />} />
+          <Route path="audit-logs" element={<RoleRoute roles={["super_admin", "facility_admin"]}><AuditLogPage /></RoleRoute>} />
           <Route path="facility" element={<RoleRoute roles={["super_admin", "facility_admin"]}><FacilityManagementPage /></RoleRoute>} />
           <Route path="screens" element={<RoleRoute roles={["super_admin", "facility_admin", "coach"]}><ScreenManagementPage /></RoleRoute>} />
           <Route path="videos" element={<VideoAnalysisPage />} />
