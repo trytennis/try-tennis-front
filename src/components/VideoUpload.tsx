@@ -8,6 +8,9 @@ interface VideoUploadProps {
 }
 
 const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
+  const MAX_BYTES = 500 * 1024 * 1024;
+  const MIN_SECONDS = 3;
+  const MAX_SECONDS = 5 * 60;
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [isDragging, setIsDragging] = useState(false);
   const [isUploading, setIsUploading] = useState(false);
@@ -18,13 +21,32 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
     const file = files?.[0];
     if (!file) return;
 
+    if (file.size > MAX_BYTES) {
+      alert('영상은 최대 500MB까지 업로드할 수 있습니다.');
+      return;
+    }
+    if (!file.type.startsWith('video/')) {
+      alert('영상 파일만 업로드할 수 있습니다.');
+      return;
+    }
+
     const videoId = `vid-${ulid()}`;
     try {
       setIsUploading(true);
+      const duration = await new Promise<number>((resolve, reject) => {
+        const probe = document.createElement('video');
+        probe.preload = 'metadata';
+        probe.onloadedmetadata = () => { URL.revokeObjectURL(probe.src); resolve(probe.duration); };
+        probe.onerror = () => reject(new Error('영상 정보를 읽을 수 없습니다.'));
+        probe.src = URL.createObjectURL(file);
+      });
+      if (duration < MIN_SECONDS || duration > MAX_SECONDS) {
+        throw new Error('영상 길이는 3초 이상 5분 이하여야 합니다.');
+      }
       const publicUrl = await uploadToSupabase(file, videoId);
       onUploadComplete(publicUrl, videoId);
     } catch (err) {
-      alert('업로드에 실패했습니다.');
+      alert(err instanceof Error ? err.message : '업로드에 실패했습니다.');
       // console.error(err);
     } finally {
       setIsUploading(false);
@@ -87,8 +109,8 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
         <div className="upload-label">
           <div className="upload-emoji">🎞️</div>
           <div className="upload-title">{isUploading ? '업로드 중...' : '영상 파일을 선택하거나 여기로 드롭'}</div>
-          <div className="upload-note">MP4, AVI, MOV 파일 지원</div>
-          <div className="upload-hint">클릭 또는 드래그앤드롭</div>
+          <div className="upload-note">MP4 권장 · AVI, MOV 지원</div>
+          <div className="upload-hint">3초~5분 · 최대 500MB</div>
         </div>
       </div>
     </div>
