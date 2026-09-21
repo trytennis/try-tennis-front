@@ -12,13 +12,15 @@ const UserDetailPage = () => {
     const { userId } = useParams();
     const [user, setUser] = useState<User | null>(null);
     const [tickets, setTickets] = useState<UserTicket[]>([]);
+    const [coaches, setCoaches] = useState<{ id: string; name: string }[]>([]);
     const [showModal, setShowModal] = useState(false);
     const [editing, setEditing] = useState(false);
     const [form, setForm] = useState<EditableUserFields>({
         name: '',
         gender: null,
         phone: '',
-        birthdate: null
+        birthdate: null,
+        assigned_coach_id: null
     });
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
@@ -31,11 +33,13 @@ const UserDetailPage = () => {
             const userTickets = await authGet<UserTicket[]>(`/api/users/${userId}/tickets`);
             setUser(user);
             setTickets(userTickets);
+            if (user.facility_id) setCoaches(await authGet(`/api/coaches`));
             setForm({
                 name: user.name,
                 gender: user.gender,
                 phone: user.phone || '',
-                birthdate: user.birthdate
+                birthdate: user.birthdate,
+                assigned_coach_id: user.assigned_coach_id || null
             });
         } catch (err) {
             console.error('회원 정보 조회 실패', err);
@@ -65,7 +69,8 @@ const UserDetailPage = () => {
             name: user.name,
             gender: user.gender,
             phone: user.phone || '',
-            birthdate: user.birthdate
+            birthdate: user.birthdate,
+            assigned_coach_id: user.assigned_coach_id || null
         });
         setEditing(false);
     };
@@ -183,6 +188,7 @@ const UserDetailPage = () => {
                     editing={editing}
                     form={form}
                     setForm={setForm}
+                    coaches={coaches}
                 />
             </section>
 

@@ -7,9 +7,10 @@ interface Props {
   editing: boolean;
   form: EditableUserFields;
   setForm: React.Dispatch<React.SetStateAction<EditableUserFields>>;
+  coaches?: { id: string; name: string }[];
 }
 
-const UserInfoCard = ({ user, editing, form, setForm }: Props) => {
+const UserInfoCard = ({ user, editing, form, setForm, coaches = [] }: Props) => {
     const genderLabel = (g: string | null) => g === 'female' ? '여' : g === 'male' ? '남' : '-';
 
     const handleInputChange = (field: keyof EditableUserFields, value: string) => {
@@ -19,6 +20,13 @@ const UserInfoCard = ({ user, editing, form, setForm }: Props) => {
     if (editing) {
         return (
             <div className="info-grid">
+                <div>
+                    <label>담당 코치</label>
+                    <select value={form.assigned_coach_id || ''} onChange={(e) => handleInputChange('assigned_coach_id', e.target.value)}>
+                        <option value="">미지정</option>
+                        {coaches.map((coach) => <option key={coach.id} value={coach.id}>{coach.name}</option>)}
+                    </select>
+                </div>
                 <div>
                     <label>이름</label>
                     <input 
