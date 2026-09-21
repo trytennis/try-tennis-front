@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import type { FacilityMember } from '../types/FacilityMember';
 import '../styles/FacilityPage.css'; 
 import { FacilitiesApi } from '../api/facility';
@@ -24,6 +25,7 @@ const getFacilityDeleteErrorMessage = (err: unknown) => {
 };
 
 const FacilityManagementPage: React.FC = () => {
+    const navigate = useNavigate();
     const [facilities, setFacilities] = useState<Facility[]>([]);
     const [selectedFacility, setSelectedFacility] = useState<Facility | null>(null);
     const [members, setMembers] = useState<FacilityMember[]>([]);
@@ -424,7 +426,7 @@ const FacilityManagementPage: React.FC = () => {
                                     return (memberRoleFilter === 'all' || member.user_type === memberRoleFilter)
                                         && (!q || member.name.toLowerCase().includes(q) || (member.phone || '').includes(q));
                                 }).map((member) => (
-                                    <div key={member.id} className="facility-member-item">
+                                    <div key={member.id} className="facility-member-item" role="button" tabIndex={0} onClick={() => { setShowMembersModal(false); navigate(`/users/${member.id}`); }} onKeyDown={(e) => { if (e.key === 'Enter') { setShowMembersModal(false); navigate(`/users/${member.id}`); } }}>
                                         <div className="facility-member-info">
                                             <div className="facility-member-name">{member.name}</div>
                                             <div className="facility-member-details">
