@@ -2,7 +2,7 @@
 import { supabase } from '../utils/supabaseClient';
 import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { authGet } from "../utils/authApi";
+import { authGet, authPost } from "../utils/authApi";
 
 export default function AuthCallbackPage() {
     const navigate = useNavigate();
@@ -58,6 +58,13 @@ export default function AuthCallbackPage() {
                 if (!session) {
                     setMsg("세션이 없어 로그인 페이지로 이동합니다.");
                     return navigate("/login", { replace: true });
+                }
+
+                const invite = localStorage.getItem('trytennis_coach_invite');
+                if (invite) {
+                    setMsg("코치 초대 확인 중...");
+                    await authPost(`/api/coach-invitations/${encodeURIComponent(invite)}/accept`, {});
+                    localStorage.removeItem('trytennis_coach_invite');
                 }
 
                 // 4) 프로필 활성 여부 확인

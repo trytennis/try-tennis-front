@@ -26,10 +26,11 @@ const UsersPage: React.FC = () => {
     return (
         <div className="users-page-main">
             <div className="user-header">
-                {/* <h2>회원 관리</h2> */}
-                {/* <button className="add-button" onClick={() => navigate('/users/new')}>
-                    관리자용 회원 수동 등록
-                </button> */}
+                <h2>회원 관리</h2>
+                <div>
+                    <button className="add-button" onClick={() => navigate('/users/invite-coach')}>코치 초대</button>
+                    <button className="add-button" onClick={() => navigate('/users/new')}>회원 등록</button>
+                </div>
             </div>
             <div className="users-filters">
                 <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder="이름·전화번호 검색" />

@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useSearchParams } from "react-router-dom";
 import { Mail, Eye, EyeOff, User, Shield, Lock, CheckCircle } from "lucide-react";
 import "../styles/SignUpPage.css";
 import { signUp } from "../utils/auth";
@@ -7,6 +8,8 @@ import logo from '../assets/thetry_logo.png';
 type Errors = Record<string, string>;
 
 export default function SignUpPage() {
+    const [searchParams] = useSearchParams();
+    const coachInvite = searchParams.get('coach_invite');
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -79,6 +82,7 @@ export default function SignUpPage() {
         if (!validateForm()) return;
         setIsSubmitting(true);
         try {
+            if (coachInvite) localStorage.setItem('trytennis_coach_invite', coachInvite);
             // 실제 supabase 회원가입 호출 (메타데이터 → DB 트리거가 profiles 생성)
             await signUp({
                 email: formData.email,

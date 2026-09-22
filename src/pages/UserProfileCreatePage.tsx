@@ -7,7 +7,7 @@ const UserCreatePage = () => {
     const navigate = useNavigate();
     const [form, setForm] = useState({
         name: '',
-        user_type: '',
+        user_type: 'student',
         gender: '',
         phone: '',
         memo: ''
@@ -61,15 +61,7 @@ const UserCreatePage = () => {
                     />
                 </div>
 
-                <div className="user-form-group">
-                    <label>역할 *</label>
-                    <select name="user_type" value={form.user_type} onChange={handleChange}>
-                        <option value="student">수강생</option>
-                        <option value="coach">코치</option>
-                        <option value="facility_admin">시설 관리자</option>
-                        <option value="super_admin">총 관리자</option>
-                    </select>
-                </div>
+                <div className="user-form-group"><label>등록 유형</label><input value="회원" readOnly /></div>
 
                 <div className="user-form-group">
                     <label>성별 *</label>
