@@ -8,9 +8,10 @@ interface Props {
   form: EditableUserFields;
   setForm: React.Dispatch<React.SetStateAction<EditableUserFields>>;
   coaches?: { id: string; name: string }[];
+  canChangeRole?: boolean;
 }
 
-const UserInfoCard = ({ user, editing, form, setForm, coaches = [] }: Props) => {
+const UserInfoCard = ({ user, editing, form, setForm, coaches = [], canChangeRole = false }: Props) => {
     const genderLabel = (g: string | null) => g === 'female' ? '여' : g === 'male' ? '남' : '-';
 
     const handleInputChange = (field: keyof EditableUserFields, value: string) => {
@@ -20,6 +21,15 @@ const UserInfoCard = ({ user, editing, form, setForm, coaches = [] }: Props) => 
     if (editing) {
         return (
             <div className="info-grid">
+                {canChangeRole && (
+                    <div>
+                        <label>회원 권한</label>
+                        <select value={form.user_type} onChange={(e) => handleInputChange('user_type', e.target.value)}>
+                            <option value="student">회원</option>
+                            <option value="coach">코치</option>
+                        </select>
+                    </div>
+                )}
                 {coaches.length > 0 && (
                     <div>
                         <label>담당 코치</label>
@@ -80,6 +90,7 @@ const UserInfoCard = ({ user, editing, form, setForm, coaches = [] }: Props) => 
                 <div className="label">이름</div>
                 <div className="value">{user.name}</div>
             </div>
+            <div><label>회원 권한</label><div>{user.user_type === 'coach' ? '코치' : user.user_type === 'student' ? '회원' : user.user_type === 'facility_admin' ? '시설 관리자' : '총 관리자'}</div></div>
             <div className="large-gender">
                 <div className="label">성별</div>
                 <div className="value">{genderLabel(user.gender)}</div>

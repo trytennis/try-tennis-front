@@ -7,6 +7,7 @@ import AssignTicketModal from '../components/AssignTicketModal';
 import { formatDate, formatPrice } from '../utils/format';
 import UserInfoCard from '../components/UserInfoCard';
 import { authGet, authPut, authDelete } from '../utils/authApi';
+import { useMyRole } from '../utils/useMyRole';
 
 const UserDetailPage = () => {
     const { userId } = useParams();
@@ -20,11 +21,14 @@ const UserDetailPage = () => {
         gender: null,
         phone: '',
         birthdate: null,
-        assigned_coach_id: null
+        assigned_coach_id: null,
+        user_type: 'student'
     });
     const [saving, setSaving] = useState(false);
     const [deleting, setDeleting] = useState(false);
     const navigate = useNavigate();
+    const { role: myRole } = useMyRole();
+    const canChangeRole = myRole === 'super_admin' || myRole === 'facility_admin';
 
     const fetchData = async () => {
         if (!userId) return;
@@ -39,7 +43,8 @@ const UserDetailPage = () => {
                 gender: user.gender,
                 phone: user.phone || '',
                 birthdate: user.birthdate,
-                assigned_coach_id: user.assigned_coach_id || null
+                assigned_coach_id: user.assigned_coach_id || null,
+                user_type: user.user_type
             });
         } catch (err) {
             console.error('회원 정보 조회 실패', err);
@@ -70,7 +75,8 @@ const UserDetailPage = () => {
             gender: user.gender,
             phone: user.phone || '',
             birthdate: user.birthdate,
-            assigned_coach_id: user.assigned_coach_id || null
+            assigned_coach_id: user.assigned_coach_id || null,
+            user_type: user.user_type
         });
         setEditing(false);
     };
@@ -189,6 +195,7 @@ const UserDetailPage = () => {
                     form={form}
                     setForm={setForm}
                     coaches={coaches}
+                    canChangeRole={canChangeRole}
                 />
             </section>
 

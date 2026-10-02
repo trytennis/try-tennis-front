@@ -18,6 +18,7 @@ export type SignUpForm = {
   consent_marketing?: boolean;
   terms_version: string;
   privacy_version: string;
+  coach_invite?: string | null;
 };
 
 export async function signUp(form: SignUpForm) {
@@ -46,7 +47,10 @@ export async function signUp(form: SignUpForm) {
         terms_version: form.terms_version,
         privacy_version: form.privacy_version,
       },
-      emailRedirectTo: `${window.location.origin}/auth/callback`,
+      // Keep the invitation token through the confirmation-email round trip.
+      // Local storage is only a fallback because the link may be opened in a
+      // different browser or device from the confirmation email.
+      emailRedirectTo: `${window.location.origin}/auth/callback${form.coach_invite ? `?coach_invite=${encodeURIComponent(form.coach_invite)}` : ''}`,
     },
   });
 

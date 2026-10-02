@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Mail, Eye, EyeOff, User, Shield, Lock, CheckCircle } from "lucide-react";
 import "../styles/SignUpPage.css";
@@ -10,6 +10,7 @@ type Errors = Record<string, string>;
 export default function SignUpPage() {
     const [searchParams] = useSearchParams();
     const coachInvite = searchParams.get('coach_invite');
+    const isCoachInvite = Boolean(coachInvite);
     const [formData, setFormData] = useState({
         email: "",
         password: "",
@@ -31,6 +32,12 @@ export default function SignUpPage() {
     const [signupStep, setSignupStep] = useState<"form" | "verify" | "complete">("form");
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+    // Save the token as a fallback for providers that remove query strings
+    // from the confirmation redirect.
+    useEffect(() => {
+        if (coachInvite) localStorage.setItem('trytennis_coach_invite', coachInvite);
+    }, [coachInvite]);
 
     // 숫자만 남기기
     const digitsOnly = (v: string) => v.replace(/\D/g, "");
@@ -82,7 +89,6 @@ export default function SignUpPage() {
         if (!validateForm()) return;
         setIsSubmitting(true);
         try {
-            if (coachInvite) localStorage.setItem('trytennis_coach_invite', coachInvite);
             // 실제 supabase 회원가입 호출 (메타데이터 → DB 트리거가 profiles 생성)
             await signUp({
                 email: formData.email,
@@ -100,6 +106,7 @@ export default function SignUpPage() {
                 consent_marketing: formData.consent_marketing,
                 terms_version: "2025-09-10",
                 privacy_version: "2025-09-10",
+                coach_invite: coachInvite,
             });
             setSignupStep("verify");
         } catch (e: any) {
@@ -156,7 +163,7 @@ export default function SignUpPage() {
                             <p>이메일: {formData.email}</p>
                             <p>이름: {formData.name}</p>
                             <p>
-                                회원 유형: 회원
+                                회원 유형: {isCoachInvite ? '코치 (초대)' : '회원'}
                             </p>
                         </div>
                     </div>
@@ -322,13 +329,13 @@ export default function SignUpPage() {
 
                             <div className="su__field">
                                 <label className="su__label u-text-muted">회원 유형</label>
-                                <input className="u-input" value="회원" readOnly />
+                                <input className="u-input" value={isCoachInvite ? "코치 (초대 링크)" : "회원"} readOnly />
                             </div>
                         </div>
 
                         <div className="su__field">
                             <label className="su__label u-text-muted">소속 시설</label>
-                            <input className="u-input" value="가입 후 시설 관리자가 지정합니다" readOnly />
+                            <input className="u-input" value={isCoachInvite ? "초대 수락 시 지정된 시설에 배정됩니다" : "가입 후 시설 관리자가 지정합니다"} readOnly />
                         </div>
 
                     </div>

@@ -60,7 +60,9 @@ export default function AuthCallbackPage() {
                     return navigate("/login", { replace: true });
                 }
 
-                const invite = localStorage.getItem('trytennis_coach_invite');
+                // Prefer the token carried by the email redirect. Local
+                // storage supports the original browser as a fallback.
+                const invite = qs.get('coach_invite') || localStorage.getItem('trytennis_coach_invite');
                 if (invite) {
                     setMsg("코치 초대 확인 중...");
                     await authPost(`/api/coach-invitations/${encodeURIComponent(invite)}/accept`, {});
