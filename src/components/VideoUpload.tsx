@@ -8,7 +8,7 @@ interface VideoUploadProps {
 }
 
 const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
-  const MAX_BYTES = 500 * 1024 * 1024;
+  const MAX_BYTES = 100 * 1024 * 1024;
   const MIN_SECONDS = 3;
   const MAX_SECONDS = 5 * 60;
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -22,7 +22,7 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
     if (!file) return;
 
     if (file.size > MAX_BYTES) {
-      alert('영상은 최대 500MB까지 업로드할 수 있습니다.');
+      alert('영상은 최대 100MB까지 업로드할 수 있습니다.');
       return;
     }
     if (!file.type.startsWith('video/')) {
@@ -110,7 +110,8 @@ const VideoUpload: React.FC<VideoUploadProps> = ({ onUploadComplete }) => {
           <div className="upload-emoji">🎞️</div>
           <div className="upload-title">{isUploading ? '업로드 중...' : '영상 파일을 선택하거나 여기로 드롭'}</div>
           <div className="upload-note">MP4 권장 · AVI, MOV 지원</div>
-          <div className="upload-hint">3초~5분 · 최대 500MB</div>
+          <div className="upload-hint upload-hint--limit">최대 100MB · 3초~5분</div>
+          <div className="upload-limit-note">분석 대기 시간과 서버 사용량을 위해 짧은 영상만 올려주세요.</div>
         </div>
       </div>
     </div>

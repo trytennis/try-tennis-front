@@ -72,3 +72,19 @@
     color: #aaa;
     margin-top: 4px;
 }
+
+.upload-hint--limit {
+    display: inline-block;
+    margin-top: 12px;
+    padding: 6px 10px;
+    border-radius: 999px;
+    background: #fff3d6;
+    color: #8a5a00;
+    font-weight: 700;
+}
+
+.upload-limit-note {
+    margin-top: 8px;
+    color: #77827c;
+    font-size: 12px;
+}
